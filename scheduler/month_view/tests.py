@@ -15,7 +15,7 @@ class TestLoginPage(TestCase):
 
     def test_login_uses_right_template(self):
         response = self.client.get('/')
-        self.assertTemplateUsed(response,'login.html')
+        self.assertTemplateUsed(response,'month_view/login.html')
 
     def test_login_redirects_to_month_view_on_success(self):
         pass
