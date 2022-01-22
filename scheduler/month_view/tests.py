@@ -1,14 +1,19 @@
-from django.test import TestCase
+from django.http import response
+from django.test import TestCase, LiveServerTestCase
+from django.contrib.auth.models import User
+
 import month_view.views as views
 
-class TestLoginPage(TestCase):
+class TestLoginPage(LiveServerTestCase):
     # the login page needs to be the first page people see
     # it needs to use the right template
     # redirect good users to month view
     # redirect bad users to login page
 
     def setUp(self):
-        pass
+        self.test_username = 'winkstiddly'
+        self.test_password = 'password123'
+        User.objects.create_user(username=self.test_username, email='test@test.com', password=self.test_password)
 
     def tearDown(self):
         pass
@@ -18,7 +23,9 @@ class TestLoginPage(TestCase):
         self.assertTemplateUsed(response,'month_view/login.html')
 
     def test_login_redirects_to_month_view_on_success(self):
-        pass
+        response = self.client.post('/', {'username': self.test_username, 'password': self.test_password}, follow=True)
+        self.assertRedirects(response, 'month_view/')
 
     def test_login_redirects_to_login_on_fail(self):
-        pass
+        response = self.client.post('/', {'username': self.test_username, 'password': 'wrong_password'}, follow=True)
+        self.assertRedirects(response, '/')
