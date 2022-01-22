@@ -1,5 +1,8 @@
 from django.shortcuts import render, redirect
+
+
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import User
 
 def login_page(request):
     if request.method == 'POST':
