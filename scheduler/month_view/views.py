@@ -12,6 +12,8 @@ def login_page(request):
         if user is not None:
             login(request, user)
             return redirect('month_view/')
+        else:
+            return redirect('/')
     return render(request, 'month_view/login.html')
 
 def month_view_page(request):

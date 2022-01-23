@@ -47,7 +47,7 @@ class UserMakesEvent(LiveServerTestCase):
         # They click on the first day of the month and a form pops up
         # they enter in the basic information and save the info
         # the form populates the month day with a color showing an event for that day
-        pass
+        
         
 
 
