@@ -6,10 +6,11 @@ import month_view.views as views
 
 
 class TestLoginPage(LiveServerTestCase):
-    # the login page needs to be the first page people see
-    # it needs to use the right template
-    # redirect good users to month view
-    # redirect bad users to login page
+
+    '''the login page needs to be the first page people see
+    it needs to use the right template
+    redirect good users to month view
+    redirect bad users to login page'''
 
     def setUp(self):
         self.test_username = 'winkstiddly'
@@ -30,3 +31,22 @@ class TestLoginPage(LiveServerTestCase):
     def test_login_redirects_to_login_on_fail(self):
         response = self.client.post('/', {'username': self.test_username, 'password': 'wrong_password'}, follow=True)
         self.assertRedirects(response, '/')
+
+    def test_login_required_redirects_to_login_page(self):
+        response = self.client.get('/month_view/', follow=True)
+        self.assertTemplateUsed(response, 'month_view/login.html')
+
+
+class TestMonthViewPage(LiveServerTestCase):
+
+    '''
+    Month View Tests:
+    -User cannot view without logging in
+    '''
+
+    def setUp(self):
+        pass
+
+    def test_month_view_requires_login(self):
+        response = self.client.get('/month_view/', follow=True)
+        self.assertTemplateNotUsed(response, 'month_view/month_view.html')
