@@ -24,4 +24,5 @@ def month_view_page(request):
     return render(request, 'month_view/month_view.html', context)
 
 def _get_days_in_month(month=datetime.now().month, year=datetime.now().year):
-    return calendar.monthrange(year, month)[1]
+    days = [i + 1 for i in range(calendar.monthrange(year, month)[1])]
+    return days

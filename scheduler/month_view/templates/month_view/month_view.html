@@ -5,5 +5,7 @@
 {% endblock %}
 
 {% block 'body' %}
-
+{% for day in month_length %}
+<button type="button">{{ day }}</button>
+{% endfor %}
 {% endblock %}

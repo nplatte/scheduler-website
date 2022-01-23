@@ -1,3 +1,4 @@
+from operator import length_hint
 from django.http import response
 from django.test import TestCase, LiveServerTestCase
 from django.contrib.auth.models import User
@@ -60,4 +61,4 @@ class TestHelperFunctions(TestCase):
         self.month = datetime.datetime.now().month
 
     def test_get_month_days(self):
-        self.assertEqual(views._get_days_in_month(1, 2022), 31)
+        self.assertEqual(len(views._get_days_in_month(1, 2022)), 31)
