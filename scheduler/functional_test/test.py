@@ -46,7 +46,7 @@ class UserMakesEvent(LiveServerTestCase):
         login_button.click()
         self.assertIn('Scheduler', self.browser.title)
         # They click on the first day of the month and a form pops up
-        day_one = self.browser.find_element_by_class_name('day_one')
+        day_one = self.browser.find_element_by_class_name('day_1')
         day_one.click()
         name_input = self.browser.find_element_by_id('event_name')
         color_input = self.browser.find_element_by_id('event_color')
