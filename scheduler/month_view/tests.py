@@ -2,6 +2,8 @@ from django.http import response
 from django.test import TestCase, LiveServerTestCase
 from django.contrib.auth.models import User
 
+import datetime, calendar
+
 import month_view.views as views
 
 
@@ -50,3 +52,12 @@ class TestMonthViewPage(LiveServerTestCase):
     def test_month_view_requires_login(self):
         response = self.client.get('/month_view/', follow=True)
         self.assertTemplateNotUsed(response, 'month_view/month_view.html')
+
+
+class TestHelperFunctions(TestCase):
+
+    def setUp(self):
+        self.month = datetime.datetime.now().month
+
+    def test_get_month_days(self):
+        self.assertEqual(views._get_days_in_month(1, 2022), 31)
