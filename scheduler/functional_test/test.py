@@ -4,6 +4,7 @@ from selenium.webdriver.common.keys import Keys
 from django.contrib.auth.models import User
 
 from django.test import LiveServerTestCase
+import unittest
 
 
 class UserMakesEvent(LiveServerTestCase):
@@ -45,7 +46,13 @@ class UserMakesEvent(LiveServerTestCase):
         login_button.click()
         self.assertIn('Scheduler', self.browser.title)
         # They click on the first day of the month and a form pops up
+        day_one = self.browser.find_element_by_class_name('day_one')
+        day_one.click()
+        name_input = self.browser.find_element_by_id('event_name')
+        color_input = self.browser.find_element_by_id('event_color')
+        time_input = self.browser.find_element_by_id('event_time')
         # they enter in the basic information and save the info
+        name_input.send_keys('topple regime')
         # the form populates the month day with a color showing an event for that day
         
         

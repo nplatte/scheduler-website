@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 
 import month_view.views as views
 
+
 class TestLoginPage(LiveServerTestCase):
     # the login page needs to be the first page people see
     # it needs to use the right template
