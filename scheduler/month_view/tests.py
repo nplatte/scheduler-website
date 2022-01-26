@@ -1,5 +1,6 @@
 from operator import length_hint
 from django.http import response
+from django.urls import reverse
 from django.test import TestCase, LiveServerTestCase
 from django.contrib.auth.models import User
 
@@ -25,19 +26,19 @@ class TestLoginPage(LiveServerTestCase):
         pass
 
     def test_login_uses_right_template(self):
-        response = self.client.get('/')
+        response = self.client.get(reverse('login_page'))
         self.assertTemplateUsed(response,'month_view/login.html')
 
     def test_login_redirects_to_month_view_on_success(self):
-        response = self.client.post('/', {'username': self.test_username, 'password': self.test_password}, follow=True)
+        response = self.client.post(reverse('login_page'), {'username': self.test_username, 'password': self.test_password}, follow=True)
         self.assertRedirects(response, 'month_view/')
 
     def test_login_redirects_to_login_on_fail(self):
-        response = self.client.post('/', {'username': self.test_username, 'password': 'wrong_password'}, follow=True)
-        self.assertRedirects(response, '/')
+        response = self.client.post(reverse('login_page'), {'username': self.test_username, 'password': 'wrong_password'}, follow=True)
+        self.assertRedirects(response, reverse('login_page'))
 
     def test_login_required_redirects_to_login_page(self):
-        response = self.client.get('/month_view/', follow=True)
+        response = self.client.get(reverse('month_page'), follow=True)
         self.assertTemplateUsed(response, 'month_view/login.html')
 
 
@@ -52,7 +53,7 @@ class TestMonthViewPage(LiveServerTestCase):
         pass
 
     def test_month_view_requires_login(self):
-        response = self.client.get('/month_view/', follow=True)
+        response = self.client.get(reverse('month_page'), follow=True)
         self.assertTemplateNotUsed(response, 'month_view/month_view.html')
 
 
