@@ -6,6 +6,8 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
+from .forms import EventForm
+
 def login_page(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -20,7 +22,11 @@ def login_page(request):
 
 @login_required(login_url='/')
 def month_view_page(request):
-    context = {'month_length': _get_days_in_month()}
+    if request.method == 'POST':
+        form = EventForm(request.POST)
+    else:
+        form=EventForm()
+    context = {'month_length': _get_days_in_month(), 'form': form}
     return render(request, 'month_view/month_view.html', context)
 
 def _get_days_in_month(month=datetime.now().month, year=datetime.now().year):

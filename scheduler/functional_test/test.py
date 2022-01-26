@@ -48,9 +48,9 @@ class UserMakesEvent(LiveServerTestCase):
         # They click on the first day of the month and a form pops up
         day_one = self.browser.find_element_by_class_name('day_1')
         day_one.click()
-        name_input = self.browser.find_element_by_id('event_name')
-        color_input = self.browser.find_element_by_id('event_color')
-        time_input = self.browser.find_element_by_id('event_time')
+        name_input = self.browser.find_element_by_class_name('event_name')
+        color_input = self.browser.find_element_by_class_name('event_color')
+        time_input = self.browser.find_element_by_class_name('event_time')
         # they enter in the basic information and save the info
         name_input.send_keys('topple regime')
         # the form populates the month day with a color showing an event for that day
