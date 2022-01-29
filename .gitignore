@@ -77,6 +77,11 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-scheduler/venv/
+venv/
+.vscode
+
+*/migrations/
+
+__init__.py
 
 __pycache__/
