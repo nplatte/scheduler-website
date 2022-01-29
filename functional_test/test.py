@@ -54,6 +54,7 @@ class UserMakesEvent(LiveServerTestCase):
         # they enter in the basic information and save the info
         name_input.send_keys('topple regime')
         # the form populates the month day with a color showing an event for that day
+        event = self.browser.find_element_by_class_name('topple regime')
         
         
 
