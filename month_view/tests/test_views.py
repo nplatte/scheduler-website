@@ -38,17 +38,17 @@ class TestLoginPage(LiveServerTestCase):
 
 class TestMonthViewPage(LiveServerTestCase):
 
-    '''
-    Month View Tests:
-    -User cannot view without logging in
-    '''
-
     def setUp(self):
         pass
 
     def test_month_view_requires_login(self):
         response = self.client.get(reverse('month_page'), follow=True)
         self.assertTemplateNotUsed(response, 'month_view/month_view.html')
+
+    def test_post_requests_save_event_name_color(self):
+        response = self.client.post(reverse('month_page'), data = {'event_name': 'Topple Regime'})
+        self.assertIn('Topple Regime', response.content.decode())
+        self.assertTemplateUsed(response, 'month_view/month_view.html')
 
 
 class TestHelperFunctions(TestCase):
