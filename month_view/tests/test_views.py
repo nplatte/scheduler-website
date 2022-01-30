@@ -1,8 +1,10 @@
 from django.test import TestCase, LiveServerTestCase
 from django.urls import reverse
 import month_view.views as views
+import month_view.models as models
 from django.contrib.auth.models import User
 import datetime
+
 
 class TestLoginPage(LiveServerTestCase):
 
@@ -45,11 +47,10 @@ class TestMonthViewPage(LiveServerTestCase):
         response = self.client.get(reverse('month_page'), follow=True)
         self.assertTemplateNotUsed(response, 'month_view/month_view.html')
 
-    def test_post_requests_save_event_name_color(self):
+    def test_post_requests_save_model(self):
         self.client.force_login(self.test_user)
         response = self.client.post(reverse('month_page'), data = {'event_name': 'Topple Regime'})
-        self.assertIn('Topple Regime', response.content.decode())
-        self.assertTemplateUsed(response, 'month_view/month_view.html')
+        self.assertEqual(1, len(models.Event.objects.all()))
 
 
 class TestHelperFunctions(TestCase):
