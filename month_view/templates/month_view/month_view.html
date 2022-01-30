@@ -6,7 +6,7 @@
 
 {% block 'body' %}
 {% for day in month_length %}
-<button type="button" class=day_{{ day }}>{{ day }}</button>
+<button type="button" class="day_{{ day }}" onclick="ToggleForm()">{{ day }}</button>
 {% endfor %}
 <div id=event_input style="visibility: hidden;">
     {{ form }}
