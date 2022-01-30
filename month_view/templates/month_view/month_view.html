@@ -9,6 +9,9 @@
 <button type="button" class="day_{{ day }}" onclick="ToggleForm()">{{ day }}</button>
 {% endfor %}
 <div id=event_input style="visibility: hidden;">
-    {{ form }}
+    <form method="POST" enctype="multipart/form-data">
+        {{ form }}
+        <button id="new_event_submit_button">Submit</button>
+    </form>
 </div>
 {% endblock %}
