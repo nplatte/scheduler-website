@@ -1,6 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import ElementNotInteractableException
+
 
 from django.contrib.auth.models import User
 
@@ -48,8 +49,8 @@ class UserMakesEvent(LiveServerTestCase):
         self.assertIn('Scheduler', self.browser.title)
         # They click on the first day of the month and a form pops up
         day_one = self.browser.find_element_by_class_name('day_1')
-        with self.assertRaises(NoSuchElementException):
-            name_input = self.browser.find_element_by_class_name('event_name')
+        bad_name_input = self.browser.find_element_by_class_name('event_name')
+        self.assertRaises(ElementNotInteractableException, bad_name_input.send_keys, 'something')
         day_one.click()
         name_input = self.browser.find_element_by_class_name('event_name')
         color_input = self.browser.find_element_by_class_name('event_color')
