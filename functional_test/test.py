@@ -41,19 +41,11 @@ class UserMakesEvent(StaticLiveServerTestCase):
         self.assertIn('Log In', self.browser.title)
         # They enter their username and password
         self._login_attempt(self.test_username, 'assword123')
-        '''username_input, password_input, login_button = self._get_username_and_password_inputs()
-        username_input.send_keys(self.test_username)
-        password_input.send_keys('assword123')
-        login_button.click()'''
         # Oh no! They entered it wrong and got prompted to reenter the information
         self.assertNotIn('Scheduler', self.browser.title)
         self.assertIn('Log In', self.browser.title)
         # There we go, they enter the password right and can see the month view of the current month
         self._login_attempt(self.test_username, self.test_password)
-        '''username_input, password_input, login_button = self._get_username_and_password_inputs()
-        username_input.send_keys(self.test_username)
-        password_input.send_keys(self.test_password)
-        login_button.click()'''
         self.assertIn('Scheduler', self.browser.title)
         # satisfied that her account works, she clicks the logout button
         logout_button = self.browser.find_element_by_id('logout_button')
@@ -65,10 +57,6 @@ class UserMakesEvent(StaticLiveServerTestCase):
         # Tiddlywinks is greeted by a log in screen
         self.assertIn('Log In', self.browser.title)
         # They enter the right username and password and can see the month view of the current month
-        '''username_input, password_input, login_button = self._get_username_and_password_inputs()
-        username_input.send_keys(self.test_username)
-        password_input.send_keys(self.test_password)
-        login_button.click()'''
         self._login_attempt(self.test_username, self.test_password)
         self.assertIn('Scheduler', self.browser.title)
         # They click on the first day of the month and a form pops up
