@@ -22,7 +22,6 @@ class UserMakesEvent(StaticLiveServerTestCase):
         self.browser = webdriver.Firefox()
         # Then Tiddlywinks types in the url
         self.browser.get(self.live_server_url)
-        #self.browser.get('http://localhost:8000')
 
     def tearDown(self):
         # Finally Tiddlywinks logs off the website
