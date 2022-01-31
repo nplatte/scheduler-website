@@ -5,11 +5,17 @@
 {% endblock %}
 
 {% block 'body' %}
-{% for day in month_length %}
+{% for day, events in month_events.items %}
 <button type="button" class="day_{{ day }}" onclick="ToggleForm()">{{ day }}</button>
+    {% for event in events %}
+    <div class="event">
+        <h5 class="event_title">{{ event.title }}</h5>
+    </div>
+    {% endfor %}
 {% endfor %}
 <div id=event_input style="visibility: hidden;">
     <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
         {{ form }}
         <button type="submit" id="new_event_submit_button">Submit</button>
     </form>

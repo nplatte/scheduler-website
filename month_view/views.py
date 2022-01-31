@@ -31,16 +31,17 @@ def month_view_page(request):
             form.save()
     else:
         form=EventForm()
+    month_events = {i: _get_events_on_day(i, month, year) for i in range(1, _get_days_in_month(month, year) + 1)}
     context = {
-        'month_length': _get_days_in_month(month, year), 
+        #'month_length': _get_days_in_month(month, year), 
         'form': form,
-        'events': {}
+        'month_events': month_events
         }
     return render(request, 'month_view/month_view.html', context)
 
 def _get_days_in_month(month=datetime.now().month, year=datetime.now().year):
-    days = [i + 1 for i in range(calendar.monthrange(year, month)[1])]
+    days = calendar.monthrange(year, month)[1]
     return days
 
 def _get_events_on_day(day, month, year):
-    return [Event.objects.filter(date=f'{year}-{month}-{day}')]
+    return Event.objects.filter(date=f'{year}-{month}-{day}')

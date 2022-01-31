@@ -4,9 +4,10 @@ from selenium.common.exceptions import ElementNotInteractableException
 
 
 from django.contrib.auth.models import User
+from month_view.models import Event
 
 from django.test import LiveServerTestCase
-import unittest
+import time
 
 
 class UserMakesEvent(LiveServerTestCase):
@@ -14,12 +15,12 @@ class UserMakesEvent(LiveServerTestCase):
     def setUp(self):
         # Tiddlywinks is a super cool person who decided to use the Scheduling app to get their life in order
         # first they boot up Firefox
-        self.browser = webdriver.Firefox()
         self.test_username = 'tiddlywinks'
         self.test_password = 'Sparta12456'
-        
+        #User.objects.create_user(self.test_username, 'test@test.com', self.test_password)
+        self.browser = webdriver.Firefox()
         # Then Tiddlywinks types in the url
-        self.browser.get('http://localhost:8000')
+        self.browser.get('http://localhost:8000/')
 
     def tearDown(self):
         # Finally Tiddlywinks logs off the website
@@ -60,10 +61,5 @@ class UserMakesEvent(LiveServerTestCase):
         name_input.send_keys('topple regime')
         submit_button.click()
         # the form populates the month day with a color showing an event for that day
-        
-        
-        
-
-
-if __name__ == '__main__':
-    unittest.main()
+        events = self.browser.find_elements_by_class_name('event')
+        self.assertEqual(len(events), 1)

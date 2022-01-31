@@ -59,10 +59,10 @@ class TestHelperFunctions(TestCase):
         self.month = datetime.now().month
 
     def test_get_month_days(self):
-        self.assertEqual(len(views._get_days_in_month(1, 2022)), 31)
+        self.assertEqual(views._get_days_in_month(1, 2022), 31)
 
     def test_get_events_on_day_returns_list(self):
-        event = models.Event.objects.create(title='New Event', date='2022-01-31')
+        models.Event.objects.create(title='New Event', date='2022-01-31')
         events = views._get_events_on_day(31, 1, 2022)
-        self.assertIsInstance(events, list)
         self.assertEqual(len(events), 1)
+        self.assertEqual(events[0].title, 'New Event')
