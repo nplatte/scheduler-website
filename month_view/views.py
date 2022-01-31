@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, date
 import calendar
 from django.shortcuts import render, redirect
 
@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
 from .forms import EventForm
+from.models import Event
 
 def login_page(request):
     if request.method == 'POST':
@@ -22,15 +23,24 @@ def login_page(request):
 
 @login_required(login_url='/')
 def month_view_page(request):
+    month = datetime.now().month
+    year = datetime.now().year
     if request.method == 'POST':
         form = EventForm(request.POST)
         if form.is_valid():
             form.save()
     else:
         form=EventForm()
-    context = {'month_length': _get_days_in_month(), 'form': form}
+    context = {
+        'month_length': _get_days_in_month(month, year), 
+        'form': form,
+        'events': {}
+        }
     return render(request, 'month_view/month_view.html', context)
 
 def _get_days_in_month(month=datetime.now().month, year=datetime.now().year):
     days = [i + 1 for i in range(calendar.monthrange(year, month)[1])]
     return days
+
+def _get_events_on_day(day, month, year):
+    return [Event.objects.filter(date=f'{year}-{month}-{day}')]
