@@ -2,14 +2,14 @@ from datetime import datetime, date
 import calendar
 from django.shortcuts import render, redirect
 
-from django.contrib.auth import authenticate, login
+#from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
 from .forms import EventForm
 from.models import Event
 
-def login_page(request):
+'''def login_page(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -19,7 +19,7 @@ def login_page(request):
             return redirect('month_view/')
         else:
             return redirect('/')
-    return render(request, 'month_view/login.html')
+    return render(request, 'month_view/login.html')'''
 
 @login_required(login_url='/')
 def month_view_page(request):
