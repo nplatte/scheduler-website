@@ -53,7 +53,7 @@ class UserMakesEvent(LiveServerTestCase):
         self.assertRaises(ElementNotInteractableException, bad_name_input.send_keys, 'something')
         day_one.click()
         name_input = self.browser.find_element_by_class_name('event_name')
-        color_input = self.browser.find_element_by_class_name('event_color')
+        description_input = self.browser.find_element_by_class_name('event_description')
         time_input = self.browser.find_element_by_class_name('event_time')
         submit_button = self.browser.find_element_by_id('new_event_submit_button')
         # they enter in the basic information and save the info

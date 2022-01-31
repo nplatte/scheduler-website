@@ -24,6 +24,8 @@ def login_page(request):
 def month_view_page(request):
     if request.method == 'POST':
         form = EventForm(request.POST)
+        if form.is_valid():
+            form.save()
     else:
         form=EventForm()
     context = {'month_length': _get_days_in_month(), 'form': form}

@@ -3,8 +3,7 @@ from django.urls import reverse
 import month_view.views as views
 import month_view.models as models
 from django.contrib.auth.models import User
-import datetime
-
+from datetime import date, datetime
 
 class TestLoginPage(LiveServerTestCase):
 
@@ -49,14 +48,15 @@ class TestMonthViewPage(LiveServerTestCase):
 
     def test_post_requests_save_model(self):
         self.client.force_login(self.test_user)
-        response = self.client.post(reverse('month_page'), data = {'event_name': 'Topple Regime'})
+        data = {'title': 'topple regime', 'date': date.today()}
+        response = self.client.post(reverse('month_page'), data)
         self.assertEqual(1, len(models.Event.objects.all()))
 
 
 class TestHelperFunctions(TestCase):
 
     def setUp(self):
-        self.month = datetime.datetime.now().month
+        self.month = datetime.now().month
 
     def test_get_month_days(self):
         self.assertEqual(len(views._get_days_in_month(1, 2022)), 31)
