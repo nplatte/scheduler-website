@@ -20,5 +20,6 @@ class TestEvent(TestCase):
     def test_time_format(self):
         self.assertIsInstance(self.new_event.time, str)
 
-    def test_date_format(self):
+    def test_date_format_and_default(self):
         self.assertIsInstance(self.new_event.date, date)
+        self.assertEqual(date.today(), self.new_event.date)
