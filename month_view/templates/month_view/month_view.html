@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block 'body' %}
+<h1 class="event_title">TEST</h1>
 {% for day, events in month_events.items %}
 <button type="button" class="day_{{ day }}" onclick="ToggleForm()">{{ day }}</button>
     {% for event in events %}
