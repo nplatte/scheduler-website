@@ -14,12 +14,17 @@
     </div>
     {% endfor %}
 {% endfor %}
+
+
 <div>
     <form method="POST">
         {% csrf_token %}
+        <input type="number" value="{{ month_number }}" name="month">
         <button type="submit" id="right_month" name="right_month">-></button>
     </form>
 </div>
+
+
 <div id=event_input style="visibility: hidden;">
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}

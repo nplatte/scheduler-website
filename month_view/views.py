@@ -20,7 +20,7 @@ def month_view_page(request):
         if 'logout' in request.POST:
             logout(request)
             return redirect(reverse('login_page'))
-        elif 'right_arrow' in request.POST:
+        elif 'right_month' in request.POST:
             month = int(request.POST['month']) + 1
         else:
             form = NewEventForm(request.POST)
@@ -29,6 +29,7 @@ def month_view_page(request):
     month_events = {i: _get_events_on_day(i, month, year) for i in range(1, _get_days_in_month(month, year) + 1)}
     context = {
         'form': form,
+        'month_number': month,
         'month_events': month_events,
         'month_name': _get_month_name(month)
         }

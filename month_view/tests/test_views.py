@@ -42,13 +42,13 @@ class TestMonthViewPage(LiveServerTestCase):
 
     def test_right_arrow_post_uses_template(self):
         self.client.force_login(self.test_user)
-        data = {'right_arrow': [''], 'month': 2}
+        data = {'right_month': [''], 'month': 2}
         response = self.client.post(reverse('month_page'), data, follow=True)
         self.assertTemplateUsed(response, 'month_view/month_view.html')
 
     def test_right_arrow_context_returns_non_curent_month_name(self):
         self.client.force_login(self.test_user)
-        data = {'right_arrow': [''], 'month': 2}
+        data = {'right_month': [''], 'month': 2}
         response = self.client.post(reverse('month_page'), data, follow=True)
         self.assertTemplateUsed(response, 'month_view/month_view.html')
         self.assertNotEqual(response.context['month_name'], _get_month_name())
