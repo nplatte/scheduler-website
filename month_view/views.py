@@ -43,6 +43,9 @@ def _get_days_in_month(month=datetime.now().month, year=datetime.now().year):
 def _get_events_on_day(day, month, year):
     return Event.objects.filter(date=f'{year}-{month}-{day}')
 
+def _get_dates_in_month(month, year):
+    return [f'{year}-{month}-{i}' for i in range(1, _get_days_in_month(month, year) + 1)]
+
 def _get_month_name(month=datetime.now().month):
     months = {
         1: 'January',
