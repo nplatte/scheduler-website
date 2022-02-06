@@ -7,7 +7,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 
-from .forms import EventForm
+from .forms import NewEventForm
 from.models import Event
 
 
@@ -15,13 +15,13 @@ from.models import Event
 def month_view_page(request):
     month = datetime.now().month
     year = datetime.now().year
-    form=EventForm()
+    form = NewEventForm()
     if request.method == 'POST':
         if 'logout' in request.POST:
             logout(request)
             return redirect(reverse('login_page'))
         else:
-            form = EventForm(request.POST)
+            form = NewEventForm(request.POST)
             if form.is_valid():
                 form.save()
         

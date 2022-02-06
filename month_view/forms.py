@@ -5,13 +5,13 @@ from django.forms import ModelForm
 from .models import Event
 
 
-class EventForm(ModelForm):
+class NewEventForm(ModelForm):
     class Meta:
         model = Event
         fields = ['title', 'date', 'time', 'description']
         widgets = {
-            'title': forms.fields.TextInput(attrs={'class': 'event_name'}),
-            'time': forms.TimeInput(attrs={'class': 'event_time'}),
-            'date': forms.DateInput(attrs={'class': 'event_date'}),
-            'description': forms.Textarea(attrs={'class': 'event_description'})
+            'title': forms.fields.TextInput(attrs={'class': 'new_event_name'}),
+            'time': forms.TimeInput(attrs={'class': 'new_event_time'}),
+            'date': forms.DateInput(attrs={'class': 'new_event_date'}),
+            'description': forms.Textarea(attrs={'class': 'new_event_description'})
             }
