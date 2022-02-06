@@ -12,6 +12,11 @@ class TestMonthViewPage(LiveServerTestCase):
     def setUp(self):
         self.test_user = User.objects.create(username='test_user', password='password')
 
+    def test_month_view_uses_right_template(self):
+        self.client.force_login(self.test_user)
+        response = self.client.get(reverse('month_page'), follow=True)
+        self.assertTemplateUsed(response, 'month_view/month_view.html')
+
     def test_month_view_requires_login(self):
         response = self.client.get(reverse('month_page'), follow=True)
         self.assertTemplateNotUsed(response, 'month_view/month_view.html')
@@ -34,6 +39,11 @@ class TestMonthViewPage(LiveServerTestCase):
         response = self.client.post(reverse('month_page'), data, follow=True)
         self.assertTemplateNotUsed(response, 'month_view/month_view.html')
 
+    def test_right_arrow_post_uses_template(self):
+        self.client.force_login(self.test_user)
+        data = {'right_arrow': ['']}
+        response = self.client.post(reverse('month_page'), data, follow=True)
+        self.assertTemplateUsed(response, 'month_view/month_view.html')
 
 
 class TestHelperFunctions(TestCase):
