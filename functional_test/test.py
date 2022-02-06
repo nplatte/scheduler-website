@@ -36,7 +36,13 @@ class UserMakesEvent(StaticLiveServerTestCase):
     def _logout_attempt(self):
         logout_button = self.browser.find_element_by_id('logout_button')
         logout_button.click()
-        
+
+    def _make_new_event(self, name):
+        name_input = self.browser.find_element_by_class_name('new_event_name')
+        submit_button = self.browser.find_element_by_id('new_event_submit_button')
+        name_input.send_keys(name)
+        submit_button.click()
+
     def test_tiddlywinks_can_log_in_and_out(self):
         # Tiddlywinks is greeted by a log in screen
         self.assertIn('Log In', self.browser.title)
@@ -99,6 +105,51 @@ class UserMakesEvent(StaticLiveServerTestCase):
         self.assertEqual(1, len(events_on_the_fifth))
         # happy with her new event, she logs off
         self._logout_attempt()
+
+    def test_tiddlywinks_can_look_at_events_from_last_year(self):
+        # Tiddlywinks logs in to  the website
+        self._login_attempt(self.test_username, self.test_password)
+        # she sees that the current month and year are on the screen
+        month_name = self.browser.find_element_by_class_name('month_name')
+        year_num = self.browser.find_element_by_class_name('year_number')
+        self.assertEqual(month_name.text, _get_month_name(datetime.now().month))
+        self.assertEqual('2022', year_num)
+        # she decides she wants to edit an event from last year, because she is a lil shit
+        # she clicks the left arrow button and sees the month swap to the previous month
+        left_arrow = self.browser.find_element_by_id('left_month')
+        left_arrow.click()
+        month_name = self.browser.find_element_by_class_name('month_name')
+        self.assertEqual(month_name.text, _get_month_name(datetime.now().month - 1))
+        # she clicks 11 more times to make sure she is in the last year
+        for i in range(11):
+            left_arrow.click()
+        # she sees she is in the last year
+        year_num = self.browser.find_element_by_class_name('year_number')
+        self.assertEqual('2021', year_num)
+        # she makes the event
+        day_1 = self.browser.find_element_by_class_name('day_1')
+        day_1.click()
+        self._make_new_event('Tiddlywinks necromancy appointment')
+        # the form dissappears when she presses submit
+        bad_name_input = self.browser.find_element_by_class_name('new_event_name')
+        self.assertRaises(ElementNotInteractableException, bad_name_input.send_keys, 'something')
+        # she then clicks on it to bring up the edit event form that is already populated with data
+        event = self.browser.find_element_by_class_name('day_1_event')
+        event.click()
+        # she changes the date to current year
+        event_edit_date = self.browser.find_element_by_id('event_edit_date_input')
+        event_edit_date.send_keys('2022-02-01')
+        # she arrows right for a full year until she's back in the current month
+        right_arrow = self.browser.find_element_by_id('right_month')
+        for i in range(12):
+            right_arrow.click()
+        # she sees her event and logs out
+        events = self.browser.find_elements_by_class_name('day_1_event')
+        self.assertEqual(len(events), 1)
+        self.assertEqual(month_name.text, _get_month_name(datetime.now().month))
+        self.assertEqual('2022', year_num)
+        self._logout_attempt()
+
 
 def _get_month_name(month=datetime.now().month):
     months = {
