@@ -106,7 +106,7 @@ class UserMakesEvent(StaticLiveServerTestCase):
         # happy with her new event, she logs off
         self._logout_attempt()
 
-    def test_tiddlywinks_can_look_at_events_from_last_year(self):
+    def test_tiddlywinks_can_edit_at_events_from_last_year(self):
         # Tiddlywinks logs in to  the website
         self._login_attempt(self.test_username, self.test_password)
         # she sees that the current month and year are on the screen

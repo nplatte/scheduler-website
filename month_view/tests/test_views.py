@@ -15,41 +15,41 @@ class TestMonthViewPage(LiveServerTestCase):
 
     def test_month_view_uses_right_template(self):
         self.client.force_login(self.test_user)
-        response = self.client.get(reverse('month_page', kwargs={'month': 2}), follow=True)
+        response = self.client.get(reverse('month_page', kwargs={'month': 2, 'year': 2022}), follow=True)
         self.assertTemplateUsed(response, 'month_view/month_view.html')
 
     def test_month_view_requires_login(self):
-        response = self.client.get(reverse('month_page', kwargs={'month': 2}), follow=True)
+        response = self.client.get(reverse('month_page', kwargs={'month': 2, 'year': 2022}), follow=True)
         self.assertTemplateNotUsed(response, 'month_view/month_view.html')
 
     def test_post_requests_save_model(self):
         self.client.force_login(self.test_user)
         data = {'title': 'topple regime', 'date': date.today()}
-        response = self.client.post(reverse('month_page', kwargs={'month': 2}), data)
+        response = self.client.post(reverse('month_page', kwargs={'month': 2, 'year': 2022}), data)
         self.assertEqual(1, len(models.Event.objects.all()))
 
     def test_logout_redirects_to_login_page(self):
         self.client.force_login(self.test_user)
         data = {'logout': ['']}
-        response = self.client.post(reverse('month_page', kwargs={'month': 2}), data, follow=True)
+        response = self.client.post(reverse('month_page', kwargs={'month': 2, 'year': 2022}), data, follow=True)
         self.assertTemplateUsed(response, 'login/login.html')
 
     def test_user_logged_out(self):
         self.client.force_login(self.test_user)
         data = {'logout': ['']}
-        response = self.client.post(reverse('month_page', kwargs={'month': 2}), data, follow=True)
+        response = self.client.post(reverse('month_page', kwargs={'month': 2, 'year': 2022}), data, follow=True)
         self.assertTemplateNotUsed(response, 'month_view/month_view.html')
 
     def test_right_arrow_post_uses_template(self):
         self.client.force_login(self.test_user)
         data = {'right_month': [''], 'month': 2}
-        response = self.client.post(reverse('month_page', kwargs={'month': 2}), data, follow=True)
+        response = self.client.post(reverse('month_page', kwargs={'month': 2, 'year': 2022}), data, follow=True)
         self.assertTemplateUsed(response, 'month_view/month_view.html')
 
     def test_right_arrow_context_returns_non_curent_month_name(self):
         self.client.force_login(self.test_user)
         data = {'right_month': [''], 'month': 2}
-        response = self.client.post(reverse('month_page', kwargs={'month': 2}), data, follow=True)
+        response = self.client.post(reverse('month_page', kwargs={'month': 2, 'year': 2022}), data, follow=True)
         self.assertTemplateUsed(response, 'month_view/month_view.html')
         self.assertNotEqual(response.context['month_name'], _get_month_name())
 
