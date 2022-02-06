@@ -90,7 +90,7 @@ class UserMakesEvent(StaticLiveServerTestCase):
         day_5 = self.browser.find_element_by_class_name('day_5')
         day_5.click()
         # she adds her data for that day and clicks submit
-        name_input = self.browser.find_element_by_class_name('event_name')
+        name_input = self.browser.find_element_by_class_name('new_event_name')
         submit_button = self.browser.find_element_by_id('new_event_submit_button')
         name_input.send_keys('topple regime')
         submit_button.click()

@@ -12,8 +12,7 @@ from.models import Event
 
 
 @login_required(login_url='/')
-def month_view_page(request):
-    month = datetime.now().month
+def month_view_page(request, month):
     year = datetime.now().year
     form = NewEventForm()
     if request.method == 'POST':
@@ -26,7 +25,6 @@ def month_view_page(request):
             form = NewEventForm(request.POST)
             if form.is_valid():
                 form.save()
-    #month_events = {i: _get_events_on_day(i, month, year) for i in range(1, _get_days_in_month(month, year) + 1)}
     month_day_info = []
     dates = _get_dates_in_month(month, year)
     for i in range(1, _get_days_in_month(month, year) + 1):
