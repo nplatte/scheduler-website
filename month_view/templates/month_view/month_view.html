@@ -8,7 +8,7 @@
 {% for day, events in month_events.items %}
 <button type="button" class="day_{{ day }}" onclick="ToggleForm()">{{ day }}</button>
     {% for event in events %}
-    <div class="event">
+    <div class="day_{{ day }}_event">
         <h5 class="event_title">{{ event.title }}</h5>
     </div>
     {% endfor %}
