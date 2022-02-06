@@ -3,6 +3,7 @@ from django.urls import reverse
 import month_view.views as views
 import month_view.models as models
 from django.contrib.auth.models import User
+from django.contrib.auth import logout
 from datetime import date, datetime
 
 
@@ -31,6 +32,7 @@ class TestMonthViewPage(LiveServerTestCase):
         self.client.force_login(self.test_user)
         data = {'logout': ['']}
         response = self.client.post(reverse('month_page'), data)
+        logout(self.test_user)
         self.assertFalse(self.test_user.is_authenticated)
 
 
