@@ -36,23 +36,6 @@ class UserMakesEvent(StaticLiveServerTestCase):
     def _logout_attempt(self):
         logout_button = self.browser.find_element_by_id('logout_button')
         logout_button.click()
-
-    def _get_month_name(self, month=datetime.now().month):
-        months = {
-            1: 'January',
-            2: 'February',
-            3: 'March',
-            4: 'April',
-            5: 'May',
-            6: 'June',
-            7: 'July',
-            8: 'August',
-            9: 'September',
-            10: 'October',
-            11: 'November',
-            12: 'December'
-        }
-        return months[month]
         
     def test_tiddlywinks_can_log_in_and_out(self):
         # Tiddlywinks is greeted by a log in screen
@@ -87,7 +70,6 @@ class UserMakesEvent(StaticLiveServerTestCase):
         submit_button.click()
         # the form populates the month day with a color showing an event for that day
         events = self.browser.find_elements_by_class_name('day_5_event')
-        sleep(5)
         self.assertEqual(len(events), 1)
         # happy with her new event, she logs off
         self._logout_attempt()
