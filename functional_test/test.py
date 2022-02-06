@@ -69,7 +69,7 @@ class UserMakesEvent(StaticLiveServerTestCase):
         name_input.send_keys('topple regime')
         submit_button.click()
         # the form populates the month day with a color showing an event for that day
-        events = self.browser.find_elements_by_class_name('day_5_event')
+        events = self.browser.find_elements_by_class_name('day_1_event')
         self.assertEqual(len(events), 1)
         # happy with her new event, she logs off
         self._logout_attempt()
