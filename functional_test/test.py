@@ -74,18 +74,18 @@ class UserMakesEvent(StaticLiveServerTestCase):
         self._login_attempt(self.test_username, self.test_password)
         # They click on the first day of the month and a form pops up
         day_one = self.browser.find_element_by_class_name('day_1')
-        bad_name_input = self.browser.find_element_by_class_name('event_name')
+        bad_name_input = self.browser.find_element_by_class_name('new_event_name')
         self.assertRaises(ElementNotInteractableException, bad_name_input.send_keys, 'something')
         day_one.click()
-        name_input = self.browser.find_element_by_class_name('event_name')
-        self.browser.find_element_by_class_name('event_description')
-        self.browser.find_element_by_class_name('event_time')
+        name_input = self.browser.find_element_by_class_name('new_event_name')
+        self.browser.find_element_by_class_name('new_event_description')
+        self.browser.find_element_by_class_name('new_event_time')
         submit_button = self.browser.find_element_by_id('new_event_submit_button')
         # they enter in the basic information and save the info
         name_input.send_keys('topple regime')
         submit_button.click()
         # the form populates the month day with a color showing an event for that day
-        events = self.browser.find_elements_by_class_name('event')
+        events = self.browser.find_elements_by_class_name('day_1_event')
         self.assertEqual(len(events), 1)
         # happy with her new event, she logs off
         self._logout_attempt()
