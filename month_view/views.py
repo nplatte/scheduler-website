@@ -27,6 +27,7 @@ def month_view_page(request):
             if form.is_valid():
                 form.save()
     month_events = {i: _get_events_on_day(i, month, year) for i in range(1, _get_days_in_month(month, year) + 1)}
+    #month_day_info = [(i, date, _get_events_on_day(i, month, year)) for i in range(1, _get_days_in_month(month, year) + 1)]
     context = {
         'form': form,
         'month_number': month,

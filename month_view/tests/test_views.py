@@ -67,3 +67,11 @@ class TestHelperFunctions(TestCase):
         events = views._get_events_on_day(31, 1, 2022)
         self.assertEqual(len(events), 1)
         self.assertEqual(events[0].title, 'New Event')
+
+    def test_get_dates_in_month_returns_days_for_full_month(self):
+        dates_in_month = views._get_dates_in_month(2)
+        self.assertEqual(28, len(dates_in_month))
+        date_parts = dates_in_month[0].split('-')
+        self.assertEqual('2022', date_parts[0])
+        self.assertEqual('02', date_parts[1])
+        self.assertEqual('01', date_parts[2])

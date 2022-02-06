@@ -20,6 +20,7 @@ class TestNewEventForm(TestCase):
     def test_date_input_attributes(self):
         form_html = self.new_event_form.as_p()
         self.assertIn('class="new_event_date"', form_html)
+        self.assertIn('id="new_event_date"', form_html)
 
     def test_description_input_attributes(self):
         form_html = self.new_event_form.as_p()
