@@ -21,6 +21,19 @@ class TestMonthViewPage(LiveServerTestCase):
         response = self.client.post(reverse('month_page'), data)
         self.assertEqual(1, len(models.Event.objects.all()))
 
+    def test_logout_redirects_to_login_page(self):
+        self.client.force_login(self.test_user)
+        data = {'logout': ['']}
+        response = self.client.post(reverse('month_page'), data, follow=True)
+        self.assertTemplateUsed(response, 'login/login.html')
+
+    def test_user_logged_out(self):
+        self.client.force_login(self.test_user)
+        data = {'logout': ['']}
+        response = self.client.post(reverse('month_page'), data)
+        self.assertFalse(self.test_user.is_authenticated)
+
+
 
 class TestHelperFunctions(TestCase):
 

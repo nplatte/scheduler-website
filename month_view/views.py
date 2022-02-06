@@ -1,8 +1,11 @@
 from datetime import datetime
 import calendar
-from django.shortcuts import render
+
+from django.urls import reverse
+from django.shortcuts import render, redirect
 
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
 
 from .forms import EventForm
 from.models import Event
@@ -13,10 +16,13 @@ def month_view_page(request):
     month = datetime.now().month
     year = datetime.now().year
     if request.method == 'POST':
-        form = EventForm(request.POST)
-        if form.is_valid():
-            form.save()
-    else:
+        if 'logout' in request.POST:
+            logout(request)
+            return redirect(reverse('login_page'))
+        else:
+            form = EventForm(request.POST)
+            if form.is_valid():
+                form.save()
         form=EventForm()
     month_events = {i: _get_events_on_day(i, month, year) for i in range(1, _get_days_in_month(month, year) + 1)}
     context = {
