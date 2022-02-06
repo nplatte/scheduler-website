@@ -21,6 +21,7 @@ def month_view_page(request, month):
             return redirect(reverse('login_page'))
         elif 'right_month' in request.POST:
             month = int(request.POST['month']) + 1
+            return redirect(reverse('month_page', kwargs={'month': month}))
         else:
             form = NewEventForm(request.POST)
             if form.is_valid():
