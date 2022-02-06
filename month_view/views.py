@@ -15,6 +15,7 @@ from.models import Event
 def month_view_page(request):
     month = datetime.now().month
     year = datetime.now().year
+    form=EventForm()
     if request.method == 'POST':
         if 'logout' in request.POST:
             logout(request)
@@ -23,7 +24,7 @@ def month_view_page(request):
             form = EventForm(request.POST)
             if form.is_valid():
                 form.save()
-        form=EventForm()
+        
     month_events = {i: _get_events_on_day(i, month, year) for i in range(1, _get_days_in_month(month, year) + 1)}
     context = {
         'form': form,

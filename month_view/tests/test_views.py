@@ -31,9 +31,8 @@ class TestMonthViewPage(LiveServerTestCase):
     def test_user_logged_out(self):
         self.client.force_login(self.test_user)
         data = {'logout': ['']}
-        response = self.client.post(reverse('month_page'), data)
-        logout(self.test_user)
-        self.assertFalse(self.test_user.is_authenticated)
+        response = self.client.post(reverse('month_page'), data, follow=True)
+        self.assertTemplateNotUsed(response, 'month_view/month_view.html')
 
 
 
