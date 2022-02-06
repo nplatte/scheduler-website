@@ -78,11 +78,14 @@ class UserMakesEvent(StaticLiveServerTestCase):
         # Tiddlywinks logs in to  the website
         self._login_attempt(self.test_username, self.test_password)
         # after making her first event, she decides to make a new event in the next month
+        # shee sees the current month on the top of the page
+        month_name = self.browser.find_element_by_class_name('month_name')
+        self.assertEqual(month_name.text, _get_month_name(datetime.now().month))
         # she clicks the arrow button and sees she isn't on the current month
         right_arrow = self.browser.find_element_by_id('right_month')
         right_arrow.click()
         month_name = self.browser.find_element_by_class_name('month_name')
-        self.assertEqual(month_name, _get_month_name(datetime.now().month + 1))
+        self.assertEqual(month_name.text, _get_month_name(datetime.now().month + 1))
         # she clicks the 5th and makes a new event for that day
         day_5 = self.browser.find_element_by_class_name('day_5')
         day_5.click()
