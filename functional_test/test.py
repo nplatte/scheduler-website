@@ -113,7 +113,7 @@ class UserMakesEvent(StaticLiveServerTestCase):
         month_name = self.browser.find_element_by_class_name('month_name')
         year_num = self.browser.find_element_by_class_name('year_number')
         self.assertEqual(month_name.text, _get_month_name(datetime.now().month))
-        self.assertEqual('2022', year_num)
+        self.assertEqual('2022', year_num.text)
         # she decides she wants to edit an event from last year, because she is a lil shit
         # she clicks the left arrow button and sees the month swap to the previous month
         left_arrow = self.browser.find_element_by_id('left_month')
@@ -125,7 +125,7 @@ class UserMakesEvent(StaticLiveServerTestCase):
             left_arrow.click()
         # she sees she is in the last year
         year_num = self.browser.find_element_by_class_name('year_number')
-        self.assertEqual('2021', year_num)
+        self.assertEqual('2021', year_num.text)
         # she makes the event
         day_1 = self.browser.find_element_by_class_name('day_1')
         day_1.click()
