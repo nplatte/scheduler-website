@@ -31,6 +31,7 @@ def month_view_page(request, month, year):
                 year = year - 1
             else:
                 month = month - 1
+            return redirect(reverse('month_page', kwargs={'month': month, 'year': year}))
         else:
             form = NewEventForm(request.POST)
             if form.is_valid():
