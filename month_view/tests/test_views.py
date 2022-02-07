@@ -53,6 +53,13 @@ class TestMonthViewPage(LiveServerTestCase):
         self.assertTemplateUsed(response, 'month_view/month_view.html')
         self.assertNotEqual(response.context['month_name'], _get_month_name())
 
+    def test_left_arrow_context_returns_month_minus_one(self):
+        self.client.force_login(self.test_user)
+        data = {'left_month': [''], 'month': 1}
+        response = self.client.post(reverse('month_page', kwargs={'month': 2, 'year': 2022}), data, follow=True)
+        self.assertEqual(1, response.context['month_number'])
+
+
 
 class TestHelperFunctions(TestCase):
 
