@@ -122,6 +122,7 @@ class UserMakesEvent(StaticLiveServerTestCase):
         self.assertEqual(month_name.text, _get_month_name(datetime.now().month - 1))
         # she clicks 11 more times to make sure she is in the last year
         for i in range(11):
+            left_arrow = self.browser.find_element_by_id('left_month')
             left_arrow.click()
         # she sees she is in the last year
         year_num = self.browser.find_element_by_class_name('year_number')
@@ -142,6 +143,7 @@ class UserMakesEvent(StaticLiveServerTestCase):
         # she arrows right for a full year until she's back in the current month
         right_arrow = self.browser.find_element_by_id('right_month')
         for i in range(12):
+            right_arrow = self.browser.find_element_by_id('right_month')
             right_arrow.click()
         # she sees her event and logs out
         events = self.browser.find_elements_by_class_name('day_1_event')
