@@ -13,15 +13,24 @@ from.models import Event
 
 @login_required(login_url='/')
 def month_view_page(request, month, year):
-    year = datetime.now().year
     form = NewEventForm()
     if request.method == 'POST':
         if 'logout' in request.POST:
             logout(request)
             return redirect(reverse('login_page'))
         elif 'right_month' in request.POST:
-            month = month + 1
+            if month == 12:
+                month = 1
+                year = year + 1
+            else:
+                month = month + 1
             return redirect(reverse('month_page', kwargs={'month': month, 'year': year}))
+        elif 'left_month' in request.POST:
+            if month == 1:
+                month = 12
+                year = year - 1
+            else:
+                month = month - 1
         else:
             form = NewEventForm(request.POST)
             if form.is_valid():
