@@ -63,6 +63,10 @@ class TestMonthViewRightArrow(TestCase):
         response = self.client.post(reverse('month_page', kwargs={'month': 12, 'year': 2022}), self.data, follow=True)
         self.assertEqual(2023, response.context['year_number'])
 
+    def test_right_month_redirects_to_month_view(self):
+        response = self.client.post(reverse('month_page', kwargs={'month': 1, 'year': 2022}), self.data, follow=True)
+        self.assertRedirects(response, '/month_view/2-2022/')
+
 
 class TestMonthViewLeftArrow(TestCase):
 
@@ -85,7 +89,7 @@ class TestMonthViewLeftArrow(TestCase):
 
     def test_left_month_redirects_to_month_view(self):
         response = self.client.post(reverse('month_page', kwargs={'month': 1, 'year': 2022}), self.data, follow=True)
-        self.assertRedirects(response, 'month_view/12-2021/')
+        self.assertRedirects(response, '/month_view/12-2021/')
 
 
 class TestHelperFunctions(TestCase):
