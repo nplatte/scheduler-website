@@ -3,7 +3,6 @@ from django.urls import reverse
 import month_view.views as views
 import month_view.models as models
 from django.contrib.auth.models import User
-from django.contrib.auth import logout
 from datetime import date, datetime
 
 from functional_test.test import _get_month_name
@@ -27,6 +26,12 @@ class TestMonthViewPage(LiveServerTestCase):
         data = {'title': 'topple regime', 'date': date.today()}
         response = self.client.post(reverse('month_page', kwargs={'month': 2, 'year': 2022}), data)
         self.assertEqual(1, len(models.Event.objects.all()))
+
+
+class TestMonthViewArrows(TestCase):
+
+    def setUp(self):
+        self.test_user = User.objects.create(username='test_user', password='password')
 
     def test_logout_redirects_to_login_page(self):
         self.client.force_login(self.test_user)
@@ -70,6 +75,12 @@ class TestMonthViewPage(LiveServerTestCase):
         data = {'left_month': ['']}
         response = self.client.post(reverse('month_page', kwargs={'month': 1, 'year': 2022}), data, follow=True)
         self.assertEqual(2021, response.context['year_number'])
+
+    def test_left_month_redirects_to_month_view(self):
+        self.client.force_login(self.test_user)
+        data = {'left_month': ['']}
+        response = self.client.post(reverse('month_page', kwargs={'month': 1, 'year': 2022}), data, follow=True)
+        self.assertRedirects(response, 'month_view/12-2021/')
 
 
 class TestHelperFunctions(TestCase):
