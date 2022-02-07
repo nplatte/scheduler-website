@@ -42,6 +42,7 @@ def month_view_page(request, month, year):
     context = {
         'form': form,
         'month_number': month,
+        'year_number': year,
         'month_day_tuples': month_day_info,
         'month_name': _get_month_name(month)
         }
