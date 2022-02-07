@@ -30,5 +30,5 @@ class TestLoginPage(LiveServerTestCase):
         self.assertRedirects(response, reverse('login_page'))
 
     def test_login_required_redirects_to_login_page(self):
-        response = self.client.get(reverse('month_page', kwargs={'month': 2}), follow=True)
+        response = self.client.get(reverse('month_page', kwargs={'month': 2, 'year': 2022}), follow=True)
         self.assertTemplateUsed(response, 'login/login.html')
