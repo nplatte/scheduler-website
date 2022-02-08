@@ -32,6 +32,18 @@ class TestMonthViewPage(LiveServerTestCase):
         response = self.client.get(reverse('month_page', kwargs={'month': 2, 'year': 2022}), follow=True)
         self.assertEqual(200, response.status_code)
 
+    def test_post_request_with_edit_event_updates_event(self):
+        event = models.Event.objects.create(title='Topple Regime', description='they goin down', date=date.today())
+        self.client.force_login(self.test_user)
+        data = {
+            'title': "don't topple regime",
+            'description': 'we done fucked up'
+        }
+        response = self.client.post(reverse('month_page', kwargs={'month':2, 'year': 2022}), data)
+        self.assertEqual(len(models.Event.objects.all()), 1)
+        self.assertEqual("don't topple regime", models.Event.objects.all()[0].title)
+
+
 
 class TestMonthViewLogout(TestCase):
 
