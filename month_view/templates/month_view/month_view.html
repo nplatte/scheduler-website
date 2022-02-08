@@ -19,7 +19,7 @@
 <button type="button" class="day_{{ day }}" onclick="ToggleForm('{{ date }}')">{{ day }}</button>
     {% for event in events %}
     <div class="day_{{ day }}_event">
-        <h5 class="event_title">{{ event.title }}</h5>
+        <button class="event_title">{{ event.title }}</button>
     </div>
     {% endfor %}
 {% endfor %}

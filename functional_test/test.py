@@ -124,7 +124,6 @@ class UserMakesEvent(StaticLiveServerTestCase):
         for i in range(11):
             left_arrow = self.browser.find_element_by_id('left_month')
             left_arrow.click()
-            sleep(1)
         # she sees she is in the last year
         year_num = self.browser.find_element_by_class_name('year_number')
         self.assertEqual('2021', year_num.text)
