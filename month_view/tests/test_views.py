@@ -36,7 +36,10 @@ class TestMonthViewPage(LiveServerTestCase):
         event = models.Event.objects.create(title='Topple Regime', description='they goin down', date=date.today())
         self.client.force_login(self.test_user)
         data = {
+            'edit_event': [''],
+            'id': event.pk,
             'title': "don't topple regime",
+            'date': date.today(),
             'description': 'we done fucked up'
         }
         response = self.client.post(reverse('month_page', kwargs={'month':2, 'year': 2022}), data)
