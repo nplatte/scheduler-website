@@ -7,13 +7,14 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 
-from .forms import NewEventForm
+from .forms import NewEventForm, EditEventForm
 from.models import Event
 
 
 @login_required(login_url='/')
 def month_view_page(request, month, year):
-    form = NewEventForm()
+    new_form = NewEventForm()
+    edit_form = EditEventForm()
     if request.method == 'POST':
         if 'logout' in request.POST:
             logout(request)
@@ -33,15 +34,16 @@ def month_view_page(request, month, year):
                 month = month - 1
             return redirect(reverse('month_page', kwargs={'month': month, 'year': year}))
         else:
-            form = NewEventForm(request.POST)
-            if form.is_valid():
-                form.save()
+            new_form = NewEventForm(request.POST)
+            if new_form.is_valid():
+                new_form.save()
     month_day_info = []
     dates = _get_dates_in_month(month, year)
     for i in range(1, _get_days_in_month(month, year) + 1):
         month_day_info.append((i, dates[i-1], _get_events_on_day(i, month, year)))
     context = {
-        'form': form,
+        'new_form': new_form,
+        'edit_form': edit_form,
         'month_number': month,
         'year_number': year,
         'month_day_tuples': month_day_info,

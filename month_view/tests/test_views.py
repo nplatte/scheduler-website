@@ -27,6 +27,11 @@ class TestMonthViewPage(LiveServerTestCase):
         response = self.client.post(reverse('month_page', kwargs={'month': 2, 'year': 2022}), data)
         self.assertEqual(1, len(models.Event.objects.all()))
 
+    def test_get_returns_200_status_code(self):
+        self.client.force_login(self.test_user)
+        response = self.client.get(reverse('month_page', kwargs={'month': 2, 'year': 2022}), follow=True)
+        self.assertEqual(200, response.status_code)
+
 
 class TestMonthViewLogout(TestCase):
 
