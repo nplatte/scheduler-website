@@ -148,18 +148,18 @@ class UserMakesEvent(StaticLiveServerTestCase):
         # she clicks the submit button
         submit_button = self.browser.find_element_by_id('edit_event_submit_button')
         submit_button.click()
-        sleep(20)
         self.assertEqual(1, len(Event.objects.all()))
         # she arrows right for a full year until she's back in the current month
-        right_arrow = self.browser.find_element_by_id('right_month')
         for i in range(12):
             right_arrow = self.browser.find_element_by_id('right_month')
             right_arrow.click()
         # she sees her event and logs out
         events = self.browser.find_elements_by_class_name('day_1_event')
         self.assertEqual(len(events), 1)
+        month_name = self.browser.find_element_by_class_name('month_name')
+        year_num = self.browser.find_element_by_class_name('year_number')
         self.assertEqual(month_name.text, _get_month_name(datetime.now().month))
-        self.assertEqual('2022', year_num)
+        self.assertEqual('2022', year_num.text)
         self._logout_attempt()
 
 
