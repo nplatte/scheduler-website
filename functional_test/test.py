@@ -130,7 +130,7 @@ class UserMakesEvent(StaticLiveServerTestCase):
         # she makes the event
         day_1 = self.browser.find_element_by_class_name('day_1')
         day_1.click()
-        self._make_new_event('Tiddlywinks necromancy appointment')
+        self._make_new_event('Twinks necromancy')
         # the form dissappears when she presses submit
         bad_name_input = self.browser.find_element_by_class_name('new_event_name')
         self.assertRaises(ElementNotInteractableException, bad_name_input.send_keys, 'something')
@@ -138,7 +138,7 @@ class UserMakesEvent(StaticLiveServerTestCase):
         event = self.browser.find_element_by_class_name('day_1_event')
         event.click()
         edit_title_input = self.browser.find_element_by_class_name('edit_event_name')
-        self.assertEqual('Tiddlywinks necromancy appointment', edit_title_input.get_attribute('value'))
+        self.assertEqual('Twinks necromancy', edit_title_input.get_attribute('value'))
         # she changes the date to current year
         event_edit_date = self.browser.find_element_by_id('event_edit_date')
         event_edit_date.send_keys('2022-02-01')

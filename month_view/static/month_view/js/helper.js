@@ -8,6 +8,6 @@ function ToggleNewForm(date) {
 function ToggleEditForm(title){
     var form = document.getElementById('new_event_input');
     form.style.visibility = 'visible';
-    var title_box = document.getElementById('edit_event_title');
+    var title_box = document.getElementById('edit_event_name');
     title_box.value = title;    
 }

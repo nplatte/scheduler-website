@@ -40,7 +40,6 @@ class TestEditEventForm(TestCase):
         self.assertIn('maxlength="20"', form_html)
         self.assertIn('required', form_html)
 
-
     def test_time_input_attributes(self):
         form_html = self.event_form.as_p()
         self.assertIn('class="edit_event_time"', form_html)
