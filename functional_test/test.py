@@ -2,6 +2,7 @@ from selenium import webdriver
 from selenium.common.exceptions import ElementNotInteractableException
 
 from django.contrib.auth.models import User
+from month_view.models import Event
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 
 from datetime import datetime
@@ -144,6 +145,11 @@ class UserMakesEvent(StaticLiveServerTestCase):
         self.assertEqual('Feb. 1, 2021', edit_event_date.get_attribute('value'))
         edit_event_date.clear()
         edit_event_date.send_keys('2022-02-01')
+        # she clicks the submit button
+        submit_button = self.browser.find_element_by_id('edit_event_submit_button')
+        submit_button.click()
+        sleep(20)
+        self.assertEqual(1, len(Event.objects.all()))
         # she arrows right for a full year until she's back in the current month
         right_arrow = self.browser.find_element_by_id('right_month')
         for i in range(12):

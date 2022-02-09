@@ -19,7 +19,7 @@
 <button type="button" class="day_{{ day }}" onclick="ShowNewForm('{{ date }}')">{{ day }}</button>
     {% for event in events %}
     <div class="event">
-        <button class="day_{{ day }}_event" onclick="ShowEditForm('{{ event.title }}', '{{ event.date }}')">{{ event.title }}</button>
+        <button class="day_{{ day }}_event" onclick="ShowEditForm('{{ event.title }}', '{{ event.date }}', '{{ event.pk }}')">{{ event.title }}</button>
     </div>
     {% endfor %}
 {% endfor %}
@@ -35,6 +35,7 @@
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {{ edit_form }}
+        <input type=text id="event_id" name="event_id">
         <button type="submit" id="edit_event_submit_button" name="edit_event" onclick="HideEditForm()">Submit</button>
     </form>
 </div>

@@ -121,7 +121,7 @@ class TestEditEventPOST(TestCase):
         event = models.Event.objects.create(title='Topple Regime', description='they goin down', date=date.today())
         data = {
             'edit_event': [''],
-            'id': event.pk,
+            'event_id': event.pk,
             'title': "don't topple regime",
             'date': date.today(),
             'description': 'we done fucked up'

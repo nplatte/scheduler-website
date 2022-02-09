@@ -34,7 +34,7 @@ def month_view_page(request, month, year):
                 month = month - 1
             return redirect(reverse('month_page', kwargs={'month': month, 'year': year}))
         elif 'edit_event' in request.POST:
-            edit_form = EditEventForm(request.POST, instance=Event.objects.get(id=request.POST['id']))
+            edit_form = EditEventForm(request.POST, instance=Event.objects.get(id=request.POST['event_id']))
             if edit_form.is_valid():
                 edit_form.save()
         else:
