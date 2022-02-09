@@ -16,10 +16,10 @@
 </div>
 
 {% for day, date, events in month_day_tuples %}
-<button type="button" class="day_{{ day }}" onclick="ToggleForm('{{ date }}')">{{ day }}</button>
+<button type="button" class="day_{{ day }}" onclick="ToggleNewForm('{{ date }}')">{{ day }}</button>
     {% for event in events %}
     <div class="day_{{ day }}_event">
-        <button class="event_title">{{ event.title }}</button>
+        <button class="event_title" onclick="ToggleEditForm()">{{ event.title }}</button>
     </div>
     {% endfor %}
 {% endfor %}
@@ -31,7 +31,7 @@
     </form>
 </div>
 
-<div id=event_input style="visibility: hidden;">
+<div id=edit_event_input style="visibility: hidden;">
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {{ edit_form }}
