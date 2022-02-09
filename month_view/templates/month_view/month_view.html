@@ -16,10 +16,10 @@
 </div>
 
 {% for day, date, events in month_day_tuples %}
-<button type="button" class="day_{{ day }}" onclick="ToggleNewForm('{{ date }}')">{{ day }}</button>
+<button type="button" class="day_{{ day }}" onclick="ShowNewForm('{{ date }}')">{{ day }}</button>
     {% for event in events %}
     <div class="event">
-        <button class="day_{{ day }}_event" onclick="ToggleEditForm('{{ event.title }}', '{{ event.date }}')">{{ event.title }}</button>
+        <button class="day_{{ day }}_event" onclick="ShowEditForm('{{ event.title }}', '{{ event.date }}')">{{ event.title }}</button>
     </div>
     {% endfor %}
 {% endfor %}
