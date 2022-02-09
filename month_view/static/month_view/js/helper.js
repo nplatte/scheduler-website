@@ -5,7 +5,9 @@ function ToggleNewForm(date) {
     date_box.value = date;
 }
 
-function ToggleEditForm(){
+function ToggleEditForm(title){
     var form = document.getElementById('new_event_input');
     form.style.visibility = 'visible';
+    var title_box = document.getElementById('edit_event_title');
+    title_box.value = title;    
 }
