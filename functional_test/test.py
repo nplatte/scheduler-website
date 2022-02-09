@@ -140,8 +140,9 @@ class UserMakesEvent(StaticLiveServerTestCase):
         edit_title_input = self.browser.find_element_by_class_name('edit_event_name')
         self.assertEqual('Twinks necromancy', edit_title_input.get_attribute('value'))
         # she changes the date to current year
-        event_edit_date = self.browser.find_element_by_id('event_edit_date')
-        event_edit_date.send_keys('2022-02-01')
+        edit_event_date = self.browser.find_element_by_id('edit_event_date')
+        self.assertEqual('2022-02-01', edit_event_date.get_attribute('value'))
+        edit_event_date.send_keys('2022-02-01')
         # she arrows right for a full year until she's back in the current month
         right_arrow = self.browser.find_element_by_id('right_month')
         for i in range(12):
