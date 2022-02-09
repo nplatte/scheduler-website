@@ -26,20 +26,6 @@ class TestMonthViewPage(LiveServerTestCase):
         response = self.client.get(reverse('month_page', kwargs={'month': 2, 'year': 2022}), follow=True)
         self.assertEqual(200, response.status_code)
 
-    def test_post_request_with_edit_event_updates_event(self):
-        event = models.Event.objects.create(title='Topple Regime', description='they goin down', date=date.today())
-        self.client.force_login(self.test_user)
-        data = {
-            'edit_event': [''],
-            'id': event.pk,
-            'title': "don't topple regime",
-            'date': date.today(),
-            'description': 'we done fucked up'
-        }
-        response = self.client.post(reverse('month_page', kwargs={'month':2, 'year': 2022}), data)
-        self.assertEqual(len(models.Event.objects.all()), 1)
-        self.assertEqual("don't topple regime", models.Event.objects.all()[0].title)
-
 
 class TestLogoutPOST(TestCase):
 
@@ -123,6 +109,26 @@ class TestNewEventPost(TestCase):
         self.assertEqual(2022, response.context['year_number'])
         self.assertEqual(1, response.context['month_day_tuples'][0][0])
         self.assertEqual('2022-2-1', response.context['month_day_tuples'][0][1])
+
+
+class TestEditEventPOST(TestCase):
+
+    def setUp(self):
+        self.test_user = User.objects.create(username='test_user', password='password')
+        self.client.force_login(self.test_user)
+
+    def test_post_request_with_edit_event_updates_event(self):
+        event = models.Event.objects.create(title='Topple Regime', description='they goin down', date=date.today())
+        data = {
+            'edit_event': [''],
+            'id': event.pk,
+            'title': "don't topple regime",
+            'date': date.today(),
+            'description': 'we done fucked up'
+        }
+        response = self.client.post(reverse('month_page', kwargs={'month':2, 'year': 2022}), data)
+        self.assertEqual(len(models.Event.objects.all()), 1)
+        self.assertEqual("don't topple regime", models.Event.objects.all()[0].title)
 
 
 class TestHelperFunctions(TestCase):
