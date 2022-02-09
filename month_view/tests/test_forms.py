@@ -10,7 +10,7 @@ class TestNewEventForm(TestCase):
     def test_title_input_attributes(self):
         form_html = self.event_form.as_p()
         self.assertIn('class="event_title_input"', form_html)
-        self.assertIn('id="new_event_title"')
+        self.assertIn('id="new_event_title"', form_html)
         self.assertIn('maxlength="20"', form_html)
         self.assertIn('required', form_html)
 
