@@ -31,11 +31,19 @@
     </form>
 </div>
 
+<div id=event_input style="visibility: hidden;">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ edit_form }}
+        <button type="submit" id="edit_event_submit_button">Submit</button>
+    </form>
+</div>
+
 
 <div id=event_input style="visibility: hidden;">
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form }}
+        {{ new_form }}
         <button type="submit" id="new_event_submit_button">Submit</button>
     </form>
 </div>

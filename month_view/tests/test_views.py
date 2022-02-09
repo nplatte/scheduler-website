@@ -21,12 +21,6 @@ class TestMonthViewPage(LiveServerTestCase):
         response = self.client.get(reverse('month_page', kwargs={'month': 2, 'year': 2022}), follow=True)
         self.assertTemplateNotUsed(response, 'month_view/month_view.html')
 
-    def test_post_requests_save_model(self):
-        self.client.force_login(self.test_user)
-        data = {'title': 'topple regime', 'date': date.today()}
-        response = self.client.post(reverse('month_page', kwargs={'month': 2, 'year': 2022}), data)
-        self.assertEqual(1, len(models.Event.objects.all()))
-
     def test_get_returns_200_status_code(self):
         self.client.force_login(self.test_user)
         response = self.client.get(reverse('month_page', kwargs={'month': 2, 'year': 2022}), follow=True)
@@ -47,8 +41,7 @@ class TestMonthViewPage(LiveServerTestCase):
         self.assertEqual("don't topple regime", models.Event.objects.all()[0].title)
 
 
-
-class TestMonthViewLogout(TestCase):
+class TestLogoutPOST(TestCase):
 
     def setUp(self):
         self.test_user = User.objects.create(username='test_user', password='password')
@@ -64,7 +57,7 @@ class TestMonthViewLogout(TestCase):
         self.assertTemplateNotUsed(response, 'month_view/month_view.html')
 
 
-class TestMonthViewRightArrow(TestCase):
+class TestRightArrowPOST(TestCase):
 
     def setUp(self):
         self.test_user = User.objects.create(username='test_user', password='password')
@@ -88,7 +81,7 @@ class TestMonthViewRightArrow(TestCase):
         self.assertRedirects(response, '/month_view/2-2022/')
 
 
-class TestMonthViewLeftArrow(TestCase):
+class TestLeftArrowPOST(TestCase):
 
     def setUp(self):
         self.test_user = User.objects.create(username='test_user', password='password')
@@ -112,6 +105,26 @@ class TestMonthViewLeftArrow(TestCase):
         self.assertRedirects(response, '/month_view/12-2021/')
 
 
+class TestNewEventPost(TestCase):
+
+    def setUp(self):
+        self.test_user = User.objects.create(username='test_user', password='password')
+        self.client.force_login(self.test_user)
+
+    def test_post_creates_new_event(self):
+        data = {'title': 'topple regime', 'date': date.today()}
+        response = self.client.post(reverse('month_page', kwargs={'month': 2, 'year': 2022}), data)
+        self.assertEqual(1, len(models.Event.objects.all()))
+
+    def test_post_sends_date(self):
+        data = {'title': 'topple regime', 'date': date.today()}
+        response = self.client.post(reverse('month_page', kwargs={'month': 2, 'year': 2022}), data)
+        self.assertEqual(2, response.context['month_number'])
+        self.assertEqual(2022, response.context['year_number'])
+        self.assertEqual(1, response.context['month_day_tuples'][0][0])
+        self.assertEqual('2022-2-1', response.context['month_day_tuples'][0][1])
+
+
 class TestHelperFunctions(TestCase):
 
     def setUp(self):
@@ -133,3 +146,4 @@ class TestHelperFunctions(TestCase):
         self.assertEqual('2022', date_parts[0])
         self.assertEqual('2', date_parts[1])
         self.assertEqual('1', date_parts[2])
+
