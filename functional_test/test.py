@@ -137,8 +137,10 @@ class UserMakesEvent(StaticLiveServerTestCase):
         # she then clicks on it to bring up the edit event form that is already populated with data
         event = self.browser.find_element_by_class_name('day_1_event')
         event.click()
+        edit_title_input = self.browser.find_element_by_class_name('edit_event_name')
+        self.assertEqual('Tiddlywinks necromancy appointment', edit_title_input.get_attribute('value'))
         # she changes the date to current year
-        event_edit_date = self.browser.find_element_by_id('event_edit_date_input')
+        event_edit_date = self.browser.find_element_by_id('event_edit_date')
         event_edit_date.send_keys('2022-02-01')
         # she arrows right for a full year until she's back in the current month
         right_arrow = self.browser.find_element_by_id('right_month')

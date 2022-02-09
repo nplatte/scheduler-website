@@ -4,3 +4,8 @@ function ToggleNewForm(date) {
     var date_box = document.getElementById('new_event_date');
     date_box.value = date;
 }
+
+function ToggleEditForm(){
+    var form = document.getElementById('new_event_input');
+    form.style.visibility = 'visible';
+}
