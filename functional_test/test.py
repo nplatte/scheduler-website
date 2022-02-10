@@ -10,6 +10,30 @@ from django.test import TestCase
 from time import sleep
 
 
+NEW_EVENT_CLASS_IDS = {
+    'title_class': 'event_title_input',
+    'title_id': 'new_event_title',
+    'time_class': 'event_time_input',
+    'time_id': 'new_event_time',
+    'date_class': 'event_date_input',
+    'date_id': 'new_event_date',
+    'description_class': 'event_description_input',
+    'description_id': 'new_event_description',
+    'submit_button': 'new_event_submit_button'
+}
+
+EDIT_EVENT_CLASS_IDS = {
+    'title_class': 'event_title_input',
+    'title_id': 'edit_event_title',
+    'time_class': 'event_time_input',
+    'date_class': 'event_date_input',
+    'date_id': 'edit_event_date',
+    'description_class': 'event_description_input',
+    'description_id': 'edit_event_description',
+    'submit_button': 'edit_event_submit_button'
+}
+
+
 class UserMakesEvent(StaticLiveServerTestCase):
 
     def setUp(self):
@@ -39,8 +63,8 @@ class UserMakesEvent(StaticLiveServerTestCase):
         logout_button.click()
 
     def _make_new_event(self, name):
-        name_input = self.browser.find_element_by_class_name('new_event_name')
-        submit_button = self.browser.find_element_by_id('new_event_submit_button')
+        name_input = self.browser.find_element_by_id(NEW_EVENT_CLASS_IDS['title_id'])
+        submit_button = self.browser.find_element_by_id(NEW_EVENT_CLASS_IDS['submit_button'])
         name_input.send_keys(name)
         submit_button.click()
 
@@ -65,13 +89,13 @@ class UserMakesEvent(StaticLiveServerTestCase):
         self._login_attempt(self.test_username, self.test_password)
         # They click on the first day of the month and a form pops up
         day_one = self.browser.find_element_by_class_name('day_1')
-        bad_name_input = self.browser.find_element_by_class_name('new_event_name')
+        bad_name_input = self.browser.find_element_by_id(NEW_EVENT_CLASS_IDS['title_id'])
         self.assertRaises(ElementNotInteractableException, bad_name_input.send_keys, 'something')
         day_one.click()
-        name_input = self.browser.find_element_by_class_name('new_event_name')
-        self.browser.find_element_by_class_name('new_event_description')
-        self.browser.find_element_by_class_name('new_event_time')
-        submit_button = self.browser.find_element_by_id('new_event_submit_button')
+        name_input = self.browser.find_element_by_id(NEW_EVENT_CLASS_IDS['title_id'])
+        self.browser.find_element_by_id(NEW_EVENT_CLASS_IDS['time_id'])
+        self.browser.find_element_by_id(NEW_EVENT_CLASS_IDS['date_id'])
+        submit_button = self.browser.find_element_by_id(NEW_EVENT_CLASS_IDS['submit_button'])
         # they enter in the basic information and save the info
         name_input.send_keys('topple regime')
         submit_button.click()
@@ -97,8 +121,8 @@ class UserMakesEvent(StaticLiveServerTestCase):
         day_5 = self.browser.find_element_by_class_name('day_5')
         day_5.click()
         # she adds her data for that day and clicks submit
-        name_input = self.browser.find_element_by_class_name('new_event_name')
-        submit_button = self.browser.find_element_by_id('new_event_submit_button')
+        name_input = self.browser.find_element_by_id(NEW_EVENT_CLASS_IDS['title_id'])
+        submit_button = self.browser.find_element_by_id(NEW_EVENT_CLASS_IDS['submit_button'])
         name_input.send_keys('topple regime')
         submit_button.click()
         # she sees her event on the calender
@@ -133,20 +157,20 @@ class UserMakesEvent(StaticLiveServerTestCase):
         day_1.click()
         self._make_new_event('Twinks necromancy')
         # the form dissappears when she presses submit
-        bad_name_input = self.browser.find_element_by_class_name('new_event_name')
+        bad_name_input = self.browser.find_element_by_id(NEW_EVENT_CLASS_IDS['title_id'])
         self.assertRaises(ElementNotInteractableException, bad_name_input.send_keys, 'something')
         # she then clicks on it to bring up the edit event form that is already populated with data
         event = self.browser.find_element_by_class_name('day_1_event')
         event.click()
-        edit_title_input = self.browser.find_element_by_class_name('edit_event_name')
+        edit_title_input = self.browser.find_element_by_id(EDIT_EVENT_CLASS_IDS['title_id'])
         self.assertEqual('Twinks necromancy', edit_title_input.get_attribute('value'))
         # she changes the date to current year
-        edit_event_date = self.browser.find_element_by_id('edit_event_date')
+        edit_event_date = self.browser.find_element_by_id(EDIT_EVENT_CLASS_IDS['date_id'])
         self.assertEqual('Feb. 1, 2021', edit_event_date.get_attribute('value'))
         edit_event_date.clear()
         edit_event_date.send_keys('2022-02-01')
         # she clicks the submit button
-        submit_button = self.browser.find_element_by_id('edit_event_submit_button')
+        submit_button = self.browser.find_element_by_id(EDIT_EVENT_CLASS_IDS['submit_button'])
         submit_button.click()
         self.assertEqual(1, len(Event.objects.all()))
         # she arrows right for a full year until she's back in the current month

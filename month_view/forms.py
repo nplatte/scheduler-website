@@ -11,7 +11,7 @@ class NewEventForm(ModelForm):
         fields = ['title', 'date', 'time', 'description']
         widgets = {
             'title': forms.fields.TextInput(attrs={'class': 'event_title_input', 'id': 'new_event_title'}),
-            'time': forms.TimeInput(attrs={'class': 'event_time_input'}),
+            'time': forms.TimeInput(attrs={'class': 'event_time_input', 'id': 'new_event_time'}),
             'date': forms.DateInput(attrs={'class': 'event_date_input', 'id': 'new_event_date'}),
             'description': forms.Textarea(attrs={'class': 'event_description_input', 'id': 'new_event_description'})
             }
