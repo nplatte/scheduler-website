@@ -105,6 +105,39 @@ class UserMakesEvent(StaticLiveServerTestCase):
         # happy with her new event, she logs off
         self._logout_attempt()
 
+    def test_tiddlywinks_can_edit_event(self):
+        # Tiddlywinks logs in to  the website
+        self._login_attempt(self.test_username, self.test_password)
+        # she makes an event badly
+        day_1 = self.browser.find_element_by_class_name('day_1')
+        day_1.click()
+        self._make_new_event('defeat shoes')
+        # she decides to correct it
+        # she clicks on the event
+        event = self.browser.find_element_by_class_name('day_1_event')
+        event.click()
+        # she sees a new form pop up with her old data
+        edit_title_input = self.browser.find_element_by_id(EDIT_EVENT_CLASS_IDS['title_id'])
+        self.assertEqual('defeat shoes', edit_title_input.get_attribute('value'))
+        # she puts her new title in and clicks submit
+        edit_title_input.clear()
+        edit_title_input.send_keys('de-feet shoes')
+        submit_button = self.browser.find_element_by_id(EDIT_EVENT_CLASS_IDS['submit_button'])
+        submit_button.click()
+        # she sees her updated event on the same day
+        event = self.browser.find_element_by_class_name('day_1_event')
+        event.click()
+        edit_title_input = self.browser.find_element_by_id(EDIT_EVENT_CLASS_IDS['title_id'])
+        self.assertEqual('defeat shoes', edit_title_input.get_attribute('value'))
+        self.assertEqual(1, len(Event.objects.all()))
+        # she logs out
+        self._logout_attempt()
+
+    def test_tiddlywinks_can_delete_an_event(self):
+        # Tiddlywinks logs in to  the website
+        self._login_attempt(self.test_username, self.test_password)
+        self._logout_attempt()
+
     def test_tiddlywinks_can_make_plan_for_month_out(self):
         # Tiddlywinks logs in to  the website
         self._login_attempt(self.test_username, self.test_password)
@@ -131,7 +164,7 @@ class UserMakesEvent(StaticLiveServerTestCase):
         # happy with her new event, she logs off
         self._logout_attempt()
 
-    def test_tiddlywinks_can_edit_at_events_from_last_year(self):
+    def test_tiddlywinks_can_make_event_for_last_year(self):
         # Tiddlywinks logs in to  the website
         self._login_attempt(self.test_username, self.test_password)
         # she sees that the current month and year are on the screen
@@ -159,31 +192,11 @@ class UserMakesEvent(StaticLiveServerTestCase):
         # the form dissappears when she presses submit
         bad_name_input = self.browser.find_element_by_id(NEW_EVENT_CLASS_IDS['title_id'])
         self.assertRaises(ElementNotInteractableException, bad_name_input.send_keys, 'something')
-        # she then clicks on it to bring up the edit event form that is already populated with data
-        event = self.browser.find_element_by_class_name('day_1_event')
-        event.click()
-        edit_title_input = self.browser.find_element_by_id(EDIT_EVENT_CLASS_IDS['title_id'])
-        self.assertEqual('Twinks necromancy', edit_title_input.get_attribute('value'))
-        # she changes the date to current year
-        edit_event_date = self.browser.find_element_by_id(EDIT_EVENT_CLASS_IDS['date_id'])
-        self.assertEqual('Feb. 1, 2021', edit_event_date.get_attribute('value'))
-        edit_event_date.clear()
-        edit_event_date.send_keys('2022-02-01')
-        # she clicks the submit button
-        submit_button = self.browser.find_element_by_id(EDIT_EVENT_CLASS_IDS['submit_button'])
-        submit_button.click()
-        self.assertEqual(1, len(Event.objects.all()))
         # she arrows right for a full year until she's back in the current month
         for i in range(12):
             right_arrow = self.browser.find_element_by_id('right_month')
             right_arrow.click()
-        # she sees her event and logs out
-        events = self.browser.find_elements_by_class_name('day_1_event')
-        self.assertEqual(len(events), 1)
-        month_name = self.browser.find_element_by_class_name('month_name')
-        year_num = self.browser.find_element_by_class_name('year_number')
-        self.assertEqual(month_name.text, _get_month_name(datetime.now().month))
-        self.assertEqual('2022', year_num.text)
+        # she logs out
         self._logout_attempt()
 
 
