@@ -16,12 +16,12 @@ function ShowEditForm(title, date, id){
     id_box.value = id; 
 }
 
-function HideNewEvent() {
+function HideNewForm() {
     var form = document.getElementById('new_event_input');
     form.style.visibility = 'hidden';
 }
 
-function HideEditEvent() {
+function HideEditForm() {
     var form = document.getElementById('edit_event_input');
     form.style.visibility = 'hidden';
 }
