@@ -144,6 +144,9 @@ class UserMakesEvent(StaticLiveServerTestCase):
         event.click()
         delete_button = self.browser.find_element_by_id('delete_button')
         delete_button.click()
+        # the form dissappears
+        bad_name_input = self.browser.find_element_by_id(EDIT_EVENT_CLASS_IDS['title_id'])
+        self.assertRaises(ElementNotInteractableException, bad_name_input.send_keys, 'something')
         # she doesn't see her event anymore
         events_on_1 = self.browser.find_elements_by_class_name('day_1_event')
         self.assertEqual(0, len(events_on_1))
@@ -160,10 +163,19 @@ class UserMakesEvent(StaticLiveServerTestCase):
         event = self.browser.find_element_by_class_name('day_5_event')
         event.click()
         # she don't wanna edit it so she clicks cancel
-        cancel_button = self.browser.find_element_by_id('cancel_button')
+        cancel_button = self.browser.find_element_by_id('edit_cancel_button')
         cancel_button.click()
         # the form dissappears
         bad_name_input = self.browser.find_element_by_id(EDIT_EVENT_CLASS_IDS['title_id'])
+        self.assertRaises(ElementNotInteractableException, bad_name_input.send_keys, 'something')
+        # she decides to make a new event
+        day = self.browser.find_element_by_class_name(f'day_4')
+        day.click()
+        self.browser.find_element_by_id(NEW_EVENT_CLASS_IDS['title_id'])
+        # she gives up because life is hard and decides to cancel the event
+        cancel_button = self.browser.find_element_by_id('new_cancel_button')
+        cancel_button.click()
+        bad_name_input = self.browser.find_element_by_id(NEW_EVENT_CLASS_IDS['title_id'])
         self.assertRaises(ElementNotInteractableException, bad_name_input.send_keys, 'something')
         # she logs out
         self._logout_attempt()
