@@ -62,7 +62,9 @@ class UserMakesEvent(StaticLiveServerTestCase):
         logout_button = self.browser.find_element_by_id('logout_button')
         logout_button.click()
 
-    def _make_new_event(self, name):
+    def _make_new_event(self, name, day):
+        day = self.browser.find_element_by_class_name(f'day_{day}')
+        day.click()
         name_input = self.browser.find_element_by_id(NEW_EVENT_CLASS_IDS['title_id'])
         submit_button = self.browser.find_element_by_id(NEW_EVENT_CLASS_IDS['submit_button'])
         name_input.send_keys(name)
@@ -109,9 +111,7 @@ class UserMakesEvent(StaticLiveServerTestCase):
         # Tiddlywinks logs in to  the website
         self._login_attempt(self.test_username, self.test_password)
         # she makes an event badly
-        day_1 = self.browser.find_element_by_class_name('day_1')
-        day_1.click()
-        self._make_new_event('defeat shoes')
+        self._make_new_event('defeat shoes', 1)
         # she decides to correct it
         # she clicks on the event
         event = self.browser.find_element_by_class_name('day_1_event')
@@ -137,9 +137,7 @@ class UserMakesEvent(StaticLiveServerTestCase):
         # Tiddlywinks logs in to  the website
         self._login_attempt(self.test_username, self.test_password)
         # she makes a bad event
-        day_one = self.browser.find_element_by_class_name('day_1')
-        day_one.click()
-        self._make_new_event('this event sucks')
+        self._make_new_event('this event sucks', 1)
         # she decides to delete that event
         # she clicks on her event and clicks the delete button
         event = self.browser.find_element_by_class_name('day_1_event')
@@ -150,6 +148,23 @@ class UserMakesEvent(StaticLiveServerTestCase):
         events_on_1 = self.browser.find_elements_by_class_name('day_1_event')
         self.assertEqual(0, len(events_on_1))
         self.assertEqual(0, len(Event.objects.all()))
+        # she logs out
+        self._logout_attempt()
+
+    def test_tiddlywinks_can_cancel_changes_or_new_event(self):
+        # Tiddlywinks logs in to  the website
+        self._login_attempt(self.test_username, self.test_password)
+        # she makes an event on the 5th day of the month
+        self._make_new_event('brothday party', 5)
+        # she clicks on the event to edit it
+        event = self.browser.find_element_by_class_name('day_5_event')
+        event.click()
+        # she don't wanna edit it so she clicks cancel
+        cancel_button = self.browser.find_element_by_id('cancel_button')
+        cancel_button.click()
+        # the form dissappears
+        bad_name_input = self.browser.find_element_by_id(EDIT_EVENT_CLASS_IDS['title_id'])
+        self.assertRaises(ElementNotInteractableException, bad_name_input.send_keys, 'something')
         # she logs out
         self._logout_attempt()
 
@@ -201,9 +216,7 @@ class UserMakesEvent(StaticLiveServerTestCase):
         year_num = self.browser.find_element_by_class_name('year_number')
         self.assertEqual('2021', year_num.text)
         # she makes the event
-        day_1 = self.browser.find_element_by_class_name('day_1')
-        day_1.click()
-        self._make_new_event('Twinks necromancy')
+        self._make_new_event('Twinks necromancy', 1)
         # the form dissappears when she presses submit
         bad_name_input = self.browser.find_element_by_id(NEW_EVENT_CLASS_IDS['title_id'])
         self.assertRaises(ElementNotInteractableException, bad_name_input.send_keys, 'something')
