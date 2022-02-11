@@ -131,6 +131,22 @@ class TestEditEventPOST(TestCase):
         self.assertEqual("don't topple regime", models.Event.objects.all()[0].title)
 
 
+class TestDeleteEventPOST(TestCase):
+
+    def setUp(self):
+        self.test_user = User.objects.create(username='test_user', password='password')
+        self.client.force_login(self.test_user)
+
+    def test_post_deletes_event(self):
+        event = models.Event.objects.create(title='Topple Regime', description='they goin down', date=date.today())
+        data = {
+            'edit_event': [''],
+            'event_id': event.pk,
+        }
+        response = self.client.post(reverse('month_page', kwargs={'month':2, 'year': 2022}), data)
+        self.assertEqual(len(models.Event.objects.all()), 0)
+
+
 class TestHelperFunctions(TestCase):
 
     def setUp(self):
