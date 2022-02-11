@@ -136,6 +136,21 @@ class UserMakesEvent(StaticLiveServerTestCase):
     def test_tiddlywinks_can_delete_an_event(self):
         # Tiddlywinks logs in to  the website
         self._login_attempt(self.test_username, self.test_password)
+        # she makes a bad event
+        day_one = self.browser.find_element_by_class_name('day_1')
+        day_one.click()
+        self._make_new_event('this event sucks')
+        # she decides to delete that event
+        # she clicks on her event and clicks the delete button
+        event = self.browser.find_element_by_class_name('day_1_event')
+        event.click()
+        delete_button = self.browser.find_element_by_id('delete_button')
+        delete_button.click()
+        # she doesn't see her event anymore
+        events_on_1 = self.browser.find_elements_by_class_name('day_1_event')
+        self.assertEqual(0, len(events_on_1))
+        self.assertEqual(0, len(Event.objects.all()))
+        # she logs out
         self._logout_attempt()
 
     def test_tiddlywinks_can_make_plan_for_month_out(self):
