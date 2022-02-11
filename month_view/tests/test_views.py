@@ -140,7 +140,7 @@ class TestDeleteEventPOST(TestCase):
     def test_post_deletes_event(self):
         event = models.Event.objects.create(title='Topple Regime', description='they goin down', date=date.today())
         data = {
-            'edit_event': [''],
+            'delete_event': [''],
             'event_id': event.pk,
         }
         response = self.client.post(reverse('month_page', kwargs={'month':2, 'year': 2022}), data)
