@@ -4,6 +4,10 @@
 <title>Scheduler</title>
 {% endblock %}
 
+{% block 'style' %}
+<link rel="stylesheet" type="text/css" href="{% static 'month_view/css/month_view.css' %}">
+{% endblock %}
+
 {% block 'body' %}
 <div class="month_identifiers">
     <h3 class="month_name">{{ month_name }}</h3>
