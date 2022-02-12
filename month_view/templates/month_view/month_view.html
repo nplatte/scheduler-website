@@ -5,8 +5,11 @@
 {% endblock %}
 
 {% block 'body' %}
-<h3 class="month_name">{{ month_name }}</h3>
-<h3 class="year_number">{{ year_number }}</h3>
+<div class="month_identifiers">
+    <h3 class="month_name">{{ month_name }}</h3>
+    <h3 class="year_number">{{ year_number }}</h3>
+</div>
+
 
 <div>
     <form method="POST">
