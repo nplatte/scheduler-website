@@ -1,9 +1,21 @@
 div.month_identifiers {
      text-align: center;
 }
+
+div.calender {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 h3.month_name {
     display: inline-block;
 }
+
 h3.year_number {
+    display: inline-block;
+}
+
+div.arrow {
     display: inline-block;
 }
