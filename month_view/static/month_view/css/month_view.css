@@ -3,9 +3,8 @@ div.month_identifiers {
 }
 
 div.calender {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: grid;
+    grid-template-columns: 60px 60px 60px 60px 60px 60px 60px;
 }
 
 h3.month_name {
@@ -13,9 +12,5 @@ h3.month_name {
 }
 
 h3.year_number {
-    display: inline-block;
-}
-
-div.arrow {
     display: inline-block;
 }

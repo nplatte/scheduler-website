@@ -16,15 +16,13 @@
 </div>
 
 
-
-<div class="calender">
-    <div class="arrow">
+<div class="arrow">
         <form method="POST">
             {% csrf_token %}
             <button type="submit" id="left_month" name="left_month">{-</button>
         </form>
     </div>
-
+<div class="calender">
     {% for day, date, events in month_day_tuples %}
         <button type="button" class="day_{{ day }}" onclick="ShowNewForm('{{ date }}')">{{ day }}</button>
         {% for event in events %}
@@ -33,15 +31,13 @@
             </div>
         {% endfor %}
     {% endfor %}
-    
-    <div class="arrow">
+</div>
+<div class="arrow">
         <form method="POST">
             {% csrf_token %}
             <button type="submit" class="arrow" id="right_month" name="right_month">-}</button>
         </form>
     </div>
-</div>
-
 
 <div id=edit_event_input style="visibility: hidden;">
     <form method="POST" enctype="multipart/form-data">
