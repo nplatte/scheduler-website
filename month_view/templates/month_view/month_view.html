@@ -17,11 +17,11 @@
 
 
 <div class="arrow">
-        <form method="POST">
-            {% csrf_token %}
-            <button type="submit" id="left_month" name="left_month">{-</button>
-        </form>
-    </div>
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit" id="left_month" name="left_month" class="arrow_button">{-</button>
+    </form>
+</div>
 <div class="calender">
     {% for day, date, events in month_day_tuples %}
         <button type="button" class="day_{{ day }}" onclick="ShowNewForm('{{ date }}')">{{ day }}</button>
@@ -35,7 +35,7 @@
 <div class="arrow">
         <form method="POST">
             {% csrf_token %}
-            <button type="submit" class="arrow" id="right_month" name="right_month">-}</button>
+            <button type="submit" id="right_month" name="right_month" class="arrow_button">-}</button>
         </form>
     </div>
 
