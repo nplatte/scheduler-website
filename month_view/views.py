@@ -20,18 +20,12 @@ def month_view_page(request, month, year):
             logout(request)
             return redirect(reverse('login_page'))
         elif 'right_month' in request.POST:
-            if month == 12:
-                month = 1
-                year = year + 1
-            else:
-                month = month + 1
+            month = month + 1
+            month, year = _validate_month_year(month, year)
             return redirect(reverse('month_page', kwargs={'month': month, 'year': year}))
         elif 'left_month' in request.POST:
-            if month == 1:
-                month = 12
-                year = year - 1
-            else:
-                month = month - 1
+            month = month - 1
+            month, year = _validate_month_year(month, year)
             return redirect(reverse('month_page', kwargs={'month': month, 'year': year}))
         elif 'edit_event' in request.POST:
             event_to_edit = Event.objects.get(id=request.POST['event_id'])
