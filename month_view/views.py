@@ -86,3 +86,9 @@ def _validate_month_year(month, year):
     elif month == 13:
         return 1, year + 1
     return month, year
+
+def _get_day_of_week_month_starts_on(month, year):
+    day = calendar.monthrange(year, month)[0]
+    if day == 6:
+        return 0
+    return day + 1

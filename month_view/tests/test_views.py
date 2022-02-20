@@ -178,3 +178,7 @@ class TestHelperFunctions(TestCase):
         self.assertEqual(month, 1)
         self.assertEqual(year, 2023)
 
+    def test_get_day_of_week_month_starts_on(self):
+        tuesday = views._get_day_of_week_month_starts_on(2, 2022)
+        self.assertEqual(2, tuesday)
+
