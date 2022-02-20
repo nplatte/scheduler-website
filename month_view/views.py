@@ -85,3 +85,10 @@ def _get_month_name(month=datetime.now().month):
         12: 'December'
     }
     return months[month]
+
+def _validate_month_year(month, year):
+    if month == 0:
+        return 12, year - 1
+    elif month == 13:
+        return 1, year + 1
+    return month, year

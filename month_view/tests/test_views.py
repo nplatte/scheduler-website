@@ -2,6 +2,7 @@ from django.test import TestCase, LiveServerTestCase
 from django.urls import reverse
 import month_view.views as views
 import month_view.models as models
+import month_view.forms as forms
 from django.contrib.auth.models import User
 from datetime import date, datetime
 
@@ -168,4 +169,12 @@ class TestHelperFunctions(TestCase):
         self.assertEqual('2022', date_parts[0])
         self.assertEqual('2', date_parts[1])
         self.assertEqual('1', date_parts[2])
+
+    def test_validate_month_year(self):
+        month, year = views._validate_month_year(0, 2022)
+        self.assertEqual(month, 12)
+        self.assertEqual(year, 2021)
+        month, year = views._validate_month_year(13, 2022)
+        self.assertEqual(month, 1)
+        self.assertEqual(year, 2023)
 
