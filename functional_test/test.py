@@ -128,7 +128,7 @@ class UserMakesEvent(StaticLiveServerTestCase):
         event = self.browser.find_element_by_class_name('day_1_event')
         event.click()
         edit_title_input = self.browser.find_element_by_id(EDIT_EVENT_CLASS_IDS['title_id'])
-        self.assertEqual('defeat shoes', edit_title_input.get_attribute('value'))
+        self.assertEqual('de-feet shoes', edit_title_input.get_attribute('value'))
         self.assertEqual(1, len(Event.objects.all()))
         # she logs out
         self._logout_attempt()
