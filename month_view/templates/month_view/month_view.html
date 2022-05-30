@@ -10,34 +10,36 @@
 {% endblock %}
 
 {% block 'body' %}
-<div class="month_identifiers">
-    <h3 class="month_name">{{ month_name }}</h3>
-    <h3 class="year_number">{{ year_number }}</h3>
-</div>
 
+<div class="calender">
 
-<div class="arrow">
+    <h3 class="calender__title" id="month_name">{{ month_name }}</h3>
+    <h3 class="calender__title" id="year_number">{{ year_number }}</h3>
+
     <form method="POST">
         {% csrf_token %}
-        <button type="submit" id="left_month" name="left_month" class="arrow_button">{-</button>
+        <button type="submit" id="left_month" name="left_month" class="calender__change-month">{-</button>
     </form>
-</div>
-<div class="calender">
-    {% for day, date, events in month_day_tuples %}
-        <button type="button" class="day_{{ day }}" onclick="ShowNewForm('{{ date }}')">{{ day }}</button>
-        {% for event in events %}
-            <div class="event">
-                <button class="day_{{ day }}_event" onclick="ShowEditForm('{{ event.title }}', '{{ event.date }}', '{{ event.pk }}')">{{ event.title }}</button>
-            </div>
+
+    <div class="calender__days">
+        {% for day, date, events in month_day_tuples %}
+            <button type="button" class="day_{{ day }}" onclick="ShowNewForm('{{ date }}')">{{ day }}</button>
+            {% for event in events %}
+                <div class="event">
+                    <button class="day_{{ day }}_event" onclick="ShowEditForm('{{ event.title }}', '{{ event.date }}', '{{ event.pk }}')">{{ event.title }}</button>
+                </div>
+            {% endfor %}
         {% endfor %}
-    {% endfor %}
-</div>
-<div class="arrow">
-        <form method="POST">
-            {% csrf_token %}
-            <button type="submit" id="right_month" name="right_month" class="arrow_button">-}</button>
-        </form>
     </div>
+
+
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit" id="right_month" name="right_month" class="calender__change-month">-}</button>
+    </form>
+
+</div>
+
 
 <div id=edit_event_input style="visibility: hidden;">
     <form method="POST" enctype="multipart/form-data">
@@ -57,7 +59,6 @@
         {{ new_form }}
         <button type="submit" id="new_event_submit_button" onclick="HideNewForm()">Submit</button>
         <button type="button" id="new_cancel_button" onclick="HideNewForm()">Cancel</button>
-        
     </form>
 </div>
 {% endblock %}
