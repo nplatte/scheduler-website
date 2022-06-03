@@ -262,4 +262,4 @@ class TestHelpers(TestCase):
 
     def test_get_month_name(self):
         test_month = _get_month_name(datetime.now().month)
-        self.assertEqual(test_month, 'May')
+        self.assertEqual(test_month, 'June')
