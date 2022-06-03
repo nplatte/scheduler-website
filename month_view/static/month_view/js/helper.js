@@ -25,3 +25,11 @@ function HideEditForm() {
     var form = document.getElementById('edit_event_input');
     form.style.visibility = 'hidden';
 }
+
+function MouseOverDay(day) {
+    day.style.backgroundColor = 'red';
+}
+
+function MouseOffDay(day) {
+    day.style.backgroundColor = 'aliceblue';
+}

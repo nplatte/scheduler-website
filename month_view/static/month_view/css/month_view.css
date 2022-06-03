@@ -17,14 +17,14 @@ h3.year_number {
     display: inline-block;
 }
 
-button.day {
+div.day {
     width: 100px;
     height: 100px;
     border: 1px solid black;
     padding: 0px;
   }
   
-  .event_1 {
+  div.event_1 {
     width:97px;
     height: 24px;
     border: 2px solid blue;
@@ -33,7 +33,7 @@ button.day {
     padding:0px
   }
   
-  .event_2 {
+  div.event_2 {
     width:97px;
     height: 24px;
     border: 2px solid green;
@@ -41,7 +41,7 @@ button.day {
     padding:0px
   }
   
-  .event_3 {
+  div.event_3 {
     width:97px;
     height: 24px;
     border: 2px solid purple;
