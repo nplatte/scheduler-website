@@ -26,10 +26,11 @@ function HideEditForm() {
     form.style.visibility = 'hidden';
 }
 
-function MouseOverDay(day) {
+function MouseOverDay(day, day_num) {
     day.style.backgroundColor = 'red';
+    var btn = document.getElementById('new_event_button_' + day_num);
 }
 
-function MouseOffDay(day) {
+function MouseOffDay(day, day_num) {
     day.style.backgroundColor = 'aliceblue';
 }

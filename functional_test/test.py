@@ -1,5 +1,6 @@
 from selenium import webdriver
 from selenium.common.exceptions import ElementNotInteractableException
+from selenium.webdriver.common.action_chains import ActionChains
 
 from django.contrib.auth.models import User
 from month_view.models import Event
@@ -63,8 +64,11 @@ class UserMakesEvent(StaticLiveServerTestCase):
         logout_button.click()
 
     def _make_new_event(self, name, day):
-        day = self.browser.find_element_by_class_name(f'day_{day}')
-        day.click()
+        day_div = self.browser.find_element_by_class_name(f'day_{day}')
+        action = ActionChains(self.browser)
+        action.move_to_element(day_div)
+        new_event_button = self.browser.find_element_by_id(f'new_event_button_{day}')
+        new_event_button.click()
         name_input = self.browser.find_element_by_id(NEW_EVENT_CLASS_IDS['title_id'])
         submit_button = self.browser.find_element_by_id(NEW_EVENT_CLASS_IDS['submit_button'])
         name_input.send_keys(name)
@@ -87,13 +91,16 @@ class UserMakesEvent(StaticLiveServerTestCase):
         self.assertIn('Log In', self.browser.title)
 
     def test_tiddlywinks_can_make_event(self):
+        action = ActionChains(self.browser)
         # Tiddlywinks logs in to  the website
         self._login_attempt(self.test_username, self.test_password)
         # They click on the first day of the month and a form pops up
         day_one = self.browser.find_element_by_class_name('day_1')
         bad_name_input = self.browser.find_element_by_id(NEW_EVENT_CLASS_IDS['title_id'])
         self.assertRaises(ElementNotInteractableException, bad_name_input.send_keys, 'something')
-        day_one.click()
+        action.move_to_element(day_one)
+        new_event_button = self.browser.find_element_by_id(f'new_event_button_1')
+        new_event_button.click()
         name_input = self.browser.find_element_by_id(NEW_EVENT_CLASS_IDS['title_id'])
         self.browser.find_element_by_id(NEW_EVENT_CLASS_IDS['time_id'])
         self.browser.find_element_by_id(NEW_EVENT_CLASS_IDS['date_id'])
@@ -169,8 +176,11 @@ class UserMakesEvent(StaticLiveServerTestCase):
         bad_name_input = self.browser.find_element_by_id(EDIT_EVENT_CLASS_IDS['title_id'])
         self.assertRaises(ElementNotInteractableException, bad_name_input.send_keys, 'something')
         # she decides to make a new event
-        day = self.browser.find_element_by_class_name(f'day_4')
-        day.click()
+        day_div = self.browser.find_element_by_class_name(f'day_4')
+        action = ActionChains(self.browser)
+        action.move_to_element(day_div)
+        new_event_button = self.browser.find_element_by_id(f'new_event_button_4')
+        new_event_button.click()
         self.browser.find_element_by_id(NEW_EVENT_CLASS_IDS['title_id'])
         # she gives up because life is hard and decides to cancel the event
         cancel_button = self.browser.find_element_by_id('new_cancel_button')
@@ -193,13 +203,7 @@ class UserMakesEvent(StaticLiveServerTestCase):
         month_name = self.browser.find_element_by_id('month_name')
         self.assertEqual(month_name.text, _get_month_name(datetime.now().month + 1))
         # she clicks the 5th and makes a new event for that day
-        day_5 = self.browser.find_element_by_class_name('day_5')
-        day_5.click()
-        # she adds her data for that day and clicks submit
-        name_input = self.browser.find_element_by_id(NEW_EVENT_CLASS_IDS['title_id'])
-        submit_button = self.browser.find_element_by_id(NEW_EVENT_CLASS_IDS['submit_button'])
-        name_input.send_keys('topple regime')
-        submit_button.click()
+        self._make_new_event('topple regime', 5)
         # she sees her event on the calender
         events_on_the_fifth = self.browser.find_elements_by_class_name('day_5_event')
         self.assertEqual(1, len(events_on_the_fifth))

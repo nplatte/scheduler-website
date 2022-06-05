@@ -23,9 +23,9 @@
 
     <div class="calender__days">
         {% for day, date, events in month_day_tuples %}
-        <div class="day_{{ day }} day" onmouseover = "MouseOverDay(this)" onmouseout = "MouseOffDay(this)" onclick = "ShowNewForm('{{ date }}')">
+        <div class="day_{{ day }} day" onmouseover = "MouseOverDay(this, '{{ day }}')" onmouseout = "MouseOffDay(this, '{{ day }}')">
             {{ day }}
-            <!--<button type="button" class="day_{{ day }} day" onclick="ShowNewForm('{{ date }}')">{{ day }}</button>-->
+            <button type="button" class="new_event_button" id="new_event_button_{{ day }}" onclick="ShowNewForm('{{ date }}')">+</button>
             {% for event in events %}
                 <div class="event">
                     <button class="day_{{ day }}_event" onclick="ShowEditForm('{{ event.title }}', '{{ event.date }}', '{{ event.pk }}')">{{ event.title }}</button>
