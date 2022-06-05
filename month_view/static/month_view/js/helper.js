@@ -27,13 +27,13 @@ function HideEditForm() {
 }
 
 function MouseOverDay(day, day_num) {
-    day.style.backgroundColor = 'red';
+    day.style.backgroundColor = '#ADCAF7';
     var btn = document.getElementById('new_event_button_' + day_num);
     btn.style.display = 'inline-block';
 }
 
 function MouseOffDay(day, day_num) {
-    day.style.backgroundColor = 'aliceblue';
+    day.style.backgroundColor = '#C9D9F2';
     var btn = document.getElementById('new_event_button_' + day_num);
     btn.style.display = 'none'
 }
