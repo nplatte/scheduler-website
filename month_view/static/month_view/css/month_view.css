@@ -24,6 +24,10 @@ div.day {
     padding: 0px;
     background-color: aliceblue;
   }
+
+button.new_event_button {
+  display: none;
+}
   
   div.event_1 {
     width:97px;

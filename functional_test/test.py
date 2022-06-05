@@ -66,7 +66,7 @@ class UserMakesEvent(StaticLiveServerTestCase):
     def _make_new_event(self, name, day):
         day_div = self.browser.find_element_by_class_name(f'day_{day}')
         action = ActionChains(self.browser)
-        action.move_to_element(day_div)
+        action.move_to_element(day_div).perform()
         new_event_button = self.browser.find_element_by_id(f'new_event_button_{day}')
         new_event_button.click()
         name_input = self.browser.find_element_by_id(NEW_EVENT_CLASS_IDS['title_id'])
@@ -98,7 +98,7 @@ class UserMakesEvent(StaticLiveServerTestCase):
         day_one = self.browser.find_element_by_class_name('day_1')
         bad_name_input = self.browser.find_element_by_id(NEW_EVENT_CLASS_IDS['title_id'])
         self.assertRaises(ElementNotInteractableException, bad_name_input.send_keys, 'something')
-        action.move_to_element(day_one)
+        action.move_to_element(day_one).perform()
         new_event_button = self.browser.find_element_by_id(f'new_event_button_1')
         new_event_button.click()
         name_input = self.browser.find_element_by_id(NEW_EVENT_CLASS_IDS['title_id'])
@@ -178,7 +178,7 @@ class UserMakesEvent(StaticLiveServerTestCase):
         # she decides to make a new event
         day_div = self.browser.find_element_by_class_name(f'day_4')
         action = ActionChains(self.browser)
-        action.move_to_element(day_div)
+        action.move_to_element(day_div).perform()
         new_event_button = self.browser.find_element_by_id(f'new_event_button_4')
         new_event_button.click()
         self.browser.find_element_by_id(NEW_EVENT_CLASS_IDS['title_id'])

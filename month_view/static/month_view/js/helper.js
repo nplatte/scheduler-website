@@ -29,8 +29,11 @@ function HideEditForm() {
 function MouseOverDay(day, day_num) {
     day.style.backgroundColor = 'red';
     var btn = document.getElementById('new_event_button_' + day_num);
+    btn.style.display = 'inline-block';
 }
 
 function MouseOffDay(day, day_num) {
     day.style.backgroundColor = 'aliceblue';
+    var btn = document.getElementById('new_event_button_' + day_num);
+    btn.style.display = 'none'
 }
