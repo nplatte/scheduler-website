@@ -13,8 +13,10 @@
 
 <div class="calender">
 
+    <div class="calender__descriptions">
     <h3 class="calender__title" id="month_name">{{ month_name }}</h3>
     <h3 class="calender__title" id="year_number">{{ year_number }}</h3>
+    </div>
 
     <form method="POST">
         {% csrf_token %}

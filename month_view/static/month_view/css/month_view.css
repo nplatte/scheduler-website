@@ -2,12 +2,34 @@ div.month_identifiers {
      text-align: center;
 }
 
-div.calender__days {
-    width: 725px;
-    display: grid;
-    grid-template-columns: 100px 100px 100px 100px 100px 100px 100px;
+div.calender {
+  width: 800px;
+  display: grid;
+  grid-template-columns: 50px 700px 50px;
 }
 
+div.calender__descriptions {
+  grid-column: 2/3;
+  grid-row: 1/2;
+}
+
+div#left_month {
+  grid-column: 1/2;
+  grid-row: 2/3;
+}
+
+div.calender__days {
+    width: 700px;
+    display: grid;
+    grid-template-columns: 100px 100px 100px 100px 100px 100px 100px;
+    grid-column: 2/3;
+    grid-row: 2/3;  
+}
+
+div#right_month {
+  grid-column: 3/4;
+  grid-row: 2/3;
+}
 
 h3.month_name {
     display: inline-block;
