@@ -27,8 +27,8 @@ div#right_month {
 div.calender__days {
     width: 714px;
     display: grid;
-    grid-template-columns: 100px 100px 100px 100px 100px 100px 100px;
-    grid-template-rows: 50px 100px 100px 100px 100px 100px;
+    grid-template-columns: repeat(7, 100px);
+    grid-template-rows: 50px repeat(5, 100px);
     grid-column: 2/3;
     grid-row: 2/3;  
 }
