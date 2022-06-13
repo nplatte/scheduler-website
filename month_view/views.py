@@ -92,3 +92,8 @@ def _get_day_of_week_month_starts_on(month, year):
     if day == 6:
         return 0
     return day + 1
+
+def _get_before_filler_days(day_of_week, month, year):
+    month, year = _validate_month_year(month-1, year)
+    past_month_len = _get_days_in_month(month, year) + 1
+    return [i for i in range(past_month_len - day_of_week, past_month_len)]

@@ -182,3 +182,8 @@ class TestHelperFunctions(TestCase):
         tuesday = views._get_day_of_week_month_starts_on(2, 2022)
         self.assertEqual(2, tuesday)
 
+    def test_get_before_filler_days(self):
+        days = views._get_before_filler_days(6, 1, 2022)
+        self.assertEqual(len(days), 6)
+        self.assertEqual(days[-1], 31)
+
