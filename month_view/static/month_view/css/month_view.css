@@ -28,8 +28,13 @@ div.calender__days {
     width: 714px;
     display: grid;
     grid-template-columns: 100px 100px 100px 100px 100px 100px 100px;
+    grid-template-rows: 50px 100px 100px 100px 100px 100px;
     grid-column: 2/3;
     grid-row: 2/3;  
+}
+
+h3.day_name {
+  text-align: center;
 }
 
 div.day {
