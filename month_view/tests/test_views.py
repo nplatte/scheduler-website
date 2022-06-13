@@ -186,4 +186,9 @@ class TestHelperFunctions(TestCase):
         days = views._get_before_filler_days(6, 1, 2022)
         self.assertEqual(len(days), 6)
         self.assertEqual(days[-1], 31)
+    
+    def test_get_after_filler_days(self):
+        days = views._get_after_filler_days(1, 1, 2022)
+        self.assertEqual(len(days), 5)
+        self.assertEqual(days[-1], 5)
 
