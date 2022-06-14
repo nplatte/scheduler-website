@@ -1,3 +1,4 @@
+from urllib import response
 from django.test import TestCase, LiveServerTestCase
 from django.urls import reverse
 import month_view.views as views
@@ -63,6 +64,11 @@ class TestRightArrowPOST(TestCase):
         response = self.client.post(reverse('month_page', kwargs={'month': 12, 'year': 2022}), self.data, follow=True)
         self.assertEqual(2023, response.context['year_number'])
 
+    def test_month_day_info_is_of_next_month(self):
+        response = self.client.post(reverse('month_page', kwargs={'month': 6, 'year': 2022}), self.data, follow=True)
+        self.assertNotEqual(30, len(response.context['month_day_tuples']))
+        self.assertEqual(31, len(response.context['month_day_tuples']))
+
     def test_right_month_redirects_to_month_view(self):
         response = self.client.post(reverse('month_page', kwargs={'month': 1, 'year': 2022}), self.data, follow=True)
         self.assertRedirects(response, '/month_view/2-2022/')
@@ -86,6 +92,11 @@ class TestLeftArrowPOST(TestCase):
     def test_year_number_goes_down_on_december_left_month(self):
         response = self.client.post(reverse('month_page', kwargs={'month': 1, 'year': 2022}), self.data, follow=True)
         self.assertEqual(2021, response.context['year_number'])
+
+    def test_month_day_info_is_of_last_month(self):
+        response = self.client.post(reverse('month_page', kwargs={'month': 6, 'year': 2022}), self.data, follow=True)
+        self.assertNotEqual(30, len(response.context['month_day_tuples']))
+        self.assertEqual(31, len(response.context['month_day_tuples']))
 
     def test_left_month_redirects_to_month_view(self):
         response = self.client.post(reverse('month_page', kwargs={'month': 1, 'year': 2022}), self.data, follow=True)

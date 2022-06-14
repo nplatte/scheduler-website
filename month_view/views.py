@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, date
 import calendar
 
 from django.urls import reverse
@@ -40,9 +40,19 @@ def month_view_page(request, month, year):
             if new_form.is_valid():
                 new_form.save()
     month_day_info = []
+
+    
+    '''last_day_of_month = date(year, month, _get_days_in_month(month, year)).weekday()
+    if last_day_of_month == 6:
+        last_day_of_month = 0
+    else:
+        last_day_of_month += 1
+        _get_before_filler_days(_get_day_of_week_month_starts_on(month, year), month, year) +  + _get_after_filler_days(last_day_of_month, month, year)'''
+        
     dates = _get_dates_in_month(month, year)
     for i in range(1, _get_days_in_month(month, year) + 1):
         month_day_info.append((i, dates[i-1], _get_events_on_day(i, month, year)))
+
     context = {
         'new_form': new_form,
         'edit_form': edit_form,
