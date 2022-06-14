@@ -3,15 +3,16 @@ import calendar
 
 from django.urls import reverse
 from django.shortcuts import render, redirect
-
+from django.views import View
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
+from django.utils.decorators import method_decorator
 
 from .forms import NewEventForm, EditEventForm
-from.models import Event
+from .models import Event
 
 
-@login_required(login_url='/')
+'''@login_required(login_url='/')
 def month_view_page(request, month, year):
     new_form = NewEventForm()
     edit_form = EditEventForm()
@@ -42,12 +43,12 @@ def month_view_page(request, month, year):
     month_day_info = []
 
     
-    '''last_day_of_month = date(year, month, _get_days_in_month(month, year)).weekday()
+    last_day_of_month = date(year, month, _get_days_in_month(month, year)).weekday()
     if last_day_of_month == 6:
         last_day_of_month = 0
     else:
         last_day_of_month += 1
-        _get_before_filler_days(_get_day_of_week_month_starts_on(month, year), month, year) +  + _get_after_filler_days(last_day_of_month, month, year)'''
+        _get_before_filler_days(_get_day_of_week_month_starts_on(month, year), month, year) +  + _get_after_filler_days(last_day_of_month, month, year)
         
     dates = _get_dates_in_month(month, year)
     for i in range(1, _get_days_in_month(month, year) + 1):
@@ -110,4 +111,42 @@ def _get_before_filler_days(day_of_week, month, year):
 
 def _get_after_filler_days(day_of_week, month, year):
     month, year = _validate_month_year(month+1, year)
-    return [i + 1 for i in range(6 - day_of_week)]
+    return [i + 1 for i in range(6 - day_of_week)]'''
+
+
+class MonthViewPage(View):
+
+    new_event_form = NewEventForm()
+    edit_event_form = EditEventForm()
+    user = None
+    month = None
+    year = None
+
+    @method_decorator(login_required)
+    def get(self, request, month, year):
+        self.month, self.year = month, year
+        context = {
+            'month_number': month,
+            'year_number': year
+        }
+        return render(request, 'month_view/month_view.html', context)
+
+    @method_decorator(login_required)
+    def post(self, request, month, year):
+        self.month, self.year = month, year
+        if 'logout' in request.POST:
+            logout(request)
+            return redirect(reverse('login_page'))
+        elif 'right_month' in request.POST:
+            self.month += 1
+            month, year = self._validate_month_year()
+            return redirect(reverse('month_page', kwargs={'month': month, 'year': year}))
+        return render(request, 'month_view/month_view.html')
+
+    def _validate_month_year(self):
+        if self.month == 0:
+            return 12, self.year - 1
+        elif self.month == 13:
+            return 1, self.year + 1
+        return self.month, self.year
+    
