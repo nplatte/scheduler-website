@@ -136,17 +136,36 @@ class MonthViewPage(View):
     def post(self, request, month, year):
         self.month, self.year = month, year
         if 'logout' in request.POST:
-            logout(request)
-            return redirect(reverse('login_page'))
+            return self.logout_post(request)
         elif 'right_month' in request.POST:
-            self.month += 1
-            month, year = self._validate_month_year()
-            return redirect(reverse('month_page', kwargs={'month': month, 'year': year}))
+            return self.right_month_post()
         elif 'left_month' in request.POST:
-            self.month -= 1
-            month, year = self._validate_month_year()
-            return redirect(reverse('month_page', kwargs={'month': month, 'year': year}))
-        return render(request, 'month_view/month_view.html')
+            return self.left_month_post()
+        elif 'new_event' in request.POST:
+            self.new_event_form = NewEventForm(request.POST)
+            if self.new_event_form.is_valid():
+                self.new_event_form.save()
+        context = {
+            'month_number': month,
+            'year_number': year,
+            'new_form': self.new_event_form,
+            'month_day_tuples': [(i, i, []) for i in range(self._find_month_length())]
+        }
+        return render(request, 'month_view/month_view.html', context=context)
+
+    def logout_post(self, request):
+        logout(request)
+        return redirect(reverse('login_page'))
+
+    def right_month_post(self):
+        self.month += 1
+        month, year = self._validate_month_year()
+        return redirect(reverse('month_page', kwargs={'month': month, 'year': year}))
+
+    def left_month_post(self):
+        self.month -= 1
+        month, year = self._validate_month_year()
+        return redirect(reverse('month_page', kwargs={'month': month, 'year': year}))
 
     def _validate_month_year(self):
         if self.month == 0:
