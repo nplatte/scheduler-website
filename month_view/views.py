@@ -142,6 +142,10 @@ class MonthViewPage(View):
             self.month += 1
             month, year = self._validate_month_year()
             return redirect(reverse('month_page', kwargs={'month': month, 'year': year}))
+        elif 'left_month' in request.POST:
+            self.month -= 1
+            month, year = self._validate_month_year()
+            return redirect(reverse('month_page', kwargs={'month': month, 'year': year}))
         return render(request, 'month_view/month_view.html')
 
     def _validate_month_year(self):
