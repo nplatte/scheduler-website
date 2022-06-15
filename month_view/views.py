@@ -127,7 +127,8 @@ class MonthViewPage(View):
         self.month, self.year = month, year
         context = {
             'month_number': month,
-            'year_number': year
+            'year_number': year,
+            'month_day_tuples': [(i, i, []) for i in range(self._find_month_length())]
         }
         return render(request, 'month_view/month_view.html', context)
 
@@ -149,4 +150,7 @@ class MonthViewPage(View):
         elif self.month == 13:
             return 1, self.year + 1
         return self.month, self.year
+
+    def _find_month_length(self):
+        return calendar.monthrange(self.year, self.month)[1]
     
