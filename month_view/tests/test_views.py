@@ -123,7 +123,6 @@ class TestNewEventPost(TestCase):
     def test_post_sends_event_to_html(self):
         data = {'new_event': [], 'title': 'topple regime', 'date': datetime(2022, 2, 1)}
         response = self.client.post(reverse('month_page', kwargs={'month': 2, 'year': 2022}), data)
-        self.assertEqual(1, len(models.Event.objects.all()))
         self.assertEqual(2, len(response.context['month_events'][0]))
         self.assertEqual(1, len(response.context['month_events'][0][1]))
 
