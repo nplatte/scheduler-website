@@ -142,6 +142,8 @@ class MonthViewPage(View):
             return self.right_month_post()
         elif 'left_month' in request.POST:
             return self.left_month_post()
+        elif 'edit_event' in request.POST:
+            self.edit_event_post(request)
         else:
             self.new_event_form = NewEventForm(request.POST)
             if self.new_event_form.is_valid():
@@ -169,6 +171,12 @@ class MonthViewPage(View):
         self.month -= 1
         month, year = self._validate_month_year()
         return redirect(reverse('month_page', kwargs={'month': month, 'year': year}))
+
+    def edit_event_post(self, request):
+        event_to_edit = Event.objects.get(id=request.POST['event_id'])
+        edit_form = EditEventForm(request.POST, instance=event_to_edit)
+        if edit_form.is_valid():
+            edit_form.save()
 
     def _validate_month_year(self):
         if self.month == 0:

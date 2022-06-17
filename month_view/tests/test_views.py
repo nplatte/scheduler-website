@@ -121,13 +121,14 @@ class TestNewEventPost(TestCase):
         self.assertEqual(2022, response.context['year_number'])
 
     def test_post_sends_event_to_html(self):
-        data = {'new_event': [], 'title': 'topple regime', 'date': datetime(2022, 2, 1)}
+        data = {'new_event': [], 'title': 'topple regime', 'date': date(2022, 2, 1)}
         response = self.client.post(reverse('month_page', kwargs={'month': 2, 'year': 2022}), data)
+        self.assertEqual(1, len(models.Event.objects.all()))
         self.assertEqual(2, len(response.context['month_events'][0]))
         self.assertEqual(1, len(response.context['month_events'][0][1]))
 
 
-'''class TestEditEventPOST(TestCase):
+class TestEditEventPOST(TestCase):
 
     def setUp(self):
         self.test_user = User.objects.create(username='test_user', password='password')
@@ -147,7 +148,7 @@ class TestNewEventPost(TestCase):
         self.assertEqual("don't topple regime", models.Event.objects.all()[0].title)
 
 
-class TestDeleteEventPOST(TestCase):
+'''class TestDeleteEventPOST(TestCase):
 
     def setUp(self):
         self.test_user = User.objects.create(username='test_user', password='password')
