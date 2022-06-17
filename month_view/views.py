@@ -127,9 +127,12 @@ class MonthViewPage(View):
         self.month, self.year = month, year
         month_days = self._get_days_in_month()
         context = {
+            'new_form': self.new_event_form,
+            'edit_form': self.edit_event_form,
             'month_number': month,
+            'month_name': self._get_month_name(),
             'year_number': year,
-            'month_events': [(day, []) for day in month_days]
+            'month_events': [(day, list(self._get_events_on_day(day))) for day in month_days]
         }
         return render(request, 'month_view/month_view.html', context)
 
@@ -150,10 +153,12 @@ class MonthViewPage(View):
             self.new_event_form = NewEventForm(request.POST)
             if self.new_event_form.is_valid():
                 self.new_event_form.save()
-
         month_days = self._get_days_in_month()
         context = {
+            'new_form': self.new_event_form,
+            'edit_form': self.edit_event_form,
             'month_number': month,
+            'month_name': self._get_month_name(),
             'year_number': year,
             'new_form': self.new_event_form,
             'month_events': [(day, list(self._get_events_on_day(day))) for day in month_days]
@@ -180,7 +185,7 @@ class MonthViewPage(View):
         if edit_form.is_valid():
             edit_form.save()
 
-    def delete_event_post(request):
+    def delete_event_post(self, request):
         event_to_delete = Event.objects.get(id=request.POST['event_id'])
         event_to_delete.delete()
 
@@ -203,6 +208,23 @@ class MonthViewPage(View):
             month = self.month
             year = self.year
         return Event.objects.filter(date=f'{year}-{month}-{day}')
+
+    def _get_month_name(self):
+        months = {
+            1: 'January',
+            2: 'February',
+            3: 'March',
+            4: 'April',
+            5: 'May',
+            6: 'June',
+            7: 'July',
+            8: 'August',
+            9: 'September',
+            10: 'October',
+            11: 'November',
+            12: 'December'
+        }
+        return months[self.month]
 
     def _set_month_year(self, month, year):
         self.month = month

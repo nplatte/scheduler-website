@@ -148,7 +148,7 @@ class TestEditEventPOST(TestCase):
         self.assertEqual("don't topple regime", models.Event.objects.all()[0].title)
 
 
-'''class TestDeleteEventPOST(TestCase):
+class TestDeleteEventPOST(TestCase):
 
     def setUp(self):
         self.test_user = User.objects.create(username='test_user', password='password')
@@ -161,7 +161,7 @@ class TestEditEventPOST(TestCase):
             'event_id': event.pk,
         }
         response = self.client.post(reverse('month_page', kwargs={'month':2, 'year': 2022}), data)
-        self.assertEqual(len(models.Event.objects.all()), 0)'''
+        self.assertEqual(len(models.Event.objects.all()), 0)
 
 
 class TestHelperFunctions(TestCase):
@@ -197,6 +197,11 @@ class TestHelperFunctions(TestCase):
         month, year = self.TestClass._validate_month_year()
         self.assertEqual(month, 1)
         self.assertEqual(year, 2023)
+
+    def test_get_month_name(self):
+        self.TestClass._set_month_year(6, 2022)
+        name = self.TestClass._get_month_name()
+        self.assertEqual(name, 'June')
 
     '''def test_get_day_of_week_month_starts_on(self):
         tuesday = views._get_day_of_week_month_starts_on(2, 2022)
