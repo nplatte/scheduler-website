@@ -27,7 +27,7 @@
         <h3 class="day_name">Sunday</h3><h3 class="day_name">Monday</h3><h3 class="day_name">Tuesday</h3>
         <h3 class="day_name">Wednesday</h3><h3 class="day_name">Thursday</h3><h3 class="day_name">Friday</h3>
         <h3 class="day_name">Saturday</h3>
-        {% for day, date, events in month_events %}
+        {% for day, events in month_events %}
         <div class="day_{{ day }} day" onmouseover = "MouseOverDay(this, '{{ day }}')" onmouseout = "MouseOffDay(this, '{{ day }}')">
             {{ day }}
             <button type="button" class="new_event_button" id="new_event_button_{{ day }}" name="new_event" onclick="ShowNewForm('{{ date }}')">+</button>

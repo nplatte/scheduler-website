@@ -125,10 +125,11 @@ class MonthViewPage(View):
     @method_decorator(login_required)
     def get(self, request, month, year):
         self.month, self.year = month, year
+        month_days = self._get_days_in_month()
         context = {
             'month_number': month,
             'year_number': year,
-            'month_events': [(i, i, []) for i in range(self._find_month_length())]
+            'month_events': [(day, []) for day in month_days]
         }
         return render(request, 'month_view/month_view.html', context)
 
@@ -145,11 +146,13 @@ class MonthViewPage(View):
             self.new_event_form = NewEventForm(request.POST)
             if self.new_event_form.is_valid():
                 self.new_event_form.save()
+
+        month_days = self._get_days_in_month()
         context = {
             'month_number': month,
             'year_number': year,
             'new_form': self.new_event_form,
-            'month_events': [(i, i, []) for i in range(self._find_month_length())]
+            'month_events': [(day, list(self._get_events_on_day(day))) for day in month_days]
         }
         return render(request, 'month_view/month_view.html', context=context)
 
@@ -177,3 +180,16 @@ class MonthViewPage(View):
     def _find_month_length(self):
         return calendar.monthrange(self.year, self.month)[1]
     
+    def _get_days_in_month(self):
+        length = calendar.monthrange(self.year, self.month)[1]
+        return [i + 1 for i in range(length)]
+    
+    def _get_events_on_day(self, day, month=None, year=None):
+        if month == None or year == None:
+            month = self.month
+            year = self.year
+        return Event.objects.filter(date=f'{year}-{month}-{day}')
+
+    def _set_month_year(self, month, year):
+        self.month = month
+        self.year = year
