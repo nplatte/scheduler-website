@@ -1,13 +1,17 @@
 from urllib import response
 from django.test import TestCase, LiveServerTestCase
 from django.urls import reverse
+from django.contrib.auth.models import User
+
 from month_view.views import MonthViewPage
 import month_view.models as models
 import month_view.forms as forms
-from django.contrib.auth.models import User
+
 from datetime import date, datetime
 
 from functional_test.test import _get_month_name
+
+
 
 class TestMonthViewPageGET(LiveServerTestCase):
 
@@ -211,30 +215,33 @@ class TestHelperFunctions(TestCase):
 
     def test_validate_month_year(self):
         self.TestClass._set_month_year(0, 2022)
-        month, year = self.TestClass._validate_month_year()
-        self.assertEqual(month, 12)
-        self.assertEqual(year, 2021)
+        self.TestClass._validate_month_year()
+        self.assertEqual(self.TestClass.month, 12)
+        self.assertEqual(self.TestClass.year, 2021)
         self.TestClass._set_month_year(13, 2022)
-        month, year = self.TestClass._validate_month_year()
-        self.assertEqual(month, 1)
-        self.assertEqual(year, 2023)
+        self.TestClass._validate_month_year()
+        self.assertEqual(self.TestClass.month, 1)
+        self.assertEqual(self.TestClass.year, 2023)
 
     def test_get_month_name(self):
         self.TestClass._set_month_year(6, 2022)
         name = self.TestClass._get_month_name()
         self.assertEqual(name, 'June')
 
-    '''def test_get_day_of_week_month_starts_on(self):
-        tuesday = views._get_day_of_week_month_starts_on(2, 2022)
-        self.assertEqual(2, tuesday)
+    def test_get_day_of_week_month_starts_on(self):
+        self.TestClass._set_month_year(6, 2022)
+        wednesday = self.TestClass._get_day_of_week_month_starts_on()
+        self.assertEqual(3, wednesday)
 
     def test_get_before_filler_days(self):
-        days = views._get_before_filler_days(6, 1, 2022)
+        self.TestClass._set_month_year(1, 2022)
+        days = self.TestClass._get_before_filler_days(6)
         self.assertEqual(len(days), 6)
         self.assertEqual(days[-1], 31)
     
     def test_get_after_filler_days(self):
-        days = views._get_after_filler_days(1, 1, 2022)
-        self.assertEqual(len(days), 5)
-        self.assertEqual(days[-1], 5)'''
+        self.TestClass._set_month_year(6, 2022)
+        days = self.TestClass._get_after_filler_days()
+        self.assertEqual(len(days), 2)
+        self.assertEqual([1, 2], days)
 
