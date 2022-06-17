@@ -144,6 +144,8 @@ class MonthViewPage(View):
             return self.left_month_post()
         elif 'edit_event' in request.POST:
             self.edit_event_post(request)
+        elif 'delete_event' in request.POST:
+            self.delete_event_post(request)
         else:
             self.new_event_form = NewEventForm(request.POST)
             if self.new_event_form.is_valid():
@@ -177,6 +179,10 @@ class MonthViewPage(View):
         edit_form = EditEventForm(request.POST, instance=event_to_edit)
         if edit_form.is_valid():
             edit_form.save()
+
+    def delete_event_post(request):
+        event_to_delete = Event.objects.get(id=request.POST['event_id'])
+        event_to_delete.delete()
 
     def _validate_month_year(self):
         if self.month == 0:
