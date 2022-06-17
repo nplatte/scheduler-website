@@ -9,7 +9,7 @@ from datetime import date, datetime
 
 from functional_test.test import _get_month_name
 
-class TestMonthViewPage(LiveServerTestCase):
+class TestMonthViewPageGET(LiveServerTestCase):
 
     def setUp(self):
         self.test_user = User.objects.create(username='test_user', password='password')
@@ -28,6 +28,35 @@ class TestMonthViewPage(LiveServerTestCase):
         response = self.client.get(reverse('month_page', kwargs={'month': 2, 'year': 2022}), follow=True)
         self.assertEqual(200, response.status_code)
 
+    def test_get_passes_new_event_form(self):
+        self.client.force_login(self.test_user)
+        response = self.client.get(reverse('month_page', kwargs={'month': 2, 'year': 2022}), follow=True)
+        self.assertIsInstance(response.context['new_form'], forms.NewEventForm)
+
+    def test_get_passes_edit_event_form(self):
+        self.client.force_login(self.test_user)
+        response = self.client.get(reverse('month_page', kwargs={'month': 2, 'year': 2022}), follow=True)
+        self.assertIsInstance(response.context['edit_form'], forms.EditEventForm)
+
+    def test_get_passes_month_name(self):
+        self.client.force_login(self.test_user)
+        response = self.client.get(reverse('month_page', kwargs={'month': 2, 'year': 2022}), follow=True)
+        self.assertEqual('February', response.context['month_name'])
+
+    def test_get_passes_month_and_year_number(self):
+        month = 2
+        year = 2022
+        self.client.force_login(self.test_user)
+        response = self.client.get(reverse('month_page', kwargs={'month': month, 'year': year}), follow=True)
+        self.assertEqual(2, response.context['month_number'])
+        self.assertEqual(2022, response.context['year_number'])
+
+    def test_get_passes_month_events_in_right_format(self):
+        self.client.force_login(self.test_user)
+        response = self.client.get(reverse('month_page', kwargs={'month': 2, 'year': 2022}), follow=True)
+        self.assertEqual(len(response.context['month_events']), 28)
+        self.assertIsInstance(response.context['month_events'][0][1], list)
+    
 
 class TestLogoutPOST(TestCase):
 
