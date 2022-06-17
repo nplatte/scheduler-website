@@ -129,9 +129,12 @@ class MonthViewPage(View):
             return 0
         return day + 1
 
-    def _get_before_filler_days(self, day_of_week, month, year):
-        month, year = self._validate_month_year(month-1, year)
-        past_month_len = self._get_days_in_month(month, year) + 1
+    def _get_before_filler_days(self, day_of_week):
+        self.month -= 1
+        self._validate_month_year()
+        past_month_len = self._find_month_length() + 1
+        self.month += 1
+        self._validate_month_year()
         return [i for i in range(past_month_len - day_of_week, past_month_len)]
 
     def _get_after_filler_days(self):
