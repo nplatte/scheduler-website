@@ -153,7 +153,10 @@ class MonthViewPage(View):
         next_month_start = self._get_day_of_week_month_starts_on()
         self.month -= 1
         self._validate_month_year()
-        return [i for i in range(1, 8 - next_month_start)]
+        days = [i for i in range(1, 8 - next_month_start)]
+        if len(days) == 7:
+            return []
+        return days
 
     def _set_month_year(self, month, year):
         self.month = month

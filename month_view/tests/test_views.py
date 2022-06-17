@@ -263,3 +263,9 @@ class TestHelperFunctions(TestCase):
         self.assertEqual(len(days), 2)
         self.assertEqual([1, 2], days)
 
+    def test_after_does_not_return_days_if_full_week(self):
+        self.TestClass._set_month_year(4, 2022)
+        days = self.TestClass._get_after_filler_days()
+        self.assertNotEqual(7, len(days))
+        self.assertEqual(0, len(days))
+
