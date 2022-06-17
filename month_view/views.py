@@ -69,13 +69,13 @@ class MonthViewPage(View):
 
     def right_month_post(self):
         self.month += 1
-        month, year = self._validate_month_year()
-        return redirect(reverse('month_page', kwargs={'month': month, 'year': year}))
+        self._validate_month_year()
+        return redirect(reverse('month_page', kwargs={'month': self.month, 'year': self.year}))
 
     def left_month_post(self):
         self.month -= 1
-        month, year = self._validate_month_year()
-        return redirect(reverse('month_page', kwargs={'month': month, 'year': year}))
+        self._validate_month_year()
+        return redirect(reverse('month_page', kwargs={'month': self.month, 'year': self.year}))
 
     def edit_event_post(self, request):
         event_to_edit = Event.objects.get(id=request.POST['event_id'])
@@ -89,10 +89,9 @@ class MonthViewPage(View):
 
     def _validate_month_year(self):
         if self.month == 0:
-            return 12, self.year - 1
+            self.month, self.year = 12, self.year - 1
         elif self.month == 13:
-            return 1, self.year + 1
-        return self.month, self.year
+            self.month, self.year = 1, self.year + 1
 
     def _find_month_length(self):
         return calendar.monthrange(self.year, self.month)[1]

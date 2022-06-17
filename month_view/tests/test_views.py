@@ -215,13 +215,13 @@ class TestHelperFunctions(TestCase):
 
     def test_validate_month_year(self):
         self.TestClass._set_month_year(0, 2022)
-        month, year = self.TestClass._validate_month_year()
-        self.assertEqual(month, 12)
-        self.assertEqual(year, 2021)
+        self.TestClass._validate_month_year()
+        self.assertEqual(self.TestClass.month, 12)
+        self.assertEqual(self.TestClass.year, 2021)
         self.TestClass._set_month_year(13, 2022)
-        month, year = self.TestClass._validate_month_year()
-        self.assertEqual(month, 1)
-        self.assertEqual(year, 2023)
+        self.TestClass._validate_month_year()
+        self.assertEqual(self.TestClass.month, 1)
+        self.assertEqual(self.TestClass.year, 2023)
 
     def test_get_month_name(self):
         self.TestClass._set_month_year(6, 2022)
