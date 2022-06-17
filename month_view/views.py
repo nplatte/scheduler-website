@@ -128,7 +128,7 @@ class MonthViewPage(View):
         context = {
             'month_number': month,
             'year_number': year,
-            'month_day_tuples': [(i, i, []) for i in range(self._find_month_length())]
+            'month_events': [(i, i, []) for i in range(self._find_month_length())]
         }
         return render(request, 'month_view/month_view.html', context)
 
@@ -141,7 +141,7 @@ class MonthViewPage(View):
             return self.right_month_post()
         elif 'left_month' in request.POST:
             return self.left_month_post()
-        elif 'new_event' in request.POST:
+        else:
             self.new_event_form = NewEventForm(request.POST)
             if self.new_event_form.is_valid():
                 self.new_event_form.save()
@@ -149,7 +149,7 @@ class MonthViewPage(View):
             'month_number': month,
             'year_number': year,
             'new_form': self.new_event_form,
-            'month_day_tuples': [(i, i, []) for i in range(self._find_month_length())]
+            'month_events': [(i, i, []) for i in range(self._find_month_length())]
         }
         return render(request, 'month_view/month_view.html', context=context)
 
