@@ -27,6 +27,19 @@
         <h3 class="day_name">Sunday</h3><h3 class="day_name">Monday</h3><h3 class="day_name">Tuesday</h3>
         <h3 class="day_name">Wednesday</h3><h3 class="day_name">Thursday</h3><h3 class="day_name">Friday</h3>
         <h3 class="day_name">Saturday</h3>
+        {% for day, events in last_month_events %}
+        <div class="day_{{ day }} day" onmouseover = "MouseOverDay(this, '{{ day }}')" onmouseout = "MouseOffDay(this, '{{ day }}')">
+            {{ day }}
+            <button type="button" class="new_event_button" id="new_event_button_{{ day }}" name="new_event" onclick="ShowNewForm('{{ year_number }}-{{ month_number }}-{{ day }}')">+</button>
+            {% for event in events %}
+                <div class="event">
+                    <button class="last_day_{{ day }}_event" onclick="ShowEditForm('{{ event.title }}', '{{ event.date }}', '{{ event.pk }}')">{{ event.title }}</button>
+                </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+
+
         {% for day, events in month_events %}
         <div class="day_{{ day }} day" onmouseover = "MouseOverDay(this, '{{ day }}')" onmouseout = "MouseOffDay(this, '{{ day }}')">
             {{ day }}
@@ -34,6 +47,19 @@
             {% for event in events %}
                 <div class="event">
                     <button class="day_{{ day }}_event" onclick="ShowEditForm('{{ event.title }}', '{{ event.date }}', '{{ event.pk }}')">{{ event.title }}</button>
+                </div>
+            {% endfor %}    
+        </div>
+        {% endfor %}
+
+
+        {% for day, events in next_month_events %}
+        <div class="day_{{ day }} day" onmouseover = "MouseOverDay(this, '{{ day }}')" onmouseout = "MouseOffDay(this, '{{ day }}')">
+            {{ day }}
+            <button type="button" class="new_event_button" id="new_event_button_{{ day }}" name="new_event" onclick="ShowNewForm('{{ year_number }}-{{ month_number }}-{{ day }}')">+</button>
+            {% for event in events %}
+                <div class="event">
+                    <button class="next_day_{{ day }}_event" onclick="ShowEditForm('{{ event.title }}', '{{ event.date }}', '{{ event.pk }}')">{{ event.title }}</button>
                 </div>
             {% endfor %}
         </div>

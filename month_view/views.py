@@ -23,14 +23,18 @@ class MonthViewPage(View):
     @method_decorator(login_required)
     def get(self, request, month, year):
         self.month, self.year = month, year
+        before_days = self._get_before_filler_days(self._get_day_of_week_month_starts_on())
         month_days = self._get_days_in_month()
+        after_days = self._get_after_filler_days()
         context = {
             'new_form': self.new_event_form,
             'edit_form': self.edit_event_form,
             'month_number': month,
             'month_name': self._get_month_name(),
             'year_number': year,
-            'month_events': [(day, list(self._get_events_on_day(day))) for day in month_days]
+            'last_month_events': [(day, list(self._get_events_on_day(day, self.last_month, self.last_year))) for day in before_days],
+            'month_events': [(day, list(self._get_events_on_day(day))) for day in month_days],
+            'next_month_events': [(day, list(self._get_events_on_day(day, self.next_month, self.next_year))) for day in after_days]
         }
         return render(request, 'month_view/month_view.html', context)
 
@@ -51,7 +55,9 @@ class MonthViewPage(View):
             self.new_event_form = NewEventForm(request.POST)
             if self.new_event_form.is_valid():
                 self.new_event_form.save()
+        before_days = self._get_before_filler_days(self._get_day_of_week_month_starts_on())
         month_days = self._get_days_in_month()
+        after_days = self._get_after_filler_days()
         context = {
             'new_form': self.new_event_form,
             'edit_form': self.edit_event_form,
@@ -59,7 +65,9 @@ class MonthViewPage(View):
             'month_name': self._get_month_name(),
             'year_number': year,
             'new_form': self.new_event_form,
-            'month_events': [(day, list(self._get_events_on_day(day))) for day in month_days]
+            'last_month_events': [(day, list(self._get_events_on_day(day, self.last_month, self.last_year))) for day in before_days],
+            'month_events': [(day, list(self._get_events_on_day(day))) for day in month_days],
+            'next_month_events': [(day, list(self._get_events_on_day(day, self.next_month, self.next_year))) for day in after_days]
         }
         return render(request, 'month_view/month_view.html', context=context)
 
@@ -132,6 +140,7 @@ class MonthViewPage(View):
     def _get_before_filler_days(self, day_of_week):
         self.month -= 1
         self._validate_month_year()
+        self.last_month, self.last_year = self.month, self.year
         past_month_len = self._find_month_length() + 1
         self.month += 1
         self._validate_month_year()
@@ -140,6 +149,7 @@ class MonthViewPage(View):
     def _get_after_filler_days(self):
         self.month += 1
         self._validate_month_year()
+        self.next_month, self.next_year = self.month, self.year
         next_month_start = self._get_day_of_week_month_starts_on()
         self.month -= 1
         self._validate_month_year()

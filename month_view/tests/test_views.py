@@ -60,6 +60,24 @@ class TestMonthViewPageGET(LiveServerTestCase):
         response = self.client.get(reverse('month_page', kwargs={'month': 2, 'year': 2022}), follow=True)
         self.assertEqual(len(response.context['month_events']), 28)
         self.assertIsInstance(response.context['month_events'][0][1], list)
+
+    def test_get_passes_last_month_events_in_right_format(self):
+        self.client.force_login(self.test_user)
+        response = self.client.get(reverse('month_page', kwargs={'month': 2, 'year': 2022}), follow=True)
+        self.assertEqual(len(response.context['last_month_events']), 2)
+        self.assertIsInstance(response.context['month_events'][0][1], list)
+
+    def test_get_passes_next_month_events_in_right_format(self):
+        self.client.force_login(self.test_user)
+        response = self.client.get(reverse('month_page', kwargs={'month': 2, 'year': 2022}), follow=True)
+        self.assertEqual(len(response.context['next_month_events']), 5)
+        self.assertIsInstance(response.context['month_events'][0][1], list)
+
+    def test_total_month_event_lens_divids_7(self):
+        self.client.force_login(self.test_user)
+        response = self.client.get(reverse('month_page', kwargs={'month': 2, 'year': 2022}), follow=True)
+        total_event_list = response.context['last_month_events'] + response.context['month_events'] + response.context['next_month_events']
+        self.assertEqual(len(total_event_list), 35)
     
 
 class TestLogoutPOST(TestCase):
