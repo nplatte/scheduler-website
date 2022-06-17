@@ -228,17 +228,20 @@ class TestHelperFunctions(TestCase):
         name = self.TestClass._get_month_name()
         self.assertEqual(name, 'June')
 
-    '''def test_get_day_of_week_month_starts_on(self):
-        tuesday = views._get_day_of_week_month_starts_on(2, 2022)
-        self.assertEqual(2, tuesday)
+    def test_get_day_of_week_month_starts_on(self):
+        self.TestClass._set_month_year(6, 2022)
+        wednesday = self.TestClass._get_day_of_week_month_starts_on()
+        self.assertEqual(3, wednesday)
 
     def test_get_before_filler_days(self):
-        days = views._get_before_filler_days(6, 1, 2022)
+        self.TestClass._set_month_year(1, 2022)
+        days = self.TestClass._get_before_filler_days(6)
         self.assertEqual(len(days), 6)
         self.assertEqual(days[-1], 31)
     
     def test_get_after_filler_days(self):
-        days = views._get_after_filler_days(1, 1, 2022)
-        self.assertEqual(len(days), 5)
-        self.assertEqual(days[-1], 5)'''
+        self.TestClass._set_month_year(6, 2022)
+        days = self.TestClass._get_after_filler_days()
+        self.assertEqual(len(days), 2)
+        self.assertEqual([1, 2], days)
 

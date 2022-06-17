@@ -123,8 +123,8 @@ class MonthViewPage(View):
         }
         return months[self.month]
 
-    def _get_day_of_week_month_starts_on(month, year):
-        day = calendar.monthrange(year, month)[0]
+    def _get_day_of_week_month_starts_on(self):
+        day = calendar.monthrange(self.year, self.month)[0]
         if day == 6:
             return 0
         return day + 1
@@ -134,9 +134,13 @@ class MonthViewPage(View):
         past_month_len = self._get_days_in_month(month, year) + 1
         return [i for i in range(past_month_len - day_of_week, past_month_len)]
 
-    def _get_after_filler_days(self, day_of_week, month, year):
-        month, year = self._validate_month_year(month+1, year)
-        return [i + 1 for i in range(6 - day_of_week)]
+    def _get_after_filler_days(self):
+        self.month += 1
+        self._validate_month_year()
+        next_month_start = self._get_day_of_week_month_starts_on()
+        self.month -= 1
+        self._validate_month_year()
+        return [i for i in range(1, 8 - next_month_start)]
 
     def _set_month_year(self, month, year):
         self.month = month
