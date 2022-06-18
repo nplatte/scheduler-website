@@ -45,6 +45,14 @@ div.day {
     background-color: #C9D9F2;
   }
 
+  div.off_day {
+    width: 98px;
+    height: 98px;
+    border: 1px solid black;
+    padding: 0px;
+    background-color: #c4c6c8;
+  }
+
 button.new_event_button {
   display: none;
   background-color: #DAE5F7;

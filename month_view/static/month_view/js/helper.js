@@ -37,3 +37,15 @@ function MouseOffDay(day, day_num) {
     var btn = document.getElementById('new_event_button_' + day_num);
     btn.style.display = 'none'
 }
+
+function MouseOverOffDay(day, day_num) {
+    day.style.backgroundColor = '#c4c6c8';
+    var btn = document.getElementById('new_event_button_' + day_num);
+    btn.style.display = 'inline-block';
+}
+
+function MouseOffOffDay(day, day_num) {
+    day.style.backgroundColor = '#C9D9F2';
+    var btn = document.getElementById('new_event_button_' + day_num);
+    btn.style.display = 'none'
+}
