@@ -13,7 +13,7 @@ from functional_test.test import _get_month_name
 
 
 
-class TestMonthViewPageGET(LiveServerTestCase):
+class TestMonthViewPage(LiveServerTestCase):
 
     def setUp(self):
         self.test_user = User.objects.create(username='test_user', password='password')
@@ -32,53 +32,93 @@ class TestMonthViewPageGET(LiveServerTestCase):
         response = self.client.get(reverse('month_page', kwargs={'month': 2, 'year': 2022}), follow=True)
         self.assertEqual(200, response.status_code)
 
-    def test_get_passes_new_event_form(self):
-        self.client.force_login(self.test_user)
-        response = self.client.get(reverse('month_page', kwargs={'month': 2, 'year': 2022}), follow=True)
-        self.assertIsInstance(response.context['new_form'], forms.NewEventForm)
 
-    def test_get_passes_edit_event_form(self):
-        self.client.force_login(self.test_user)
-        response = self.client.get(reverse('month_page', kwargs={'month': 2, 'year': 2022}), follow=True)
-        self.assertIsInstance(response.context['edit_form'], forms.EditEventForm)
+class TestViewGETContext(LiveServerTestCase):
 
-    def test_get_passes_month_name(self):
+    def setUp(self):
+        self.test_user = User.objects.create(username='test_user', password='password')
         self.client.force_login(self.test_user)
-        response = self.client.get(reverse('month_page', kwargs={'month': 2, 'year': 2022}), follow=True)
-        self.assertEqual('February', response.context['month_name'])
+        view_data = {'month': 2, 'year': 2022}
+        self.response = self.client.get(reverse('month_page', kwargs=view_data), follow=True)
 
-    def test_get_passes_month_and_year_number(self):
-        month = 2
-        year = 2022
-        self.client.force_login(self.test_user)
-        response = self.client.get(reverse('month_page', kwargs={'month': month, 'year': year}), follow=True)
-        self.assertEqual(2, response.context['month_number'])
-        self.assertEqual(2022, response.context['year_number'])
+    def test_get_context_new_event_form(self):
+        self.assertIsInstance(self.response.context['new_form'], forms.NewEventForm)
 
-    def test_get_passes_month_events_in_right_format(self):
-        self.client.force_login(self.test_user)
-        response = self.client.get(reverse('month_page', kwargs={'month': 2, 'year': 2022}), follow=True)
-        self.assertEqual(len(response.context['month_events']), 28)
-        self.assertIsInstance(response.context['month_events'][0][1], list)
+    def test_get_context_edit_event_form(self):
+        self.assertIsInstance(self.response.context['edit_form'], forms.EditEventForm)
 
-    def test_get_passes_last_month_events_in_right_format(self):
-        self.client.force_login(self.test_user)
-        response = self.client.get(reverse('month_page', kwargs={'month': 2, 'year': 2022}), follow=True)
-        self.assertEqual(len(response.context['last_month_events']), 2)
-        self.assertIsInstance(response.context['month_events'][0][1], list)
+    def test_get_context_month_name(self):
+        self.assertEqual('February', self.response.context['month_name'])
 
-    def test_get_passes_next_month_events_in_right_format(self):
-        self.client.force_login(self.test_user)
-        response = self.client.get(reverse('month_page', kwargs={'month': 2, 'year': 2022}), follow=True)
-        self.assertEqual(len(response.context['next_month_events']), 5)
-        self.assertIsInstance(response.context['month_events'][0][1], list)
+    def test_get_context_month_and_year_number(self):
+        self.assertEqual(2, self.response.context['month_number'])
+        self.assertEqual(2022, self.response.context['year_number'])
+
+    def test_get_context_month_events_in_right_format(self):
+        self.assertEqual(len(self.response.context['month_events']), 28)
+        self.assertIsInstance(self.response.context['month_events'][0][1], list)
+
+    def test_get_context_last_month_events_in_right_format(self):
+        self.assertEqual(len(self.response.context['last_month_events']), 2)
+        self.assertIsInstance(self.response.context['month_events'][0][1], list)
+
+    def test_get_context_next_month_events_in_right_format(self):
+        self.assertEqual(len(self.response.context['next_month_events']), 5)
+        self.assertIsInstance(self.response.context['month_events'][0][1], list)
 
     def test_total_month_event_lens_divids_7(self):
-        self.client.force_login(self.test_user)
-        response = self.client.get(reverse('month_page', kwargs={'month': 2, 'year': 2022}), follow=True)
-        total_event_list = response.context['last_month_events'] + response.context['month_events'] + response.context['next_month_events']
+        last_month_events = self.response.context['last_month_events']
+        this_month_events = self.response.context['month_events']
+        next_month_events = self.response.context['next_month_events']
+        total_event_list = last_month_events + this_month_events + next_month_events
         self.assertEqual(len(total_event_list), 35)
     
+
+class TestViewPOSTContext(LiveServerTestCase):
+
+    def setUp(self):
+        self.test_user = User.objects.create(username='test_user', password='password')
+        self.client.force_login(self.test_user)
+        view_data = {'month': 2, 'year': 2022}
+        event = models.Event.objects.create(title='Topple Regime', description='they goin down', date=date.today())
+        post_data = {
+            'delete_event': [''],
+            'event_id': event.pk,
+        }
+        self.response = self.client.post(reverse('month_page', kwargs=view_data), post_data)
+
+    def test_get_context_new_event_form(self):
+        self.assertIsInstance(self.response.context['new_form'], forms.NewEventForm)
+
+    def test_get_context_edit_event_form(self):
+        self.assertIsInstance(self.response.context['edit_form'], forms.EditEventForm)
+
+    def test_get_context_month_name(self):
+        self.assertEqual('February', self.response.context['month_name'])
+
+    def test_get_context_month_and_year_number(self):
+        self.assertEqual(2, self.response.context['month_number'])
+        self.assertEqual(2022, self.response.context['year_number'])
+
+    def test_get_context_month_events_in_right_format(self):
+        self.assertEqual(len(self.response.context['month_events']), 28)
+        self.assertIsInstance(self.response.context['month_events'][0][1], list)
+
+    def test_get_context_last_month_events_in_right_format(self):
+        self.assertEqual(len(self.response.context['last_month_events']), 2)
+        self.assertIsInstance(self.response.context['month_events'][0][1], list)
+
+    def test_get_context_next_month_events_in_right_format(self):
+        self.assertEqual(len(self.response.context['next_month_events']), 5)
+        self.assertIsInstance(self.response.context['month_events'][0][1], list)
+
+    def test_total_month_event_lens_divids_7(self):
+        last_month_events = self.response.context['last_month_events']
+        this_month_events = self.response.context['month_events']
+        next_month_events = self.response.context['next_month_events']
+        total_event_list = last_month_events + this_month_events + next_month_events
+        self.assertEqual(len(total_event_list), 35)
+
 
 class TestLogoutPOST(TestCase):
 
@@ -111,11 +151,11 @@ class TestRightArrowPOST(TestCase):
         response = self.client.post(reverse('month_page', kwargs={'month': 2, 'year': 2022}), self.data, follow=True)
         self.assertEqual(3, response.context['month_number'])
 
-    def test_year_number_goes_up_on_december_right_month(self):
+    def test_decemeber_goes_to_january(self):
         response = self.client.post(reverse('month_page', kwargs={'month': 12, 'year': 2022}), self.data, follow=True)
         self.assertEqual(2023, response.context['year_number'])
 
-    def test_month_day_info_is_of_next_month(self):
+    def test_gets_events_for_current_month(self):
         response = self.client.post(reverse('month_page', kwargs={'month': 6, 'year': 2022}), self.data, follow=True)
         self.assertNotEqual(30, len(response.context['month_events']))
         self.assertEqual(31, len(response.context['month_events']))

@@ -64,7 +64,6 @@ class MonthViewPage(View):
             'month_number': month,
             'month_name': self._get_month_name(),
             'year_number': year,
-            'new_form': self.new_event_form,
             'last_month_events': [(day, list(self._get_events_on_day(day, self.last_month, self.last_year))) for day in before_days],
             'month_events': [(day, list(self._get_events_on_day(day))) for day in month_days],
             'next_month_events': [(day, list(self._get_events_on_day(day, self.next_month, self.next_year))) for day in after_days]
