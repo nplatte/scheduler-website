@@ -13,7 +13,7 @@ function ShowEditForm(title, date, id){
     var date_box = document.getElementById('edit_event_date');
     date_box.value = date;   
     var id_box = document.getElementById('event_id');
-    id_box.value = id; 
+    id_box.value = id;   
 }
 
 function HideNewForm() {
@@ -45,7 +45,7 @@ function MouseOverOffDay(day, day_num) {
 }
 
 function MouseOffOffDay(day, day_num) {
-    day.style.backgroundColor = '#C9D9F2';
+    day.style.backgroundColor = '#c4c6c8';
     var btn = document.getElementById('new_event_button_' + day_num);
     btn.style.display = 'none'
 }
