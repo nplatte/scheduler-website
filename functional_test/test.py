@@ -243,6 +243,26 @@ class UserMakesEvent(StaticLiveServerTestCase):
         # she logs out
         self._logout_attempt()
 
+    def test_tiddlywinks_can_make_event_on_greyed_out_days(self):
+        # she logs in
+        self._login_attempt(self.test_username, self.test_password)
+        # she wants to make an event for next month
+        # she clicks on the plus sign on the first day and makes an event
+        day_div = self.browser.find_element_by_class_name(f'next_month_day_1')
+        action = ActionChains(self.browser)
+        action.move_to_element(day_div).perform()
+        new_event_button = self.browser.find_element_by_id(f'next_month_new_event_button_1')
+        new_event_button.click()
+        name_input = self.browser.find_element_by_id(NEW_EVENT_CLASS_IDS['next_title_id'])
+        submit_button = self.browser.find_element_by_id(NEW_EVENT_CLASS_IDS['next_submit_button'])
+        name_input.send_keys('destory world')
+        submit_button.click()
+        # she sees her event on screen
+        events = self.browser.find_elements_by_class_name('day_1_event')
+        self.assertEqual(len(events), 1)
+        # she then logs off
+        self._logout_attempt()
+
 
 def _get_month_name(month=datetime.now().month):
     months = {
