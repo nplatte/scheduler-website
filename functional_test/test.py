@@ -20,7 +20,7 @@ NEW_EVENT_CLASS_IDS = {
     'date_id': 'new_event_date',
     'description_class': 'event_description_input',
     'description_id': 'new_event_description',
-    'submit_button': 'new_event_submit_button'
+    'submit_button': 'new_event_submit_button',
 }
 
 EDIT_EVENT_CLASS_IDS = {
@@ -253,13 +253,20 @@ class UserMakesEvent(StaticLiveServerTestCase):
         action.move_to_element(day_div).perform()
         new_event_button = self.browser.find_element_by_id(f'next_month_new_event_button_1')
         new_event_button.click()
-        name_input = self.browser.find_element_by_id(NEW_EVENT_CLASS_IDS['next_title_id'])
-        submit_button = self.browser.find_element_by_id(NEW_EVENT_CLASS_IDS['next_submit_button'])
+        # She sees the date is for next month
+        date_input = self.browser.find_element_by_id(NEW_EVENT_CLASS_IDS['date_id'])
+        self.assertEqual('2022-7-1', date_input.get_attribute('value'))
+        # she puts in her event info
+        name_input = self.browser.find_element_by_id(NEW_EVENT_CLASS_IDS['title_id'])
+        submit_button = self.browser.find_element_by_id(NEW_EVENT_CLASS_IDS['submit_button'])
         name_input.send_keys('destory world')
         submit_button.click()
         # she sees her event on screen
-        events = self.browser.find_elements_by_class_name('day_1_event')
+        events = self.browser.find_elements_by_class_name('next_day_1_event')
         self.assertEqual(len(events), 1)
+        # She makes sure the event got added to the right day
+        event = self.browser.find_element_by_class_name('next_day_1_event')
+        event.click()
         # she then logs off
         self._logout_attempt()
 
