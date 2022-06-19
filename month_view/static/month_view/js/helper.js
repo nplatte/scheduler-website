@@ -50,22 +50,30 @@ function MouseOffNextMonthDay(day_div, day_num) {
     btn.style.display = 'none'
 }
 
-function MouseOverLastMonthDay(day, day_num) {
-    day.style.backgroundColor = '#c4c6c8';
-    var btn = document.getElementById('next_month_new_event_button_' + day_num);
-    btn.style.display = 'inline-block';
-}
-
-function MouseOffLastMonthDay(day_div, day_num) {
-    day_div.style.backgroundColor = '#c4c6c8';
-    var btn = document.getElementById('next_month_new_event_button_' + day_num);
-    btn.style.display = 'none'
-}
-
 function ShowNewNextMonthForm(day, month, year) {
     var form = document.getElementById('new_event_input');
     form.style.visibility = 'visible';
     var date_box = document.getElementById('new_event_date');
     var date = year + '-' + String(Number(month) + 1) + '-' + day;
+    date_box.value = date;
+}
+
+function MouseOverLastMonthDay(day, day_num) {
+    day.style.backgroundColor = '#c4c6c8';
+    var btn = document.getElementById('last_month_new_event_button_' + day_num);
+    btn.style.display = 'inline-block';
+}
+
+function MouseOffLastMonthDay(day_div, day_num) {
+    day_div.style.backgroundColor = '#c4c6c8';
+    var btn = document.getElementById('last_month_new_event_button_' + day_num);
+    btn.style.display = 'none'
+}
+
+function ShowNewLastMonthForm(day, month, year) {
+    var form = document.getElementById('new_event_input');
+    form.style.visibility = 'visible';
+    var date_box = document.getElementById('new_event_date');
+    var date = year + '-' + String(Number(month) - 1) + '-' + day;
     date_box.value = date;
 }

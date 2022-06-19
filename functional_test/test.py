@@ -243,7 +243,7 @@ class UserMakesEvent(StaticLiveServerTestCase):
         # she logs out
         self._logout_attempt()
 
-    def test_tiddlywinks_can_make_event_on_greyed_out_days(self):
+    def test_tiddlywinks_can_make_event_on_greyed_out_next_month_days(self):
         # she logs in
         self._login_attempt(self.test_username, self.test_password)
         # she wants to make an event for next month
@@ -266,6 +266,33 @@ class UserMakesEvent(StaticLiveServerTestCase):
         self.assertEqual(len(events), 1)
         # She makes sure the event got added to the right day
         event = self.browser.find_element_by_class_name('next_day_1_event')
+        event.click()
+        # she then logs off
+        self._logout_attempt()
+
+    def test_tiddlywinks_can_make_event_on_greyed_out_last_month_days(self):
+        # she logs in
+        self._login_attempt(self.test_username, self.test_password)
+        # she wants to make an event for next month
+        # she clicks on the plus sign on the first day and makes an event
+        day_div = self.browser.find_element_by_class_name(f'last_month_day_31')
+        action = ActionChains(self.browser)
+        action.move_to_element(day_div).perform()
+        new_event_button = self.browser.find_element_by_id(f'last_month_new_event_button_31')
+        new_event_button.click()
+        # She sees the date is for next month
+        date_input = self.browser.find_element_by_id(NEW_EVENT_CLASS_IDS['date_id'])
+        self.assertEqual('2022-5-31', date_input.get_attribute('value'))
+        # she puts in her event info
+        name_input = self.browser.find_element_by_id(NEW_EVENT_CLASS_IDS['title_id'])
+        submit_button = self.browser.find_element_by_id(NEW_EVENT_CLASS_IDS['submit_button'])
+        name_input.send_keys('destory world')
+        submit_button.click()
+        # she sees her event on screen
+        events = self.browser.find_elements_by_class_name('last_day_31_event')
+        self.assertEqual(len(events), 1)
+        # She makes sure the event got added to the right day
+        event = self.browser.find_element_by_class_name('last_day_31_event')
         event.click()
         # she then logs off
         self._logout_attempt()
