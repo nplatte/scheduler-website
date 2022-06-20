@@ -51,10 +51,13 @@ function MouseOffNextMonthDay(day_div, day_num) {
 }
 
 function ShowNewNextMonthForm(day, month, year) {
+    var num_month = Number(month) + 1;
+    var num_year = Number(year);
+    const [new_month, new_year] = ValidateMonthYear(num_month, num_year);
     var form = document.getElementById('new_event_input');
     form.style.visibility = 'visible';
     var date_box = document.getElementById('new_event_date');
-    var date = year + '-' + String(Number(month) + 1) + '-' + day;
+    var date = String(new_year) + '-' + String(new_month) + '-' + day;
     date_box.value = date;
 }
 
@@ -71,9 +74,24 @@ function MouseOffLastMonthDay(day_div, day_num) {
 }
 
 function ShowNewLastMonthForm(day, month, year) {
+    var num_month = Number(month) - 1;
+    var num_year = Number(year);
+    const [new_month, new_year] = ValidateMonthYear(num_month, num_year);
     var form = document.getElementById('new_event_input');
     form.style.visibility = 'visible';
     var date_box = document.getElementById('new_event_date');
-    var date = year + '-' + String(Number(month) - 1) + '-' + day;
+    var date = String(new_year) + '-' + String(new_month) + '-' + day;
     date_box.value = date;
+}
+
+function ValidateMonthYear(month, year) {
+    if (month == 0) {
+        return [12, year - 1];
+    }
+    if (month == 13) {
+        return [1, year + 1];
+    }
+    else {
+        return [month, year]
+    }
 }

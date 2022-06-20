@@ -74,6 +74,28 @@ class UserMakesEvent(StaticLiveServerTestCase):
         name_input.send_keys(name)
         submit_button.click()
 
+    def _make_new_event_last_month(self, name, day):
+        day_div = self.browser.find_element_by_class_name(f'last_month_day_{day}')
+        action = ActionChains(self.browser)
+        action.move_to_element(day_div).perform()
+        new_event_button = self.browser.find_element_by_id(f'last_month_new_event_button_{day}')
+        new_event_button.click()
+        name_input = self.browser.find_element_by_id(NEW_EVENT_CLASS_IDS['title_id'])
+        submit_button = self.browser.find_element_by_id(NEW_EVENT_CLASS_IDS['submit_button'])
+        name_input.send_keys(name)
+        submit_button.click()
+
+    def _make_new_event_next_month(self, name, day):
+        day_div = self.browser.find_element_by_class_name(f'next_month_day_{day}')
+        action = ActionChains(self.browser)
+        action.move_to_element(day_div).perform()
+        new_event_button = self.browser.find_element_by_id(f'next_month_new_event_button_{day}')
+        new_event_button.click()
+        name_input = self.browser.find_element_by_id(NEW_EVENT_CLASS_IDS['title_id'])
+        submit_button = self.browser.find_element_by_id(NEW_EVENT_CLASS_IDS['submit_button'])
+        name_input.send_keys(name)
+        submit_button.click()
+
     def test_tiddlywinks_can_log_in_and_out(self):
         # Tiddlywinks is greeted by a log in screen
         self.assertIn('Log In', self.browser.title)
@@ -320,6 +342,35 @@ class UserMakesEvent(StaticLiveServerTestCase):
         self.assertEqual(1, len(Event.objects.all()))
         # she then logs off
         self._logout_attempt()
+
+    def test_tiddly_winks_can_make_and_edit_event_around_year_end(self):
+        # Tiddlywinks logs in
+        self._login_attempt(self.test_username, self.test_password)
+        # she goes to January and decides to make an event on the 31st of December
+        for i in range(datetime.now().month - 1):
+            left_arrow = self.browser.find_element_by_id('left_month')
+            left_arrow.click()
+        month_name = self.browser.find_element_by_id('month_name')
+        self.assertEqual('January', month_name.text)
+        # she tries to make an event on December 31
+        self._make_new_event_last_month('destroy world calendars', 31)
+        # she sees her event on the 31st and goes over to december to view it proper
+        left_arrow = self.browser.find_element_by_id('left_month')
+        left_arrow.click()
+        event = self.browser.find_element_by_class_name('day_31_event')
+        event.click()
+        edit_title_input = self.browser.find_element_by_id(EDIT_EVENT_CLASS_IDS['title_id'])
+        self.assertEqual('destroy world calend', edit_title_input.get_attribute('value'))
+        # she then tries to make a new years day event
+        self._make_new_event_next_month('party', 1)
+        # she sees her event on January 1
+        event = self.browser.find_element_by_class_name('next_day_1_event')
+        event.click()
+        edit_title_input = self.browser.find_element_by_id(EDIT_EVENT_CLASS_IDS['title_id'])
+        self.assertEqual('party', edit_title_input.get_attribute('value'))
+        # she logs out and takes a nap
+        self._logout_attempt()
+
 
 def _get_month_name(month=datetime.now().month):
     months = {
