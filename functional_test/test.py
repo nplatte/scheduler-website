@@ -267,10 +267,22 @@ class UserMakesEvent(StaticLiveServerTestCase):
         # She makes sure the event got added to the right day
         event = self.browser.find_element_by_class_name('next_day_1_event')
         event.click()
+        # she realizes she needs to change the event
+        edit_title_input = self.browser.find_element_by_id(EDIT_EVENT_CLASS_IDS['title_id'])
+        edit_title_input.clear()
+        edit_title_input.send_keys('de-feet shoes')
+        submit_button = self.browser.find_element_by_id(EDIT_EVENT_CLASS_IDS['submit_button'])
+        submit_button.click()
+        # she sees her updated event on the same day
+        event = self.browser.find_element_by_class_name('next_day_1_event')
+        event.click()
+        edit_title_input = self.browser.find_element_by_id(EDIT_EVENT_CLASS_IDS['title_id'])
+        self.assertEqual('de-feet shoes', edit_title_input.get_attribute('value'))
+        self.assertEqual(1, len(Event.objects.all()))
         # she then logs off
         self._logout_attempt()
 
-    def test_tiddlywinks_can_make_event_on_greyed_out_last_month_days(self):
+    def test_tiddlywinks_can_make_and_edit_event_on_greyed_out_last_month_days(self):
         # she logs in
         self._login_attempt(self.test_username, self.test_password)
         # she wants to make an event for next month
@@ -294,9 +306,20 @@ class UserMakesEvent(StaticLiveServerTestCase):
         # She makes sure the event got added to the right day
         event = self.browser.find_element_by_class_name('last_day_31_event')
         event.click()
+        # she realizes she needs to change the event
+        edit_title_input = self.browser.find_element_by_id(EDIT_EVENT_CLASS_IDS['title_id'])
+        edit_title_input.clear()
+        edit_title_input.send_keys('de-feet shoes')
+        submit_button = self.browser.find_element_by_id(EDIT_EVENT_CLASS_IDS['submit_button'])
+        submit_button.click()
+        # she sees her updated event on the same day
+        event = self.browser.find_element_by_class_name('last_day_31_event')
+        event.click()
+        edit_title_input = self.browser.find_element_by_id(EDIT_EVENT_CLASS_IDS['title_id'])
+        self.assertEqual('de-feet shoes', edit_title_input.get_attribute('value'))
+        self.assertEqual(1, len(Event.objects.all()))
         # she then logs off
         self._logout_attempt()
-
 
 def _get_month_name(month=datetime.now().month):
     months = {
