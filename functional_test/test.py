@@ -277,7 +277,7 @@ class UserMakesEvent(StaticLiveServerTestCase):
         new_event_button.click()
         # She sees the date is for next month
         date_input = self.browser.find_element_by_id(NEW_EVENT_CLASS_IDS['date_id'])
-        self.assertEqual('2022-7-1', date_input.get_attribute('value'))
+        self.assertEqual(f'2022-{datetime.now().month + 1}-1', date_input.get_attribute('value'))
         # she puts in her event info
         name_input = self.browser.find_element_by_id(NEW_EVENT_CLASS_IDS['title_id'])
         submit_button = self.browser.find_element_by_id(NEW_EVENT_CLASS_IDS['submit_button'])
@@ -316,7 +316,7 @@ class UserMakesEvent(StaticLiveServerTestCase):
         new_event_button.click()
         # She sees the date is for next month
         date_input = self.browser.find_element_by_id(NEW_EVENT_CLASS_IDS['date_id'])
-        self.assertEqual('2022-5-31', date_input.get_attribute('value'))
+        self.assertEqual(f'2022-{datetime.now().month - 1}-31', date_input.get_attribute('value'))
         # she puts in her event info
         name_input = self.browser.find_element_by_id(NEW_EVENT_CLASS_IDS['title_id'])
         submit_button = self.browser.find_element_by_id(NEW_EVENT_CLASS_IDS['submit_button'])
@@ -393,5 +393,5 @@ def _get_month_name(month=datetime.now().month):
 class TestHelpers(TestCase):
 
     def test_get_month_name(self):
-        test_month = _get_month_name(datetime.now().month)
+        test_month = _get_month_name(6)
         self.assertEqual(test_month, 'June')

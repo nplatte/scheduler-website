@@ -1,6 +1,7 @@
 from django.test import  LiveServerTestCase
 from django.urls import reverse
 from django.contrib.auth.models import User
+from datetime import datetime
 
 class TestLoginPage(LiveServerTestCase):
 
@@ -23,7 +24,7 @@ class TestLoginPage(LiveServerTestCase):
 
     def test_login_redirects_to_month_view_on_success(self):
         response = self.client.post(reverse('login_page'), {'username': self.test_username, 'password': self.test_password}, follow=True)
-        self.assertRedirects(response, 'month_view/6-2022/')
+        self.assertRedirects(response, f'month_view/{datetime.now().month}-2022/')
 
     def test_login_redirects_to_login_on_fail(self):
         response = self.client.post(reverse('login_page'), {'username': self.test_username, 'password': 'wrong_password'}, follow=True)
