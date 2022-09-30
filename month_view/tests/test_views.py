@@ -231,12 +231,13 @@ class TestEditEventPOST(TestCase):
             'edit_event': [''],
             'event_id': event.pk,
             'title': "don't topple regime",
-            'date': date.today(),
+            'date': '2022-02-22',
             'description': 'we done fucked up'
         }
         response = self.client.post(reverse('month_page', kwargs={'month':2, 'year': 2022}), data)
         self.assertEqual(len(models.Event.objects.all()), 1)
         self.assertEqual("don't topple regime", models.Event.objects.all()[0].title)
+        self.assertEqual('2022-02-22' , str(models.Event.objects.all()[0].date))
 
 
 class TestDeleteEventPOST(TestCase):
