@@ -35,8 +35,9 @@
             <button type="button" class="new_event_button" id="last_month_new_event_button_{{ day }}" name="new_event" onclick="ShowNewLastMonthForm('{{ day }}', '{{ month_number }}', '{{ year_number }}')">+</button>
             {% for event in events %}
                 <div class="event">
-                    <button class="last_day_{{ day }}_event" onclick="ShowEditForm('{{ event.title }}', '{{ event.date }}', '{{ event.pk }}')">{{ event.title }}</button>
+                    <button class="last_day_{{ day }}_event" onclick="ShowEditForm('{{ event.title }}', '{{ event.date|date:"Y-m-d" }}', '{{ event.pk }}')">{{ event.title }}</button>
                 </div>
+
             {% endfor %}
         </div>
         {% endfor %}
@@ -48,7 +49,7 @@
             <button type="button" class="new_event_button" id="new_event_button_{{ day }}" name="new_event" onclick="ShowNewForm('{{ year_number }}-{{ month_number }}-{{ day }}')">+</button>
             {% for event in events %}
                 <div class="event">
-                    <button class="day_{{ day }}_event" onclick="ShowEditForm('{{ event.title }}', '{{ event.date }}', '{{ event.pk }}')">{{ event.title }}</button>
+                    <button class="day_{{ day }}_event" onclick="ShowEditForm('{{ event.title }}', '{{ event.date|date:"Y-m-d" }}', '{{ event.pk }}')">{{ event.title }}</button>
                 </div>
             {% endfor %}    
         </div>
@@ -61,7 +62,7 @@
             <button type="button" class="new_event_button" id="next_month_new_event_button_{{ day }}" name="new_event" onclick="ShowNewNextMonthForm('{{ day }}', '{{ month_number }}', '{{ year_number }}')">+</button>
             {% for event in events %}
                 <div class="event">
-                    <button class="next_day_{{ day }}_event" onclick="ShowEditForm('{{ event.title }}', '{{ event.date }}', '{{ event.pk }}')">{{ event.title }}</button>
+                    <button class="next_day_{{ day }}_event" onclick="ShowEditForm('{{ event.title }}', '{{ event.date|date:"Y-m-d" }}', '{{ event.pk }}')">{{ event.title }}</button>
                 </div>
             {% endfor %}
         </div>
