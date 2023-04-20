@@ -78,6 +78,7 @@ celerybeat.pid
 
 # Environments
 venv/
+311_venv/
 .vscode
 
 */migrations/

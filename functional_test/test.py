@@ -44,7 +44,7 @@ class UserMakesEvent(StaticLiveServerTestCase):
         self.test_username = 'tiddlywinks'
         self.test_password = 'Sparta12456'
         User.objects.create_user(self.test_username, 'test@test.com', self.test_password)
-        self.browser = webdriver.Chrome()
+        self.browser = webdriver.Firefox()
         # Then Tiddlywinks types in the url
         self.browser.get(self.live_server_url)
         self.curr_date = datetime.now()
@@ -69,8 +69,7 @@ class UserMakesEvent(StaticLiveServerTestCase):
         day_div = self.browser.find_element(By.CLASS_NAME, f'day_{day}')
         action = ActionChains(self.browser)
         action.move_to_element(day_div).perform()
-        if day == 31:
-            sleep(20)
+        
         new_event_button = self.browser.find_element(By.ID,f'new_event_button_{day}')
         new_event_button.click()
         name_input = self.browser.find_element(By.ID,NEW_EVENT_CLASS_IDS['title_id'])
@@ -351,9 +350,13 @@ class UserMakesEvent(StaticLiveServerTestCase):
         # Tiddlywinks logs in
         self._login_attempt(self.test_username, self.test_password)
         # she goes to January and decides to make an event on the 31st of December
-        for i in range(self.curr_date.month - 1):
+        month_name = self.browser.find_element(By.ID, 'month_name')
+        year_num = self.browser.find_element(By.ID, 'year_number')
+        while f'{month_name.text} {year_num.text}' != 'January 2022':
             left_arrow = self.browser.find_element(By.ID, 'left_month')
             left_arrow.click()
+            month_name = self.browser.find_element(By.ID, 'month_name')
+            year_num = self.browser.find_element(By.ID, 'year_number')
         month_name = self.browser.find_element(By.ID, 'month_name')
         self.assertEqual('January', month_name.text)
         # she tries to make an event on December 31
