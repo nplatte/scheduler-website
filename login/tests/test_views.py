@@ -24,7 +24,8 @@ class TestLoginPage(LiveServerTestCase):
 
     def test_login_redirects_to_month_view_on_success(self):
         response = self.client.post(reverse('login_page'), {'username': self.test_username, 'password': self.test_password}, follow=True)
-        self.assertRedirects(response, f'month_view/{datetime.now().month}-2022/')
+        curr_date = datetime.now()
+        self.assertRedirects(response, f'month_view/{curr_date.month}-{curr_date.year}/')
 
     def test_login_redirects_to_login_on_fail(self):
         response = self.client.post(reverse('login_page'), {'username': self.test_username, 'password': 'wrong_password'}, follow=True)
