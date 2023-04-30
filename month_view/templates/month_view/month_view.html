@@ -69,33 +69,35 @@
         {% endfor %}
     </div>
 
-
     <form method="POST">
         {% csrf_token %}
         <button type="submit" id="right_month" name="right_month" class="calender__change-month">-}</button>
     </form>
 
+    <div id=edit_event_input style="visibility: hidden;">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ edit_form }}
+            <input type=text id="event_id" name="event_id">
+            <button type="submit" id="edit_event_submit_button" name="edit_event" onclick="HideEditForm()">Submit</button>
+            <button type="button" id="edit_cancel_button" onclick="HideEditForm()">Cancel</button>
+            <button type="submit" id="delete_button" name="delete_event">Delete</button>
+        </form>
+    </div>    
+    
+    <div id=new_event_input style="visibility: hidden;">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ new_form }}
+            <button type="submit" id="new_event_submit_button" name="new_event" onclick="HideNewForm()">Submit</button>
+            <button type="button" id="new_cancel_button" onclick="HideNewForm()">Cancel</button>
+        </form>
+    </div>    
 </div>
 
 
-<div id=edit_event_input style="visibility: hidden;">
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ edit_form }}
-        <input type=text id="event_id" name="event_id">
-        <button type="submit" id="edit_event_submit_button" name="edit_event" onclick="HideEditForm()">Submit</button>
-        <button type="button" id="edit_cancel_button" onclick="HideEditForm()">Cancel</button>
-        <button type="submit" id="delete_button" name="delete_event">Delete</button>
-    </form>
-</div>
 
 
-<div id=new_event_input style="visibility: hidden;">
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ new_form }}
-        <button type="submit" id="new_event_submit_button" name="new_event" onclick="HideNewForm()">Submit</button>
-        <button type="button" id="new_cancel_button" onclick="HideNewForm()">Cancel</button>
-    </form>
-</div>
+
+
 {% endblock %}
