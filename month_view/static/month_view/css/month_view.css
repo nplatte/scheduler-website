@@ -38,6 +38,7 @@ h3.day_name {
 }
 
 div.day {
+    border-radius: 5px;
     width: 98px;
     height: 98px;
     border: 1px solid black;
@@ -46,6 +47,7 @@ div.day {
   }
 
   div.off_day {
+    border-radius: 5px;
     width: 98px;
     height: 98px;
     border: 1px solid black;
@@ -57,9 +59,11 @@ button.new_event_button {
   display: none;
   background-color: #DAE5F7;
   border:none;
+  border-radius: 4px;
   float:right;
   margin-top: 3%;
   margin-right: 3%;
+  cursor: pointer;
 }
   
   div.event_1 {
