@@ -79,8 +79,8 @@
             {% csrf_token %}
             {{ edit_form }}
             <input type=text id="event_id" name="event_id">
-            <button type="submit" id="edit_event_submit_button" name="edit_event" onclick="HideEditForm()">Submit</button>
-            <button type="button" id="edit_cancel_button" onclick="HideEditForm()">Cancel</button>
+            <button type="submit" id="edit_event_submit_button" name="edit_event" onclick="ToggleEditEventFormVisibility()">Submit</button>
+            <button type="button" id="edit_cancel_button" onclick="ToggleEditEventFormVisibility()">Cancel</button>
             <button type="submit" id="delete_button" name="delete_event">Delete</button>
         </form>
     </div>    
