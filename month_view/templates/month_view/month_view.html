@@ -89,8 +89,8 @@
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             {{ new_form }}
-            <button type="submit" id="new_event_submit_button" name="new_event" onclick="HideNewForm()">Submit</button>
-            <button type="button" id="new_cancel_button" onclick="HideNewForm()">Cancel</button>
+            <button type="submit" id="new_event_submit_button" name="new_event" onclick="ToggleNewEventFormVisibility(-1)">Submit</button>
+            <button type="button" id="new_cancel_button" onclick="ToggleNewEventFormVisibility(-1)">Cancel</button>
         </form>
     </div>    
 </div>
