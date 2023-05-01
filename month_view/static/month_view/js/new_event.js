@@ -11,9 +11,8 @@ function HideNewForm() {
 }
 
 function ToggleNewEventFormVisibility(date) {
-    console.log('ToggleNewForm')
     var form = document.getElementById('new_event_input');
-    if (form.style.visibility = 'visible') {
+    if (form.style.visibility == 'visible') {
         form.style.visibility = 'hidden';
     } else {
         form.style.visibility = 'visible';
