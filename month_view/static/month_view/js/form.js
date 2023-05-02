@@ -22,3 +22,37 @@ function ToggleEditEventFormVisibility(title, date, id) {
         var id_box = document.getElementById('event_id');
         id_box.value = id;
     }}
+
+function ShowNewNextMonthForm(day, month, year) {
+        var num_month = Number(month) + 1;
+        var num_year = Number(year);
+        const [new_month, new_year] = ValidateMonthYear(num_month, num_year);
+        var form = document.getElementById('new_event_input');
+        form.style.visibility = 'visible';
+        var date_box = document.getElementById('new_event_date');
+        var date = String(new_year) + '-' + String(new_month) + '-' + day;
+        date_box.value = date;
+    }
+
+function ShowNewLastMonthForm(day, month, year) {
+        var num_month = Number(month) - 1;
+        var num_year = Number(year);
+        const [new_month, new_year] = ValidateMonthYear(num_month, num_year);
+        var form = document.getElementById('new_event_input');
+        form.style.visibility = 'visible';
+        var date_box = document.getElementById('new_event_date');
+        var date = String(new_year) + '-' + String(new_month) + '-' + day;
+        date_box.value = date;
+    }
+    
+function ValidateMonthYear(month, year) {
+        if (month == 0) {
+            return [12, year - 1];
+        }
+        if (month == 13) {
+            return [1, year + 1];
+        }
+        else {
+            return [month, year]
+        }
+    }
