@@ -59,7 +59,7 @@
         {% for day, events in next_month_events %}
         <div class="next_month_day_{{ day }} off_day" onmouseover = "MouseOverNextMonthDay(this, '{{ day }}')" onmouseout = "MouseOffNextMonthDay(this, '{{ day }}')">
             {{ day }}
-            <button type="button" class="new_event_button" id="next_month_new_event_button_{{ day }}" name="new_event" onclick="ShowNewNextMonthForm('{{ day }}', '{{ month_number }}', '{{ year_number }}')">+</button>
+            <button type="button" class="new_event_button" id="next_month_new_event_button_{{ day }}" name="new_event" onclick="ShowNewNextMonthForm('{{ year_number }}-{{ month_number}}-{{ day }}')">+</button>
             {% for event in events %}
                 <div class="event">
                     <button class="next_day_{{ day }}_event" onclick="ToggleEditEventFormVisibility('{{ event.title }}', '{{ event.date|date:"Y-m-d" }}', '{{ event.pk }}')">{{ event.title }}</button>

@@ -23,16 +23,13 @@ function ToggleEditEventFormVisibility(title, date, id) {
         id_box.value = id;
     }}
 
-function ShowNewNextMonthForm(day, month, year) {
-        var num_month = Number(month) + 1;
-        var num_year = Number(year);
-        const [new_month, new_year] = ValidateMonthYear(num_month, num_year);
-        var form = document.getElementById('new_event_input');
-        form.style.visibility = 'visible';
-        var date_box = document.getElementById('new_event_date');
-        var date = String(new_year) + '-' + String(new_month) + '-' + day;
-        date_box.value = date;
-    }
+function ShowNewNextMonthForm(date) {
+    date = IncrementDate(date, 1)
+    var form = document.getElementById('new_event_input');
+    form.style.visibility = 'visible';
+    var date_box = document.getElementById('new_event_date');
+    date_box.value = date;
+}
 
 function ShowNewLastMonthForm(day, month, year) {
         var num_month = Number(month) - 1;
@@ -44,15 +41,26 @@ function ShowNewLastMonthForm(day, month, year) {
         var date = String(new_year) + '-' + String(new_month) + '-' + day;
         date_box.value = date;
     }
+
+function IncrementDate(date, amount) {
+    const split_date = date.split('-');
+    var year = split_date[0];
+    var month = Number(split_date[1]);
+    const day = Number(split_date[2]);
+    month += amount
+    const [new_month, new_year] = ValidateMonthYear(month, year)
+    const new_date = String(new_year) + '-' + String(new_month) + '-' + day;
+    return new_date
+}
     
 function ValidateMonthYear(month, year) {
-        if (month == 0) {
-            return [12, year - 1];
-        }
-        if (month == 13) {
-            return [1, year + 1];
-        }
-        else {
-            return [month, year]
-        }
+    if (month == 0) {
+        return [12, year - 1];
     }
+    if (month == 13) {
+        return [1, year + 1];
+    }
+    else {
+        return [month, year]
+    }
+}
