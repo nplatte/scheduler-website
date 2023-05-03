@@ -99,6 +99,34 @@ class UserMakesEvent(StaticLiveServerTestCase):
         name_input.send_keys(name)
         submit_button.click()
 
+    def date_after_current(self, target_month: int, target_year: int) -> bool:
+        curr_date = datetime.now()
+        if target_year > curr_date.year:
+            return True
+        elif target_year < curr_date.year:
+            return False
+        else:
+            if target_month > curr_date.month:
+                return True
+            elif target_month < curr_date.month:
+                return False
+            
+
+    def _find_month_year(self, target_month, target_year):
+        # navigates to the month and year in the parameters
+        # first check if the date is before or after the current date
+        is_after = self.date_after_current(target_month, target_year)
+        if is_after:
+            element_id = 'right_month'
+        else:
+            element_id = 'left_month'
+            arrow = self.browser.find_element(By.ID, 'left_month')
+        month_name = self.browser.find_element(By.ID, 'month_name')
+        year_num = self.browser.find_element(By.ID, 'year_number')
+        while f'{month_name} {year_num}' != f'{_get_month_name(target_month)} {target_year}':
+            arrow.click()
+        
+
     def test_tiddlywinks_can_log_in_and_out(self):
         # Tiddlywinks is greeted by a log in screen
         self.assertIn('Log In', self.browser.title)
@@ -379,7 +407,7 @@ class UserMakesEvent(StaticLiveServerTestCase):
         self._logout_attempt()
 
 
-def _get_month_name(month=datetime.now().month):
+def _get_month_name(month=datetime.now().month) -> str:
     months = {
         1: 'January',
         2: 'February',
