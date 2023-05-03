@@ -24,22 +24,19 @@ function ToggleEditEventFormVisibility(title, date, id) {
     }}
 
 function ShowNewNextMonthForm(date) {
-    date = IncrementDate(date, 1)
+    date = IncrementDate(date, 1);
     var form = document.getElementById('new_event_input');
     form.style.visibility = 'visible';
     var date_box = document.getElementById('new_event_date');
     date_box.value = date;
 }
 
-function ShowNewLastMonthForm(day, month, year) {
-        var num_month = Number(month) - 1;
-        var num_year = Number(year);
-        const [new_month, new_year] = ValidateMonthYear(num_month, num_year);
-        var form = document.getElementById('new_event_input');
-        form.style.visibility = 'visible';
-        var date_box = document.getElementById('new_event_date');
-        var date = String(new_year) + '-' + String(new_month) + '-' + day;
-        date_box.value = date;
+function ShowNewLastMonthForm(date) {
+    date = IncrementDate(date, -1);
+    var form = document.getElementById('new_event_input');
+    form.style.visibility = 'visible';
+    var date_box = document.getElementById('new_event_date');
+    date_box.value = date;
     }
 
 function IncrementDate(date, amount) {
@@ -47,8 +44,8 @@ function IncrementDate(date, amount) {
     var year = split_date[0];
     var month = Number(split_date[1]);
     const day = Number(split_date[2]);
-    month += amount
-    const [new_month, new_year] = ValidateMonthYear(month, year)
+    month += amount;
+    const [new_month, new_year] = ValidateMonthYear(month, year);
     const new_date = String(new_year) + '-' + String(new_month) + '-' + day;
     return new_date
 }
