@@ -46,7 +46,7 @@ div.day {
     background-color: #C9D9F2;
   }
 
-  div.off_day {
+div.off_day {
     border-radius: 5px;
     width: 98px;
     height: 98px;
@@ -65,28 +65,30 @@ button.new_event_button {
   margin-right: 3%;
   cursor: pointer;
 }
+
+
   
-  div.event_1 {
-    width:97px;
-    height: 24px;
-    border: 2px solid #81AEF7;
-    background: aqua;
-    margin: 0px;
-    padding:0px
-  }
+div.event_1 {
+  width:97px;
+  height: 24px;
+  border: 2px solid #81AEF7;
+  background: aqua;
+  margin: 0px;
+  padding:0px;
+}
   
-  div.event_2 {
-    width:97px;
-    height: 24px;
-    border: 2px solid green;
-    margin: 0px;
-    padding:0px
-  }
-  
-  div.event_3 {
-    width:97px;
-    height: 24px;
-    border: 2px solid purple;
-    margin: 0px;
-    padding:0px
-  }
+div.event_2 {
+  width:97px;
+  height: 24px;
+  border: 2px solid green;
+  margin: 0px;
+  padding:0px;
+}
+
+div.event_3 {
+  width:97px;
+  height: 24px;
+  border: 2px solid purple;
+  margin: 0px;
+  padding:0px;
+}

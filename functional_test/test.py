@@ -99,6 +99,38 @@ class UserMakesEvent(StaticLiveServerTestCase):
         name_input.send_keys(name)
         submit_button.click()
 
+    def date_after_current(self, target_month: int, target_year: int, curr_month, curr_year) -> bool:
+        if target_year > curr_year:
+            return True
+        elif target_year < curr_year:
+            return False
+        else:
+            if target_month > curr_month:
+                return True
+            elif target_month < curr_month:
+                return False
+            
+
+    def _find_month_year(self, target_month, target_year, curr_month=None, curr_year=None):
+        # navigates to the month and year in the parameters
+        # first check if the date is before or after the current date
+        if curr_month == None:
+            curr_month = self.curr_date.month
+            curr_year = self.curr_date.year
+        is_after = self.date_after_current(target_month, target_year, curr_month, curr_year)
+        if is_after:
+            element_id = 'right_month'
+        else:
+            element_id = 'left_month'
+        month_name = self.browser.find_element(By.ID, 'month_name')
+        year_num = self.browser.find_element(By.ID, 'year_number')
+        while f'{month_name.text} {year_num.text}' != f'{_get_month_name(target_month)} {target_year}':
+            arrow = self.browser.find_element(By.ID, element_id)
+            arrow.click()
+            month_name = self.browser.find_element(By.ID, 'month_name')
+            year_num = self.browser.find_element(By.ID, 'year_number')
+        
+
     def test_tiddlywinks_can_log_in_and_out(self):
         # Tiddlywinks is greeted by a log in screen
         self.assertIn('Log In', self.browser.title)
@@ -250,9 +282,7 @@ class UserMakesEvent(StaticLiveServerTestCase):
         month_name = self.browser.find_element(By.ID, 'month_name')
         self.assertEqual(month_name.text, _get_month_name(self.curr_date.month - 1))
         # she clicks 11 more times to make sure she is in the last year
-        for i in range(11):
-            left_arrow = self.browser.find_element(By.ID, 'left_month')
-            left_arrow.click()
+        self._find_month_year(self.curr_date.month, 2022)
         # she sees she is in the last year
         year_num = self.browser.find_element(By.ID, 'year_number')
         self.assertEqual(f'{self.curr_date.year - 1}', year_num.text)
@@ -262,9 +292,7 @@ class UserMakesEvent(StaticLiveServerTestCase):
         bad_name_input = self.browser.find_element(By.ID, NEW_EVENT_CLASS_IDS['title_id'])
         self.assertRaises(ElementNotInteractableException, bad_name_input.send_keys, 'something')
         # she arrows right for a full year until she's back in the current month
-        for i in range(12):
-            right_arrow = self.browser.find_element(By.ID, 'right_month')
-            right_arrow.click()
+        self._find_month_year(self.curr_date.month, self.curr_date.year, curr_month=self.curr_date.month, curr_year=2022)
         # she logs out
         self._logout_attempt()
 
@@ -308,10 +336,13 @@ class UserMakesEvent(StaticLiveServerTestCase):
         self._logout_attempt()
 
     def test_tiddlywinks_can_make_and_edit_event_on_greyed_out_last_month_days(self):
+        test_month = 4
+        test_year = 2023
         # she logs in
         self._login_attempt(self.test_username, self.test_password)
         # she wants to make an event for next month
         # she clicks on the plus sign on the first day and makes an event
+        self._find_month_year(test_month, test_year)
         day_div = self.browser.find_element(By.CLASS_NAME, f'last_month_day_31')
         action = ActionChains(self.browser)
         action.move_to_element(day_div).perform()
@@ -319,7 +350,7 @@ class UserMakesEvent(StaticLiveServerTestCase):
         new_event_button.click()
         # She sees the date is for next month
         date_input = self.browser.find_element(By.ID, NEW_EVENT_CLASS_IDS['date_id'])
-        self.assertEqual(f'{self.curr_date.year}-{self.curr_date.month - 1}-31', date_input.get_attribute('value'))
+        self.assertEqual(f'2023-3-31', date_input.get_attribute('value'))
         # she puts in her event info
         name_input = self.browser.find_element(By.ID, NEW_EVENT_CLASS_IDS['title_id'])
         submit_button = self.browser.find_element(By.ID, NEW_EVENT_CLASS_IDS['submit_button'])
@@ -349,14 +380,8 @@ class UserMakesEvent(StaticLiveServerTestCase):
     def test_tiddly_winks_can_make_and_edit_event_around_year_end(self):
         # Tiddlywinks logs in
         self._login_attempt(self.test_username, self.test_password)
-        # she goes to January and decides to make an event on the 31st of December
-        month_name = self.browser.find_element(By.ID, 'month_name')
-        year_num = self.browser.find_element(By.ID, 'year_number')
-        while f'{month_name.text} {year_num.text}' != 'January 2022':
-            left_arrow = self.browser.find_element(By.ID, 'left_month')
-            left_arrow.click()
-            month_name = self.browser.find_element(By.ID, 'month_name')
-            year_num = self.browser.find_element(By.ID, 'year_number')
+        # she goes to January and decides to make an event on the 31st of December 2022
+        self._find_month_year(1, 2022)
         month_name = self.browser.find_element(By.ID, 'month_name')
         self.assertEqual('January', month_name.text)
         # she tries to make an event on December 31
@@ -379,7 +404,7 @@ class UserMakesEvent(StaticLiveServerTestCase):
         self._logout_attempt()
 
 
-def _get_month_name(month=datetime.now().month):
+def _get_month_name(month=datetime.now().month) -> str:
     months = {
         1: 'January',
         2: 'February',
