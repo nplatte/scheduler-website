@@ -1,4 +1,4 @@
-function ToggleNewEventFormVisibility(date) {
+export function ToggleNewEventFormVisibility(date) {
     var form = document.getElementById('new_event_input');
     if (form.style.visibility == 'visible') {
         form.style.visibility = 'hidden';
@@ -9,7 +9,7 @@ function ToggleNewEventFormVisibility(date) {
     }
 }
 
-function ToggleEditEventFormVisibility(title, date, id) {
+export function ToggleEditEventFormVisibility(title, date, id) {
     var form = document.getElementById('edit_event_input');
     if (form.style.visibility == 'visible'){
         form.style.visibility = 'hidden';
@@ -25,6 +25,7 @@ function ToggleEditEventFormVisibility(title, date, id) {
 
 function ShowNewNextMonthForm(date) {
     date = IncrementDate(date, 1);
+    console.log(date)
     var form = document.getElementById('new_event_input');
     form.style.visibility = 'visible';
     var date_box = document.getElementById('new_event_date');
@@ -39,9 +40,9 @@ function ShowNewLastMonthForm(date) {
     date_box.value = date;
     }
 
-function IncrementDate(date, amount) {
+export function IncrementDate(date, amount) {
     const split_date = date.split('-');
-    var year = split_date[0];
+    var year = Number(split_date[0]);
     var month = Number(split_date[1]);
     const day = Number(split_date[2]);
     month += amount;

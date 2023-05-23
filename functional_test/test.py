@@ -99,31 +99,32 @@ class UserMakesEvent(StaticLiveServerTestCase):
         name_input.send_keys(name)
         submit_button.click()
 
-    def date_after_current(self, target_month: int, target_year: int) -> bool:
-        if target_year > self.curr_date.year:
+    def date_after_current(self, target_month: int, target_year: int, curr_month, curr_year) -> bool:
+        if target_year > curr_year:
             return True
-        elif target_year < self.curr_date.year:
+        elif target_year < curr_year:
             return False
         else:
-            if target_month > self.curr_date.month:
+            if target_month > curr_month:
                 return True
-            elif target_month < self.curr_date.month:
+            elif target_month < curr_month:
                 return False
             
 
-    def _find_month_year(self, target_month, target_year):
+    def _find_month_year(self, target_month, target_year, curr_month=None, curr_year=None):
         # navigates to the month and year in the parameters
         # first check if the date is before or after the current date
-        is_after = self.date_after_current(target_month, target_year)
+        if curr_month == None:
+            curr_month = self.curr_date.month
+            curr_year = self.curr_date.year
+        is_after = self.date_after_current(target_month, target_year, curr_month, curr_year)
         if is_after:
             element_id = 'right_month'
         else:
             element_id = 'left_month'
         month_name = self.browser.find_element(By.ID, 'month_name')
         year_num = self.browser.find_element(By.ID, 'year_number')
-        print(f'{_get_month_name(target_month)} {target_year}')
         while f'{month_name.text} {year_num.text}' != f'{_get_month_name(target_month)} {target_year}':
-            print(f'{month_name.text} {year_num.text}')
             arrow = self.browser.find_element(By.ID, element_id)
             arrow.click()
             month_name = self.browser.find_element(By.ID, 'month_name')
@@ -281,7 +282,7 @@ class UserMakesEvent(StaticLiveServerTestCase):
         month_name = self.browser.find_element(By.ID, 'month_name')
         self.assertEqual(month_name.text, _get_month_name(self.curr_date.month - 1))
         # she clicks 11 more times to make sure she is in the last year
-        self._find_month_year(self.curr_date.month, self.curr_date.year - 1)
+        self._find_month_year(self.curr_date.month, 2022)
         # she sees she is in the last year
         year_num = self.browser.find_element(By.ID, 'year_number')
         self.assertEqual(f'{self.curr_date.year - 1}', year_num.text)
@@ -291,7 +292,7 @@ class UserMakesEvent(StaticLiveServerTestCase):
         bad_name_input = self.browser.find_element(By.ID, NEW_EVENT_CLASS_IDS['title_id'])
         self.assertRaises(ElementNotInteractableException, bad_name_input.send_keys, 'something')
         # she arrows right for a full year until she's back in the current month
-        self._find_month_year(self.curr_date.month, self.curr_date.year)
+        self._find_month_year(self.curr_date.month, self.curr_date.year, curr_month=self.curr_date.month, curr_year=2022)
         # she logs out
         self._logout_attempt()
 
