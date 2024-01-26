@@ -1,8 +1,11 @@
 from django.test import LiveServerTestCase
 from django.urls import reverse
 from django.contrib.auth.models import User
+from month_view.models import Event
+from datetime import datetime
 
 import month_view.forms as forms
+import json
 
 
 
@@ -65,3 +68,21 @@ class TestViewGETContext(LiveServerTestCase):
         next_month_events = self.response.context['next_month_events']
         total_event_list = last_month_events + this_month_events + next_month_events
         self.assertEqual(len(total_event_list), 35)
+
+
+class TestGETMonthAPI(LiveServerTestCase):
+
+    def setUp(self):
+        self.url = reverse('api_month_page', kwargs={'month': 10, 'year': 2010})
+
+
+    def test_api_return(self):
+        json = self.client.get(self.url)
+
+    def test_some_events(self):
+        e1 = Event.objects.create(title='event 1', description='desc for event 1', time='00:00:00', date=datetime(2010, 10, 17).date())
+        e2 = Event.objects.create(title='event 2', description='desc for event 2', time='00:00:00', date=datetime(2010, 10, 18).date())
+        e3 = Event.objects.create(title='event 3', description='desc for event 3', time='00:01:00', date=datetime(2010, 10, 17).date())
+        e4 = Event.objects.create(title='event 4', description='desc for event 4', time='00:00:00', date=datetime(2010, 11, 17).date())
+        json = self.client.get(self.url)
+        print(json.content)

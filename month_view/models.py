@@ -7,4 +7,3 @@ class Event(models.Model):
     description = models.CharField(max_length=100, blank=True, null=True)
     time = models.TimeField(blank=True, null=True)
     date = models.DateField(default=date.today())
-

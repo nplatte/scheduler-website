@@ -1,5 +1,6 @@
 from datetime import datetime, date
 import calendar
+from django.http import JsonResponse
 
 from django.urls import reverse
 from django.shortcuts import render, redirect
@@ -10,6 +11,7 @@ from django.utils.decorators import method_decorator
 
 from .forms import NewEventForm, EditEventForm
 from .models import Event
+from month_view.serializers import EventSerializer
 
 
 class MonthViewPage(View):
@@ -160,3 +162,13 @@ class MonthViewPage(View):
     def _set_month_year(self, month, year):
         self.month = month
         self.year = year
+
+
+def month_view_api_page(request, month, year):
+    events = {}
+    month_events = Event.objects.filter(date__month=month, date__year=year)
+    for day in range(1, 32):
+        day_events = month_events.filter(date__day=day)
+        s = EventSerializer(day_events, many=True)
+        events[day] = s.data
+    return JsonResponse(events)
