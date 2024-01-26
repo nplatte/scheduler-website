@@ -7,8 +7,7 @@
 
 {% block 'style' %}
 <link rel="stylesheet" type="text/css" href="{% static 'month_view/css/month_view.css' %}">
-<script src="{% static 'month_view/js/form.mjs' %}" type="module"></script>
-<!--<script src="{% static 'month_view/js/new_event.js' %}"></script>-->
+
 {% endblock %}
 
 {% block 'body' %}
@@ -94,10 +93,8 @@
         </form>
     </div>    
 </div>
+{% endblock %}
 
-
-
-
-
-
+{% block 'script' %}
+<script src="{% static 'month_view/js/form.js' %}" type="module"></script>
 {% endblock %}

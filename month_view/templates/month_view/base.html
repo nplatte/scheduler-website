@@ -5,12 +5,17 @@
         <link rel="stylesheet" type="text/css" href="{% static 'month_view/css/base.css' %}">
         {% block 'style' %}
         {% endblock %}
-        <script src="{% static 'month_view/js/helper.js' %}"></script>
+        
     </head>
     <body>
         {% block 'logout' %}
         {% endblock %}
         {% block 'body' %}
         {% endblock %}
+        <script src="{% static 'month_view/js/helper.js' %}"></script>
+        {% block 'script' %}
+        {% endblock %}
+
     </body>
+
 </html>
