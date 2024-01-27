@@ -167,8 +167,12 @@ class MonthViewPage(View):
 def month_view_api_page(request, month, year):
     events = {}
     month_events = Event.objects.filter(date__month=month, date__year=year)
-    for day in range(1, 32):
+    length = _find_month_length(month, year) + 1
+    for day in range(1, length):
         day_events = month_events.filter(date__day=day)
         s = EventSerializer(day_events, many=True)
         events[day] = s.data
     return JsonResponse(events)
+
+def _find_month_length(month, year):
+        return calendar.monthrange(year, month)[1]
