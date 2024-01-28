@@ -1,10 +1,23 @@
-function MonthInfo() {
-    return (
-        <div className="calendar__descriptions">
-            <h3 className="calendar__month">Month Name</h3>
-            <h3 className="calendar__year">Year Number</h3>
+
+
+function DayGrid() {
+    return(
+        <div>
+        <DayName name="Sunday" />
+        <DayName name="Monday" />
+        <DayName name="Tueday" />
+        <DayName name="Wednesday" />
+        <DayName name="Thursday" />
+        <DayName name="Friday" />
+        <DayName name="Saturday" />
         </div>
     );
 }
 
-export default MonthInfo;
+function DayName({name}) {
+    return (
+        <h3 class="day_name">{name}</h3>
+    );
+}
+
+export default DayGrid;

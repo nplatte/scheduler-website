@@ -1,4 +1,5 @@
-import MonthInfo from './calendar/calendar_box.js';
+import {MonthInfo, LeftArrow, RightArrow} from './calendar/calendar_overlay.js';
+import DayGrid from './calendar/calendar_box.js';
 
 
 function Calendar() {
@@ -14,6 +15,11 @@ function Calendar() {
     return (
       <div className="calendar">
         <MonthInfo />
+        <div>
+          <LeftArrow />
+          <DayGrid />
+          <RightArrow />
+        </div>
       </div>
     );
 }
