@@ -165,6 +165,16 @@ class MonthViewPage(View):
 
 
 def month_view_api_page(request, month, year):
+    month_event_data = {}
+    month_event_data['month_info'] = {
+        'name' : _get_month_name(month),
+        'month_num' : month,
+        'year' : year,
+    }
+    month_event_data['events'] = _get_month_events(month, year)
+    return JsonResponse(month_event_data)
+
+def _get_month_events(month, year):
     events = {}
     month_events = Event.objects.filter(date__month=month, date__year=year)
     length = _find_month_length(month, year) + 1
@@ -172,7 +182,24 @@ def month_view_api_page(request, month, year):
         day_events = month_events.filter(date__day=day)
         s = EventSerializer(day_events, many=True)
         events[day] = s.data
-    return JsonResponse(events)
+    return events
+
+def _get_month_name(month):
+        months = {
+            1: 'January',
+            2: 'February',
+            3: 'March',
+            4: 'April',
+            5: 'May',
+            6: 'June',
+            7: 'July',
+            8: 'August',
+            9: 'September',
+            10: 'October',
+            11: 'November',
+            12: 'December'
+        }
+        return months[month]
 
 def _find_month_length(month, year):
         return calendar.monthrange(year, month)[1]

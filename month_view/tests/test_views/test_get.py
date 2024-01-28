@@ -79,10 +79,23 @@ class TestGETMonthAPI(LiveServerTestCase):
     def test_api_return(self):
         json = self.client.get(self.url)
 
+    def test_api_format(self):
+        jsn = self.client.get(self.url)
+        json_dict = json.loads(jsn.content)
+        month_info = json_dict['month_info']
+        events = json_dict['events']
+        self.assertEqual(month_info['name'], 'October')
+        self.assertEqual(month_info['year'], 2010)
+        self.assertEqual(31, len(events))
+
     def test_some_events(self):
         e1 = Event.objects.create(title='event 1', description='desc for event 1', time='00:00:00', date=datetime(2010, 10, 17).date())
         e2 = Event.objects.create(title='event 2', description='desc for event 2', time='00:00:00', date=datetime(2010, 10, 18).date())
         e3 = Event.objects.create(title='event 3', description='desc for event 3', time='00:01:00', date=datetime(2010, 10, 17).date())
         e4 = Event.objects.create(title='event 4', description='desc for event 4', time='00:00:00', date=datetime(2010, 11, 17).date())
-        json = self.client.get(self.url)
-        print(json.content)
+        jsn = self.client.get(self.url)
+        json_dict = json.loads(jsn.content)
+
+        event_data = json_dict["events"]
+        self.assertEqual(2, len(event_data['17']))
+        self.assertEqual(1, len(event_data['18']))
