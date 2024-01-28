@@ -1,25 +1,21 @@
-import logo from './logo.svg';
-import './App.css';
+import MonthInfo from './calendar/calendar_box.js';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+function Calendar() {
+    //calendar box
+    //  left arrow right arrow
+    //  month info
+    //  week day labels
+    //  month days
+    //    day box
+    //      day number
+    //      event
+    //      a new event button
+    return (
+      <div className="calendar">
+        <MonthInfo />
+      </div>
+    );
 }
 
-export default App;
+export default Calendar;
