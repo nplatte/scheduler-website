@@ -2,7 +2,7 @@
 
 function DayGrid() {
     return(
-        <div>
+        <div className="calender__days">
         <DayName name="Sunday" />
         <DayName name="Monday" />
         <DayName name="Tueday" />
@@ -16,7 +16,7 @@ function DayGrid() {
 
 function DayName({name}) {
     return (
-        <h3 class="day_name">{name}</h3>
+        <h3 className="day_name">{name}</h3>
     );
 }
 

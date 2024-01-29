@@ -8,17 +8,27 @@ function MonthInfo() {
 }
 
 function LeftArrow() {
+
+    function  handleClick() {
+        console.log("left clicked");
+    }
+
     return (
         <div>
-            <button>Left</button>
+            <button onClick={handleClick}>Left</button>
         </div>
     );
 }
 
 function RightArrow() {
+
+    function handleClick() {
+        console.log("right clicked");
+    }
+
     return (
         <div>
-            <button>Right</button>
+            <button onClick={handleClick}>Right</button>
         </div>
     );
 }
